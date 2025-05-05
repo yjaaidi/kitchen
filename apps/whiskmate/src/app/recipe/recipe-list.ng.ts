@@ -6,9 +6,9 @@ import {
   input,
   TemplateRef,
 } from '@angular/core';
-import { GridComponent } from '../shared/grid.component';
+import { Grid } from '../shared/grid.ng';
+import { RecipePreview } from './recipe-preview.ng';
 import { Recipe } from './recipe';
-import { RecipePreviewComponent } from './recipe-preview.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,9 +27,9 @@ import { RecipePreviewComponent } from './recipe-preview.component';
       }
     </wm-grid>
   `,
-  imports: [GridComponent, RecipePreviewComponent, NgTemplateOutlet],
+  imports: [Grid, RecipePreview, NgTemplateOutlet],
 })
-export class RecipeListComponent {
+export class RecipeList {
   recipes = input.required<Recipe[]>();
 
   actionsTemplateRef = contentChild.required<

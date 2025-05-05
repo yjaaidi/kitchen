@@ -33,6 +33,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     `,
   ],
 })
-export class CardComponent {
+export class Card {
   pictureUri = input<string>();
 }

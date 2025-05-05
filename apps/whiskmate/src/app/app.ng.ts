@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavComponent } from './shared/nav.component';
+import { Nav } from './shared/nav.ng';
 
 @Component({
-  imports: [RouterOutlet, NavComponent],
+  imports: [RouterOutlet, Nav],
   selector: 'wm-app',
   template: `
     <wm-nav [links]="links" title="👨🏻‍🍳 Whiskmate">
@@ -11,6 +11,6 @@ import { NavComponent } from './shared/nav.component';
     </wm-nav>
   `,
 })
-export class AppComponent {
+export class App {
   links = [{ name: 'Search', route: ['/search'] }];
 }

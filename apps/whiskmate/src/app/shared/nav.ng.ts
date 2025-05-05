@@ -88,7 +88,7 @@ export interface Link {
     `,
   ],
 })
-export class NavComponent {
+export class Nav {
   links = input.required<Link[]>();
   title = input.required<string>();
 

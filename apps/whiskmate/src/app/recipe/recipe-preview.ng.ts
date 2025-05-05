@@ -1,4 +1,4 @@
-import { CardComponent } from './../shared/card.component';
+import { Card } from './../shared/card.ng';
 import type { Recipe } from './recipe';
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-recipe-preview',
-  imports: [CardComponent],
+  imports: [Card],
   template: `@if (recipe()) {
     <wm-card [pictureUri]="recipe().pictureUri">
       <h2 data-role="recipe-name">{{ recipe().name }}</h2>
@@ -30,6 +30,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     `,
   ],
 })
-export class RecipePreviewComponent {
+export class RecipePreview {
   recipe = input.required<Recipe>();
 }

@@ -6,22 +6,22 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RecipeFilter } from './recipe-filter';
-import { RecipeFilterComponent } from './recipe-filter.component';
+import { RecipeFilterCriteria } from './recipe-filter-criteria';
+import { RecipeFilter } from './recipe-filter.ng';
+import { RecipeList } from './recipe-list.ng';
+import { RecipeAddButton } from './recipe-add-button.ng';
+import { Message } from '../shared/message.ng';
 import { RecipeRepository } from './recipe-repository.service';
-import { RecipeListComponent } from './recipe-list.component';
-import { RecipeAddButtonComponent } from './recipe-add-button.component';
-import { MessageComponent } from '../shared/message.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-recipe-search',
   imports: [
-    MessageComponent,
+    Message,
     MatButtonModule,
-    RecipeFilterComponent,
-    RecipeListComponent,
-    RecipeAddButtonComponent,
+    RecipeFilter,
+    RecipeList,
+    RecipeAddButton,
   ],
   template: `
     <wm-recipe-filter (filterChange)="filter.set($event)"></wm-recipe-filter>
@@ -30,7 +30,7 @@ import { MessageComponent } from '../shared/message.component';
       <wm-message>⏳ Searching...</wm-message>
     }
     @if (recipesResource.error()) {
-      <wm-message> 💥 Something went wrong</wm-message>
+      <wm-message>💥 Something went wrong</wm-message>
     }
 
     @if (recipesResource.value(); as recipes) {
@@ -46,8 +46,8 @@ import { MessageComponent } from '../shared/message.component';
     }
   `,
 })
-export class RecipeSearchComponent {
-  filter = signal<RecipeFilter>({});
+export class RecipeSearch {
+  filter = signal<RecipeFilterCriteria>({});
   recipesResource = rxResource({
     request: this.filter,
     loader: ({ request }) => this._recipeRepository.search(request.keywords),
@@ -56,4 +56,4 @@ export class RecipeSearchComponent {
   private _recipeRepository = inject(RecipeRepository);
 }
 
-export default RecipeSearchComponent;
+export default RecipeSearch;

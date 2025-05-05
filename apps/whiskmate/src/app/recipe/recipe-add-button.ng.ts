@@ -15,6 +15,6 @@ import type { Recipe } from './recipe';
     ADD
   </button>`,
 })
-export class RecipeAddButtonComponent {
+export class RecipeAddButton {
   recipe = input.required<Recipe>();
 }

@@ -2,20 +2,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'wm-title',
-  template: `<h1><ng-content></ng-content></h1>`,
+  selector: 'wm-message',
+  template: ` <ng-content />`,
   styles: [
     `
       :host {
+        color: #666;
         display: block;
-        padding-top: 1em;
+        font-size: 1.5em;
+        margin: 1em auto;
         text-align: center;
-
-        background: #380030;
-        border-bottom: solid 1px #ddd;
-        color: #fff;
       }
     `,
   ],
 })
-export class TitleComponent {}
+export class Message {}
