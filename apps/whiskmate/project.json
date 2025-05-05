@@ -77,6 +77,17 @@
     },
     "reset": {
       "command": "rm -rf {projectRoot}/playwright/.cache"
+    },
+    "typecheck": {
+      "dependsOn": ["typecheck-app", "typecheck-spec"]
+    },
+    "typecheck-app": {
+      "command": "tsc -p {projectRoot}/tsconfig.app.json --noEmit",
+      "cwd": "{projectRoot}"
+    },
+    "typecheck-spec": {
+      "command": "tsc -p {projectRoot}/tsconfig.spec.json --noEmit",
+      "cwd": "{projectRoot}"
     }
   }
 }
