@@ -68,5 +68,6 @@
         "targetName": "test-ui"
       }
     }
-  ]
+  ],
+  "useLegacyCache": true
 }

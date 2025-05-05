@@ -1,6 +1,11 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "playwright/.cache/**/*"],
+  "ignorePatterns": [
+    "!**/*",
+    "playwright/.cache/**/*",
+    "**/vite.config.*.timestamp*",
+    "**/vitest.config.*.timestamp*"
+  ],
   "overrides": [
     {
       "files": ["*.ts"],
