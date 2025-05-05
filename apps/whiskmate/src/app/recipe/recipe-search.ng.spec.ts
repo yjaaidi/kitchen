@@ -10,11 +10,11 @@ describe(RecipeSearch.name, () => {
   it.todo('🚧 should filter recipes using keywords');
 
   async function renderComponent() {
-    const { fixture } = await render(RecipeSearch);
+    await render(RecipeSearch);
 
     return {
       async findRecipeTitles() {
-        return await screen.findAllByRole('heading', { level: 2 });
+        return screen.findAllByRole('heading', { level: 2 });
       },
       async typeKeywords(keywords: string) {
         await userEvent.type(screen.getByLabelText('Keywords'), keywords);

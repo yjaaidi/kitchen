@@ -49,8 +49,8 @@ import { RecipeRepository } from './recipe-repository.service';
 export class RecipeSearch {
   filter = signal<RecipeFilterCriteria>({});
   recipesResource = rxResource({
-    request: this.filter,
-    loader: ({ request }) => this._recipeRepository.search(request.keywords),
+    params: this.filter,
+    stream: ({ params }) => this._recipeRepository.search(params.keywords),
   });
 
   private _recipeRepository = inject(RecipeRepository);

@@ -9,7 +9,7 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import { beforeEach } from 'vitest';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
@@ -18,6 +18,6 @@ getTestBed().initTestEnvironment(
 
 beforeEach(() => {
   TestBed.configureTestingModule({
-    providers: [provideExperimentalZonelessChangeDetection()],
+    providers: [provideZonelessChangeDetection()],
   });
 });
