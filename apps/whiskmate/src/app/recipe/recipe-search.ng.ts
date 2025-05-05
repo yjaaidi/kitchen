@@ -11,7 +11,7 @@ import { RecipeFilter } from './recipe-filter.ng';
 import { RecipeList } from './recipe-list.ng';
 import { RecipeAddButton } from './recipe-add-button.ng';
 import { Message } from '../shared/message.ng';
-import { RecipeRepository } from './recipe-repository.service';
+import { RecipeRepository } from './recipe-repository';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
