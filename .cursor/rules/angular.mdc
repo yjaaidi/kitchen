@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- use [Angular docs](mdc:https:/angular.dev/llms-full.txt)
+- use `.ng.ts` extension for components instead of `.component.ts`
+- respect workspace's component prefix
+- prefer standalone (do not use `standalone: true` as it's the default behavior)
+- prefer inline template & inline styles
+- prefer functions such as `inject` and avoid decorators whenever there is an alternative (e.g. `@Component` and `@Directive` do not have an alternative yet)
+- prefer `input()` and `output()` to `@Input()` and `@Output()`
+- prefer control flow such as `@if` to structural directives such as `*ngIf`
+- prefer signals and transform observables to signals in order to use them in the view
+- avoid `effect` function
+- do not add `styles` field unless there are styles
+
+## Angular component example
+
+```ts
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-rules',
+  template: `
+    @if(rules().length > 0) { 
+      <ul>
+        @for(rule of rules(); track rule.id) { 
+          <li>{{ rule }}</li>
+        }
+      </ul>
+    }
+    @else {
+      <p role="status">no results<p>
+    }
+  `
+})
+class Rules {
+  rules = input.required<Rule[]>();
+}
+```

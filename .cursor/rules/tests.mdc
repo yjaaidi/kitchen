@@ -1,0 +1,115 @@
+---
+description: 
+globs: *.ts
+alwaysApply: false
+---
+- never use `vi.mock()` or mocks, spies, stubs in general, prefer fakes.
+- never use `beforeEach` / `afterEach`, prefer setup functions.
+- use our `ng-test-utils` instead of testing library or TestBed to configure/mount/inject.
+- use `{componentName}.spec.ts` name convention for component tests (e.g. `my-button.spec.ts`). Do not use `.ng.spec.ts`
+
+## Angular component test example
+
+```ts
+import { describe, it } from 'vitest';
+import { screen } from '@testing-library/angular';
+import { Rules } from './rules.ng';
+import {
+  provideRulesRepositoryFake,
+  RulesRepositoryFake,
+} from './rules-repository.fake';
+import { ruleMother } from '../testing/rule.mother';
+import { t } from '../testing/ng-test-utils';
+
+describe(RuleSearch.name, () => {
+  it('search rules without filtering', async () => {
+    const { getRules } = await renderComponent();
+
+    expect(getRules()).toEqual(['Rule A', 'Rule B']);
+  });
+
+  async function renderComponent() {
+    t.configure({providers: [provideRuleRepositoryFake()]});
+
+    t.inject(RuleRepositoryFake).setRules([
+        ruleMother.withBasicInfo('A Flexible Rule').build(),
+        ruleMother.withBasicInfo('Some Strict Rule').build(),
+    ])l;
+
+    await t.mount(RulesSearch);
+
+    return {
+      getRules() {
+        return screen.queryAllByRole('heading').map((el) => el.textContent);
+      },
+    };
+  }
+});
+```
+
+## Angular component output test example
+
+```ts
+describe(RuleList.name, () => {
+  it('search rules without filtering', async () => {
+    const ruleSelect = vi.fn<(rule: Rule) => void>();
+
+    await t.mount(RuleList, { outputs: { ruleSelect }});
+
+    await userEvent.click(screen.getByRole('heading', {name: 'Burger'}));
+
+    expect(ruleSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({name: 'Burger'}))
+  });
+});
+```
+
+## Angular component test example with configuration before mount
+
+```ts
+import { describe, it } from 'vitest';
+import { screen } from '@testing-library/angular';
+import { Rules } from './rules.ng';
+import {
+  provideRulesRepositoryFake,
+  RulesRepositoryFake,
+} from './rules-repository.fake';
+import { ruleMother } from '../testing/rule.mother';
+import { t } from '../testing/ng-test-utils';
+
+describe(RuleSearch.name, () => {
+  it('search rules without filtering', async () => {
+    const { mount, ruleRepoFake, getRules } = await setUp();
+
+    ruleRepoFake.setRules([]);
+
+    await mount();
+
+    expect(getRules()).toEqual([]);
+  });
+
+  async function setUp() {
+    t.configure({providers: [provideRuleRepositoryFake()]});
+
+    const ruleRepoFake = t.inject(RuleRepositoryFake);
+    ruleRepoFake.setRules([
+      ruleMother.withBasicInfo('A Flexible Rule').build(),
+      ruleMother.withBasicInfo('Some Strict Rule').build(),
+    ])l;
+
+    await t.mount(RulesSearch);
+
+    return {
+      ruleRepoFake,
+      async mount() {
+        t.mount(RuleSearch);
+      },
+      getRules() {
+        return screen.queryAllByRole('heading').map((el) => el.textContent);
+      },
+    };
+  }
+});
+```
+
+
+

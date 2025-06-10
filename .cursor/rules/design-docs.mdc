@@ -1,0 +1,21 @@
+---
+description: 
+globs: *.md
+alwaysApply: false
+---
+## Legend
+
+- Square corners are Angular components
+- Round corners are Angular services
+- Text in arrows like `methodName({param1: Type1, param2: Type2}): ReturnType` are method signatures
+- Text in square brackets like `[input1: Type1, input2: Type2]` are Angular inputs
+- Text in round brackets like `(output1: Type1, output2: Type2)` are Angular outputs
+- Use `<br>` as needed in arrow labels to make sure labels are not truncated.
+
+## Example
+
+```mermaid
+flowchart TD
+  Cart --"getItems({includeSavedForLater: boolean}):<br>Observable[CartItem[]]"--> CartRepository(CartRepository)
+  Cart --[item: CartItem,<br>flavor: 'interactive' | 'passive']<br>(priorityChange: number)--> CartItemPreview
+```
