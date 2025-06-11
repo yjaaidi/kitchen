@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "settings": {},
+  "mcpServers": {
+    "charted-coding": {
+      "command": "node",
+      "args": ["./dist/tools/mcp-charted-coding/main.js"]
+    }
+  }
+}

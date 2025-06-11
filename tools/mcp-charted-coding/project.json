@@ -1,0 +1,59 @@
+{
+  "name": "mcp-charted-coding",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/mcp-charted-coding/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/tools/mcp-charted-coding",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "tools/mcp-charted-coding/src/main.ts",
+        "tsConfig": "tools/mcp-charted-coding/tsconfig.app.json",
+        "assets": ["tools/mcp-charted-coding/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "mcp-charted-coding:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mcp-charted-coding:build:development"
+        },
+        "production": {
+          "buildTarget": "mcp-charted-coding:build:production"
+        }
+      }
+    }
+  }
+}
