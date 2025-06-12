@@ -1,12 +1,12 @@
 import { describe, it } from 'vitest';
 import { screen } from '@testing-library/angular';
-import { RecipePaginator } from './paginator.ng';
+import { Paginator } from './paginator.ng';
 import { t } from '../testing/ng-test-utils';
 import userEvent from '@testing-library/user-event';
 
-describe('RecipePaginator', () => {
+describe(Paginator.name, () => {
   it('Disables previous button on first page', async () => {
-    await t.mount(RecipePaginator, {
+    await t.mount(Paginator, {
       inputs: { offset: 0, limit: 5, total: 7 },
     });
     const prevButton = screen.getByRole('button', { name: /previous/i });
@@ -14,7 +14,7 @@ describe('RecipePaginator', () => {
   });
 
   it('Disables next button on last page', async () => {
-    await t.mount(RecipePaginator, {
+    await t.mount(Paginator, {
       inputs: { offset: 5, limit: 5, total: 7 },
     });
     const nextButton = screen.getByRole('button', { name: /next/i });
@@ -23,7 +23,7 @@ describe('RecipePaginator', () => {
 
   it('Emits offsetChange when next is clicked', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
-    await t.mount(RecipePaginator, {
+    await t.mount(Paginator, {
       inputs: { offset: 0, limit: 5, total: 7 },
       outputs: { offsetChange },
     });
@@ -34,7 +34,7 @@ describe('RecipePaginator', () => {
 
   it('Emits offsetChange when previous is clicked', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
-    await t.mount(RecipePaginator, {
+    await t.mount(Paginator, {
       inputs: { offset: 10, limit: 5, total: 15 },
       outputs: { offsetChange },
     });

@@ -3,7 +3,7 @@ import { input, output } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'wm-recipe-paginator',
+  selector: 'wm-paginator',
   template: `
     <button type="button" [disabled]="offset() === 0" (click)="onPrevious()">
       Previous
@@ -17,7 +17,7 @@ import { input, output } from '@angular/core';
     </button>
   `,
 })
-export class RecipePaginator {
+export class Paginator {
   offset = input.required<number>();
   limit = input.required<number>();
   total = input.required<number>();
