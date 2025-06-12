@@ -26,19 +26,49 @@ describe(RecipeSearch.name, () => {
 });
 
 describe('RecipeSearch pagination', () => {
-  it.todo('Go to next page', () => {
-    // Arrange the fake repo with 7 recipes
-    // Mount the component
-    // Click next
-    // Assert the last two recipes are displayed
+  it.todo('Go to next page', async () => {
+    const { recipeRepoFake, mount, getRecipeNames } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Sushi').build(),
+      recipeMother.withBasicInfo('Taco').build(),
+      recipeMother.withBasicInfo('Pasta').build(),
+    ]);
+
+    await mount();
+
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+
+    expect(getRecipeNames()).toEqual(['Taco', 'Pasta']);
   });
 
-  it.todo('When filter changes, reset to the first page', () => {
-    // Arrange the fake repo with 7 recipes including "Burger" and "Another Burger" which are respectively on the first and second page
-    // Mount the component
-    // Click next
-    // Type "Burger" in the search input
-    // Assert that only "Burger" and "Another Burger" are displayed
+  it.todo('When filter changes, reset to the first page', async () => {
+    const { recipeRepoFake, mount, getRecipeNames, typeKeyword } =
+      await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(), // first page
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Sushi').build(),
+      recipeMother.withBasicInfo('Taco').build(),
+      recipeMother.withBasicInfo('Another Burger').build(), // second page
+    ]);
+
+    await mount();
+
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+
+    await typeKeyword('Burger');
+
+    expect(getRecipeNames()).toEqual(['Burger', 'Another Burger']);
   });
 });
 
