@@ -5,6 +5,7 @@ import {
   signal,
   computed,
   effect,
+  linkedSignal,
 } from '@angular/core';
 import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 import { Catalog } from '../shared/catalog.ng';
@@ -45,27 +46,23 @@ import { Paginator } from '../shared/paginator.ng';
 })
 export class RecipeSearch {
   filter = signal<RecipeFilter>({});
-  offset = signal(0);
+  offset = linkedSignal({
+    source: this.filter,
+    computation: () => 0,
+  });
   limit = signal(5);
 
   recipes = rxResource({
-    params: computed(() => ({
+    params: () => ({
       filter: this.filter(),
       offset: this.offset(),
       limit: this.limit(),
-    })),
+    }),
     stream: ({ params }) =>
       this._recipeRepository
         .search(params)
         .pipe(map((result) => ({ items: result.items, total: result.total }))),
   });
-
-  constructor() {
-    effect(() => {
-      this.filter();
-      this.offset.set(0);
-    });
-  }
 
   onOffsetChange(newOffset: number) {
     this.offset.set(newOffset);
