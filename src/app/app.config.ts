@@ -23,6 +23,12 @@ export const appConfig: ApplicationConfig = {
         recipeMother.withBasicInfo('Burger').build(),
         recipeMother.withBasicInfo('Salad').build(),
         recipeMother.withBasicInfo('Beer').build(),
+        recipeMother.withBasicInfo('Another Burger').build(),
+        recipeMother.withBasicInfo('Another Salad').build(),
+        recipeMother.withBasicInfo('Another Beer').build(),
+        recipeMother.withBasicInfo('Vegan Burger').build(),
+        recipeMother.withBasicInfo('Vegan Salad').build(),
+        recipeMother.withBasicInfo('Vegan Beer').build(),
       ]);
     }),
   ],
