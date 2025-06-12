@@ -5,7 +5,7 @@ import { t } from '../testing/ng-test-utils';
 import userEvent from '@testing-library/user-event';
 
 describe('RecipePaginator', () => {
-  it.todo('Disables previous button on first page', async () => {
+  it('Disables previous button on first page', async () => {
     await t.mount(RecipePaginator, {
       inputs: { offset: 0, limit: 5, total: 7 },
     });
@@ -13,7 +13,7 @@ describe('RecipePaginator', () => {
     expect(prevButton).toBeDisabled();
   });
 
-  it.todo('Disables next button on last page', async () => {
+  it('Disables next button on last page', async () => {
     await t.mount(RecipePaginator, {
       inputs: { offset: 5, limit: 5, total: 7 },
     });
@@ -21,7 +21,7 @@ describe('RecipePaginator', () => {
     expect(nextButton).toBeDisabled();
   });
 
-  it.todo('Emits offsetChange when next is clicked', async () => {
+  it('Emits offsetChange when next is clicked', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
     await t.mount(RecipePaginator, {
       inputs: { offset: 0, limit: 5, total: 7 },
@@ -32,14 +32,14 @@ describe('RecipePaginator', () => {
     expect(offsetChange).toHaveBeenCalledExactlyOnceWith(5);
   });
 
-  it.todo('Emits offsetChange when previous is clicked', async () => {
+  it('Emits offsetChange when previous is clicked', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
     await t.mount(RecipePaginator, {
-      inputs: { offset: 5, limit: 5, total: 7 },
+      inputs: { offset: 10, limit: 5, total: 15 },
       outputs: { offsetChange },
     });
     const prevButton = screen.getByRole('button', { name: /previous/i });
     await userEvent.click(prevButton);
-    expect(offsetChange).toHaveBeenCalledExactlyOnceWith(0);
+    expect(offsetChange).toHaveBeenCalledExactlyOnceWith(5);
   });
 });
