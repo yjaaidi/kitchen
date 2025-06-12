@@ -6,7 +6,11 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 export interface RecipeRepositoryDef {
-  search(filter: RecipeFilter): Observable<Recipe[]>;
+  search(args: {
+    filter: RecipeFilter;
+    offset: number;
+    limit: number;
+  }): Observable<{ items: Recipe[]; total: number }>;
 }
 
 @Injectable({
@@ -15,21 +19,31 @@ export interface RecipeRepositoryDef {
 export class RecipeRepository implements RecipeRepositoryDef {
   private _httpClient = inject(HttpClient);
 
-  search({ keywords, maxIngredientCount }: RecipeFilter = {}): Observable<
-    Recipe[]
-  > {
-    const params: ResponseListQueryParams = {
-      embed: 'ingredients',
-      ...(keywords ? { q: keywords } : {}),
-    };
+  search({
+    filter,
+    offset,
+    limit,
+  }: {
+    filter: RecipeFilter;
+    offset: number;
+    limit: number;
+  }): Observable<{ items: Recipe[]; total: number }> {
+    const { keywords, maxIngredientCount } = filter || {};
+    const params: ResponseListQueryParams & { offset: number; limit: number } =
+      {
+        embed: 'ingredients',
+        ...(keywords ? { q: keywords } : {}),
+        offset,
+        limit,
+      };
 
     return this._httpClient
       .get<RecipeListResponseDto>('https://recipe-api.marmicode.io/recipes', {
         params,
       })
       .pipe(
-        map((response) =>
-          response.items
+        map((response) => {
+          const items = response.items
             .map((item) =>
               createRecipe({
                 id: item.id,
@@ -40,13 +54,13 @@ export class RecipeRepository implements RecipeRepositoryDef {
                 steps: [],
               })
             )
-            /* Filter max ingredients locally meanwhile it is implemented server-side. */
             .filter((recipe) =>
               maxIngredientCount != null
                 ? recipe.ingredients.length <= maxIngredientCount
                 : true
-            )
-        )
+            );
+          return { items, total: response.total };
+        })
       );
   }
 }
@@ -58,6 +72,7 @@ type ResponseListQueryParams = {
 
 interface RecipeListResponseDto {
   items: RecipeDto[];
+  total: number;
 }
 
 interface RecipeDto {

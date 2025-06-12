@@ -11,12 +11,17 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
   private _recipes: Recipe[] = [];
 
   search({
-    keywords,
-    maxIngredientCount,
-    maxStepCount,
-  }: RecipeFilter = {}): Observable<Recipe[]> {
+    filter,
+    offset,
+    limit,
+  }: {
+    filter: RecipeFilter;
+    offset: number;
+    limit: number;
+  }): Observable<{ items: Recipe[]; total: number }> {
     return defer(() => {
-      const recipes = this._recipes.filter((recipe) => {
+      const { keywords, maxIngredientCount, maxStepCount } = filter || {};
+      const filtered = this._recipes.filter((recipe) => {
         const conditions = [
           /* Filter by keywords. */
           () => (keywords ? recipe.name.includes(keywords) : true),
@@ -29,11 +34,11 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
           () =>
             maxStepCount != null ? recipe.steps.length <= maxStepCount : true,
         ];
-
-        /* Return true if all conditions are true. */
         return conditions.every((condition) => condition());
       });
-      return of(recipes);
+      const total = filtered.length;
+      const items = filtered.slice(offset, offset + limit);
+      return of({ items, total });
     });
   }
 
