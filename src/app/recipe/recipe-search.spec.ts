@@ -26,7 +26,7 @@ describe(RecipeSearch.name, () => {
 });
 
 describe('RecipeSearch pagination', () => {
-  it.todo('Go to next page', async () => {
+  it('Go to next page', async () => {
     const { recipeRepoFake, mount, getRecipeNames } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([
@@ -47,7 +47,7 @@ describe('RecipeSearch pagination', () => {
     expect(getRecipeNames()).toEqual(['Taco', 'Pasta']);
   });
 
-  it.todo('When filter changes, reset to the first page', async () => {
+  it('When filter changes, reset to the first page', async () => {
     const { recipeRepoFake, mount, getRecipeNames, typeKeyword } =
       await setUpRecipeSearch();
 
@@ -63,11 +63,14 @@ describe('RecipeSearch pagination', () => {
 
     await mount();
 
+    // Go to next page
     const nextButton = screen.getByRole('button', { name: /next/i });
     await userEvent.click(nextButton);
 
+    // Type 'Burger' in the search input
     await typeKeyword('Burger');
 
+    // Assert that only 'Burger' and 'Another Burger' are displayed
     expect(getRecipeNames()).toEqual(['Burger', 'Another Burger']);
   });
 });
