@@ -1,101 +1,54 @@
-# Whiskmate
+# Charted Coding
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+[![Charted Coding Demo](./charted-coding-video-thumbnail.webp)](https://youtu.be/8z9tUsSoros)
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+[📺 Watch the video on YouTube](https://youtu.be/8z9tUsSoros) 
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+[✅ Learn more about Angular Testing](https://marmico.de/test.ng)
 
-## Run tasks
+## Getting Started
 
-To run the dev server for your app, use:
+### 1. Install dependencies
 
-```sh
-npx nx serve whiskmate
-```
-
-To create a production bundle:
+This will also build the Charted Coding MCP server.
 
 ```sh
-npx nx build whiskmate
+pnpm install
 ```
 
-To see all available targets to run for a project, run:
+## 2. Enable the MCP server
 
-```sh
-npx nx show project whiskmate
-```
+You should see a dialog in Cursor asking you to enable the MCP server.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+Otherwise, go to the MCP Settings (`Ctrl or Cmd + Shift + P` > "MCP Settings", or go to `Cursor Settings` > `Tools & Integrations`) and enable the Charted Coding MCP server.
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 3. Write a design doc
 
-## Add new projects
+Cf. [Recipe Pagination Design Doc](./design-docs/recipe-pagination.md)
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+## 4. Prompt in Cursor chat
 
-Use the plugin's generator to create new projects.
+Reference the design doc in the prompt and ask the Charted Coding step of your choice:
 
-To generate a new application, use:
+- **`scaffold`**: Generate empty files.
+- **`wip`**: Generate work in progress code and tests.
+- **`next test`**: Implement the next failing test in the selected test file.
+- **`green`**: Implement whatever is needed to make the tests in the selected test file pass.
 
-```sh
-npx nx g @nx/angular:app demo
-```
+## Charted Coding MCP server
 
-To generate a new library, use:
+The source code of the Charted Coding MCP server is at [tools/mcp-charted-coding/src/main.ts](./tools/mcp-charted-coding/src/main.ts).
 
-```sh
-npx nx g @nx/angular:lib mylib
-```
+If you want to create your own MCP server, Nx can get you started even faster. Cf. [Building an MCP Server with Nx
+](https://nx.dev/blog/building-mcp-server-with-nx) by [Max Kless](https://x.com/MaxKless).
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Customizing the MCP server
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+If you want to have fun and edit the MCP server:
+- edit the source code in [tools/mcp-charted-coding/src/main.ts](./tools/mcp-charted-coding/src/main.ts)
+- build it with `pnpm nx build mcp-charted-coding`
+- ⚠️ due to some caching issues probably, you will have to either restart Cursor or rename the MCP server in `mcp.json`.
 
-## Set up CI!
+## License
 
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+MIT

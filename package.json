@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
+    "postinstall": "nx build mcp-charted-coding",
     "test": "nx test"
   },
   "private": true,
