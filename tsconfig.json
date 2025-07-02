@@ -18,9 +18,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@demo/recipes/core": ["./src/recipes/core/index.ts"],
-      "@demo/recipes/feature-search": ["./src/recipes/feature-search/index.ts"],
-      "@demo/recipes/infra": ["./src/recipes/infra/index.ts"]
+      "@marmicode/recipes/core": ["src/recipes/core/index.ts"],
+      "@marmicode/recipes/feature-search": [
+        "src/recipes/feature-search/index.ts"
+      ],
+      "@marmicode/recipes/infra": ["src/recipes/infra/index.ts"],
+      "implicit-libs": ["tools/implicit-libs/src/index.ts"]
     }
   }
 }

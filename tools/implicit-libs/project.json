@@ -1,0 +1,6 @@
+{
+  "name": "implicit-libs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/implicit-libs/src",
+  "projectType": "library"
+}

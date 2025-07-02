@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "sync-tsconfig-paths": {
+      "factory": "./src/sync-tsconfig-paths",
+      "schema": "./src/schema.json",
+      "description": "Updates the tsconfig.json#compilerOptions.paths to match the project graph"
+    }
+  }
+}
