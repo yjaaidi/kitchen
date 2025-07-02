@@ -1,4 +1,4 @@
-import { recipeCore } from '../core';
-import { recipeInfra } from '../infra';
+import { recipeCore } from '@demo/recipes/core';
+import { recipeInfra } from '@demo/recipes/infra';
 
 export const recipeFeatureSearch = recipeCore + recipeInfra;

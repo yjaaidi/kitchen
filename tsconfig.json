@@ -16,6 +16,11 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@demo/recipes/core": ["./src/recipes/core/index.ts"],
+      "@demo/recipes/feature-search": ["./src/recipes/feature-search/index.ts"],
+      "@demo/recipes/infra": ["./src/recipes/infra/index.ts"]
+    }
   }
 }

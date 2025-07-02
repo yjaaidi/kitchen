@@ -8,7 +8,7 @@ export const createNodesV2: CreateNodesV2 = [
       const projectRoot = `${libs}/${scope}/${name}`;
       const projectName = `${scope}-${name}`;
       const nameParts = name.split('-');
-      const type = nameParts.at(-1);
+      const type = nameParts[0];
 
       return [
         indexPath,
