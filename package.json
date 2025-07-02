@@ -33,6 +33,7 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@nx/devkit": "21.2.1",
+    "@nx/eslint-plugin": "21.2.1",
     "@nx/js": "21.2.1",
     "@swc-node/register": "~1.9.1",
     "@swc/cli": "^0.6.0",
