@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -17,6 +16,14 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@marmicode/recipes/core": ["src/recipes/core/index.ts"],
+      "@marmicode/recipes/feature-search": [
+        "src/recipes/feature-search/index.ts"
+      ],
+      "@marmicode/recipes/infra": ["src/recipes/infra/index.ts"],
+      "implicit-libs": ["tools/implicit-libs/src/index.ts"]
+    }
   }
 }
