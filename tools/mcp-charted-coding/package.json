@@ -1,0 +1,13 @@
+{
+  "name": "mcp-charted-coding",
+  "type": "module",
+  "version": "0.0.0",
+  "license": "MIT",
+  "bin": {
+    "mcp-charted-coding": "main.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "0.1.0",
+    "zod": "3.24.2"
+  }
+}

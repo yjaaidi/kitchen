@@ -12,13 +12,16 @@
       "options": {
         "platform": "node",
         "outputPath": "dist/tools/mcp-charted-coding",
-        "format": ["cjs"],
+        "format": ["esm"],
         "bundle": false,
         "main": "tools/mcp-charted-coding/src/main.ts",
         "tsConfig": "tools/mcp-charted-coding/tsconfig.app.json",
         "assets": ["tools/mcp-charted-coding/src/assets"],
-        "generatePackageJson": true,
+        "generatePackageJson": false,
         "esbuildOptions": {
+          "banner": {
+            "js": "#!/usr/bin/env node"
+          },
           "sourcemap": true,
           "outExtension": {
             ".js": ".js"
@@ -27,14 +30,7 @@
       },
       "configurations": {
         "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "production": {}
       }
     },
     "serve": {
