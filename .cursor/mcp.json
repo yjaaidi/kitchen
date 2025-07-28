@@ -4,7 +4,9 @@
   "mcpServers": {
     "charted-coding": {
       "command": "node",
-      "args": ["./dist/tools/mcp-charted-coding/main.js"]
+      "args": [
+        "./dist/tools/mcp-charted-coding/main.js"
+      ]
     }
   }
 }
