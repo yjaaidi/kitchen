@@ -99,7 +99,7 @@ flowchart TD
 
 ## PR #2: Update RecipeRepository for Pagination
 
-- Add `offset` and `limit` parameters to `searchRecipes` method
+- Add `offset` and `limit` parameters to `search` method
 - Update return type to include total count for pagination
 
 ## PR #3: Integrate Pagination into RecipeSearch
