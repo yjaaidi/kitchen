@@ -19,9 +19,7 @@
             "outputPath": "dist/ng-demo",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -29,9 +27,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -54,6 +50,14 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "testronaut": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "browser": "testronaut/main.ts",
+              "index": "testronaut/index.html",
+              "tsConfig": "testronaut/tsconfig.json"
             }
           },
           "defaultConfiguration": "production"
@@ -66,6 +70,11 @@
             },
             "development": {
               "buildTarget": "ng-demo:build:development"
+            },
+            "testronaut": {
+              "buildTarget": "ng-demo:build:testronaut",
+              "liveReload": false,
+              "prebundle": false
             }
           },
           "defaultConfiguration": "development"
@@ -76,10 +85,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -87,9 +93,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         }
