@@ -2,20 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  signal,
-  computed,
-  effect,
   linkedSignal,
+  signal,
 } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 import { Catalog } from '../shared/catalog.ng';
+import { Paginator } from '../shared/paginator.ng';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form.ng';
 import { RecipePreview } from './recipe-preview.ng';
 import { RecipeRepository } from './recipe-repository';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
-import { Paginator } from '../shared/paginator.ng';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

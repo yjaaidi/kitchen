@@ -1,8 +1,8 @@
-import { describe, it } from 'vitest';
 import { screen } from '@testing-library/angular';
-import { Paginator } from './paginator.ng';
-import { t } from '../testing/ng-test-utils';
 import userEvent from '@testing-library/user-event';
+import { describe, it } from 'vitest';
+import { t } from '../testing/ng-test-utils';
+import { Paginator } from './paginator.ng';
 
 describe(Paginator.name, () => {
   it('Disables previous button on first page', async () => {
