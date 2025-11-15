@@ -24,8 +24,8 @@
 
 **Purpose**: Verify project structure and install dependencies
 
-- [ ] T001 Verify Angular Material is installed and configured for pagination
-- [ ] T002 Review existing recipe search structure in src/app/recipe/
+- [x] T001 Verify Angular Material is installed and configured for pagination
+- [x] T002 Review existing recipe search structure in src/app/recipe/
 
 ---
 
@@ -35,10 +35,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Extend RecipeFilter interface with page property in src/app/recipe/recipe-filter.ts
-- [ ] T004 [P] Create pagination state types and utility functions in src/app/recipe/pagination-state.ts
-- [ ] T005 Update createRecipeFilter() factory to handle page parameter in src/app/recipe/recipe-filter.ts
-- [ ] T006 [P] Update RecipeRepositoryFake to support pagination filter in src/app/recipe/recipe-repository.fake.ts
+- [x] T003 [P] Extend RecipeFilter interface with page property in src/app/recipe/recipe-filter.ts
+- [x] T004 [P] Create pagination state types and utility functions in src/app/recipe/pagination-state.ts
+- [x] T005 Update createRecipeFilter() factory to handle page parameter in src/app/recipe/recipe-filter.ts
+- [x] T006 [P] Update RecipeRepositoryFake to support pagination filter in src/app/recipe/recipe-repository.fake.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -54,23 +54,23 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T007 [P] [US1] Write unit tests for computePaginationState() function in src/app/recipe/pagination-state.spec.ts
-- [ ] T008 [P] [US1] Write unit tests for getPageItems() function in src/app/recipe/pagination-state.spec.ts
-- [ ] T009 [P] [US1] Write unit tests for shouldShowPagination() function in src/app/recipe/pagination-state.spec.ts
+- [x] T007 [P] [US1] Write unit tests for computePaginationState() function in src/app/recipe/pagination-state.spec.ts
+- [x] T008 [P] [US1] Write unit tests for getPageItems() function in src/app/recipe/pagination-state.spec.ts
+- [x] T009 [P] [US1] Write unit tests for shouldShowPagination() function in src/app/recipe/pagination-state.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Create PaginationControls component with Material paginator in src/app/recipe/pagination-controls.ng.ts
-- [ ] T011 [US1] Add pagination state signals to RecipeSearch component in src/app/recipe/recipe-search.ng.ts
-- [ ] T012 [US1] Implement client-side slicing logic in RecipeSearch component in src/app/recipe/recipe-search.ng.ts
-- [ ] T013 [US1] Add pagination controls to RecipeSearch template in src/app/recipe/recipe-search.ng.ts
-- [ ] T014 [US1] Implement page change handler in RecipeSearch component in src/app/recipe/recipe-search.ng.ts
-- [ ] T015 [US1] Update filter change handler to reset to page 1 in src/app/recipe/recipe-search.ng.ts
-- [ ] T016 [US1] Add conditional rendering to hide pagination when <= 12 results in src/app/recipe/recipe-search.ng.ts
-- [ ] T017 [P] [US1] Write component tests for pagination visibility in src/app/recipe/recipe-search.spec.ts
-- [ ] T018 [P] [US1] Write component tests for page navigation in src/app/recipe/recipe-search.spec.ts
-- [ ] T019 [P] [US1] Write component tests for filter changes resetting pagination in src/app/recipe/recipe-search.spec.ts
-- [ ] T020 [P] [US1] Write component tests for PaginationControls events in src/app/recipe/pagination-controls.spec.ts
+- [x] T010 [US1] Create PaginationControls component with Material paginator in src/app/recipe/pagination-controls.ng.ts
+- [x] T011 [US1] Add pagination state signals to RecipeSearch component in src/app/recipe/recipe-search.ng.ts
+- [x] T012 [US1] Implement client-side slicing logic in RecipeSearch component in src/app/recipe/recipe-search.ng.ts
+- [x] T013 [US1] Add pagination controls to RecipeSearch template in src/app/recipe/recipe-search.ng.ts
+- [x] T014 [US1] Implement page change handler in RecipeSearch component in src/app/recipe/recipe-search.ng.ts
+- [x] T015 [US1] Update filter change handler to reset to page 1 in src/app/recipe/recipe-search.ng.ts
+- [x] T016 [US1] Add conditional rendering to hide pagination when <= 12 results in src/app/recipe/recipe-search.ng.ts
+- [x] T017 [P] [US1] Write component tests for pagination visibility in src/app/recipe/recipe-search.spec.ts
+- [x] T018 [P] [US1] Write component tests for page navigation in src/app/recipe/recipe-search.spec.ts
+- [x] T019 [P] [US1] Write component tests for filter changes resetting pagination in src/app/recipe/recipe-search.spec.ts
+- [x] T020 [P] [US1] Write component tests for PaginationControls events in src/app/recipe/pagination-controls.spec.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - users can paginate through search results with prev/next buttons
 

@@ -14,7 +14,8 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
     keywords,
     maxIngredientCount,
     maxStepCount,
-  }: RecipeFilter = {}): Observable<Recipe[]> {
+  }: // page parameter is handled client-side in the component
+  RecipeFilter = {}): Observable<Recipe[]> {
     return defer(() => {
       const recipes = this._recipes.filter((recipe) => {
         const conditions = [
