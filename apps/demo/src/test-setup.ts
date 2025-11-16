@@ -7,5 +7,5 @@ globalThis.ngJest = {
 };
 
 import '@angular/compiler';
-import 'reflect-metadata';
 import 'jest-preset-angular/setup-jest';
+import 'reflect-metadata';

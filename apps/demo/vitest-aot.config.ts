@@ -6,7 +6,7 @@ export default mergeConfig(vitestConfig, {
   plugins: [
     angular({
       jit: false,
-      tsconfig: 'apps/demo/tsconfig.vitest.json',
+      tsconfig: './tsconfig.vitest.json',
     }),
   ],
 });

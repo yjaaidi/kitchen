@@ -7,17 +7,15 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/demo",
         "index": "{projectRoot}/src/index.html",
         "browser": "{projectRoot}/src/main.ts",
-        "polyfills": ["zone.js"],
         "tsConfig": "{projectRoot}/tsconfig.app.json",
         "assets": ["{projectRoot}/src/favicon.ico", "{projectRoot}/src/assets"],
-        "styles": ["{projectRoot}/src/styles.css"],
-        "scripts": []
+        "styles": ["{projectRoot}/src/styles.css"]
       },
       "configurations": {
         "production": {
@@ -65,33 +63,15 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "angular-cli-jest": {
-      "executor": "@angular-devkit/build-angular:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "include": ["{projectRoot}/**/*.spec.ts"],
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "{projectRoot}/tsconfig.spec.json"
-      }
-    },
     "angular-cli-karma": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@angular/build:unit-test",
       "options": {
-        "browsers": "ChromeHeadless",
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "{projectRoot}/tsconfig.spec.json",
+        "runner": "karma",
         "watch": false
       }
     },
-    "angular-cli-web-test-runner": {
-      "executor": "@angular-devkit/build-angular:web-test-runner",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "include": ["{projectRoot}/**/*.spec.ts"],
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "{projectRoot}/tsconfig.spec.json"
-      }
+    "angular-cli-vitest": {
+      "executor": "@angular/build:unit-test"
     },
     "jest": {
       "executor": "@nx/jest:jest",
