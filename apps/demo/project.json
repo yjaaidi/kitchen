@@ -97,14 +97,16 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "{projectRoot}/jest.config.ts"
+        "jestConfig": "{projectRoot}/jest.config.ts",
+        "tsConfig": "apps/demo/tsconfig.spec.json"
       }
     },
     "jest-swc": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "{projectRoot}/jest-swc.config.ts"
+        "jestConfig": "{projectRoot}/jest-swc.config.ts",
+        "tsConfig": "apps/demo/tsconfig.spec.json"
       }
     },
     "vitest-forks": {
