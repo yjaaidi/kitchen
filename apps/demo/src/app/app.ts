@@ -1,13 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  imports: [NxWelcome, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  template: 'Demo',
 })
-export class App {
-  protected title = 'demo';
-}
+export class App {}
