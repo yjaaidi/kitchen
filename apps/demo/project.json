@@ -46,6 +46,12 @@
       },
       "defaultConfiguration": "production"
     },
+    "codegen": {
+      "command": "graphql-codegen",
+      "options": {
+        "cwd": "{projectRoot}"
+      }
+    },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
