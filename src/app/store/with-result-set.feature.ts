@@ -5,12 +5,12 @@ import { ResultSetRepository } from '../result-set.repository';
 
 const initialState: ResultSetState = {
   resultSet: null,
-  loading: false,
+  isLoading: false,
 };
 
 interface ResultSetState {
   resultSet: ResultSet | null;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 export function withResultSetFetching() {
@@ -18,7 +18,6 @@ export function withResultSetFetching() {
     withState(initialState),
     withMethods((store) => {
       const repository = inject(ResultSetRepository);
-
       return {
         async fetchResultSet(resultSetId: string) {
           patchState(store, loading());
@@ -26,7 +25,7 @@ export function withResultSetFetching() {
             const resultSet = await repository.fetchResultSet(resultSetId);
             patchState(store, { resultSet });
           } finally {
-            patchState(store, { loading: false });
+            patchState(store, { isLoading: false });
           }
         },
       };
@@ -35,5 +34,5 @@ export function withResultSetFetching() {
 }
 
 function loading(): Partial<ResultSetState> {
-  return { ...initialState, loading: true };
+  return { ...initialState, isLoading: true };
 }

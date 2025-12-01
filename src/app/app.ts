@@ -4,12 +4,12 @@ import { ResultSetStore } from './store/result-set.store';
 @Component({
   selector: 'app-root',
   template: `
-    <button (click)="fetch()">REFRESH</button>
-    @if (store.loading()) {
+    <button (click)="reload()">RELOAD</button>
+    @if (store.isLoading()) {
       <div>Loading...</div>
     }
 
-    <ul [class.loading]="store.loading()">
+    <ul [class.loading]="store.isLoading()">
       @for (item of store.resultTree(); track item.name) {
         <li>
           <span>{{ item.name }}</span>
@@ -31,11 +31,11 @@ export class App {
   store = inject(ResultSetStore);
 
   constructor() {
-    this.fetch();
+    this.store.selectResultSet('rs_1');
   }
 
-  fetch() {
-    this.store.fetchResultSet('rs_1');
+  reload() {
+    this.store.reload();
   }
 
   pinItem(item: { name: string; pinned: boolean }) {
