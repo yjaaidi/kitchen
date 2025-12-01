@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { ResultSetStore } from './store/result-set.store';
 
 @Component({
@@ -9,14 +9,20 @@ import { ResultSetStore } from './store/result-set.store';
       <div>Loading...</div>
     }
 
-    <ul [class.loading]="store.isLoading()">
-      @for (item of store.resultTree(); track item.name) {
-        <li>
-          <span>{{ item.name }}</span>
-          <button [class.pinned]="item.pinned" (click)="pinItem(item)">📌</button>
-        </li>
-      }
-    </ul>
+    @if (store.error()) {
+      <div>Error: {{ store.error() }}</div>
+    }
+
+    @if (store.hasValue()) {
+      <ul [class.loading]="store.isLoading()">
+        @for (item of store.resultTree(); track item.name) {
+          <li>
+            <span>{{ item.name }}</span>
+            <button [class.pinned]="item.pinned" (click)="pinItem(item)">📌</button>
+          </li>
+        }
+      </ul>
+    }
   `,
   styles: `
     .loading {
@@ -30,8 +36,12 @@ import { ResultSetStore } from './store/result-set.store';
 export class App {
   store = inject(ResultSetStore);
 
+  /* TODO: should be a router input binding. */
+  // resultSetId = input.required<string>();
+  resultSetId = signal<string>('rs_1');
+
   constructor() {
-    this.store.selectResultSet('rs_1');
+    this.store.linkResultSetId(this.resultSetId);
   }
 
   reload() {

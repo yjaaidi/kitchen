@@ -28,6 +28,10 @@ export class ResultSetRepository {
 
   async fetchResultSet(resultSetId: string): Promise<ResultSet> {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    return this._resultSets.get(resultSetId)!;
+    const resultSet = this._resultSets.get(resultSetId)!;
+    if (!resultSet) {
+      throw new Error(`ResultSet ${resultSetId} not found`);
+    }
+    return resultSet;
   }
 }

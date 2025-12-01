@@ -1,10 +1,11 @@
 import { withResource } from '@angular-architects/ngrx-toolkit';
-import { inject, resource } from '@angular/core';
+import { computed, inject, resource, Signal } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
   withComputed,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
 import { ResultSetRepository } from '../result-set.repository';
@@ -12,6 +13,9 @@ import { ResultSetRepository } from '../result-set.repository';
 export function withResultSetResource() {
   return signalStoreFeature(
     withState(initialState),
+    withComputed(({ _resultSetId }) => ({
+      resultSetId: computed(() => _resultSetId()?.source()),
+    })),
     withResource(({ resultSetId }) => {
       const repository = inject(ResultSetRepository);
       return resource({
@@ -26,17 +30,19 @@ export function withResultSetResource() {
       reload() {
         store._reload();
       },
-      selectResultSet(id: string) {
-        patchState(store, { resultSetId: id });
+      linkResultSetId(id: Signal<string>) {
+        patchState(store, { _resultSetId: { source: id } });
       },
     })),
   );
 }
 
 interface ResultSetResourceState {
-  resultSetId: string | null;
+  _resultSetId: {
+    source: Signal<string>;
+  } | null;
 }
 
 const initialState: ResultSetResourceState = {
-  resultSetId: null,
+  _resultSetId: null,
 };
