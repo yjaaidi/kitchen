@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { ResultSetStore } from './result-set.store';
+import { ResultSetStore } from './store/result-set.store';
 
 @Component({
   selector: 'app-root',
