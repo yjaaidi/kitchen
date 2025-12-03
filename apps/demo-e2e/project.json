@@ -1,0 +1,10 @@
+{
+  "name": "@lit-demo/demo-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/demo-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["@lit-demo/demo"],
+  "// targets": "to see all targets run: nx show project @lit-demo/demo-e2e --web",
+  "targets": {}
+}

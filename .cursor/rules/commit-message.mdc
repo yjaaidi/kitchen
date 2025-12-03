@@ -1,0 +1,14 @@
+---
+description: Commit message instructions
+alwaysApply: false
+---
+
+# Commit Message Instructions
+
+Use `build: 📦` as commit prefix for anything related to devtools, build, setup, etc.
+Use `feat: ✨` as commit prefix for anything related to new features.
+Use `fix: 🐞` as commit prefix for anything related to bug fixes.
+Use `refactor: 🔧` as commit prefix for anything related to code refactoring.
+Use `test: ✅` as commit prefix for anything related to testing.
+Use `docs: 📝` as commit prefix for anything related to documentation.
+Use `ci: 🤖` as commit prefix for anything related to CI/CD.
