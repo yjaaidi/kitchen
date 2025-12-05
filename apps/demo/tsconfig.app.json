@@ -7,7 +7,9 @@
     "rootDir": "src",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
   },
   "exclude": [
     "out-tsc",
