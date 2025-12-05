@@ -9,6 +9,7 @@
       "node",
       "vitest"
     ],
+    "lib": ["dom"],
     "module": "esnext",
     "moduleResolution": "bundler"
   },
