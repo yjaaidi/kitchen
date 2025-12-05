@@ -1,1 +1,5 @@
 autoInstallPeers: true
+
+onlyBuiltDependencies:
+  - esbuild
+  - lmdb
