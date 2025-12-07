@@ -2,13 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node",
-      "vitest"
-    ]
+    "types": ["vitest/importMeta", "vite/client", "node", "vitest"]
   },
   "include": [
     "vite.config.ts",
@@ -23,7 +17,8 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/app/meal-planner/meal-repository.fake.spec.ts"
   ],
   "files": ["src/test-setup.ts"]
 }

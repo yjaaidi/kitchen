@@ -1,13 +1,11 @@
-import '@angular/compiler';
-import '@analogjs/vitest-angular/setup-zone';
+import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
+import { ɵgetCleanupHook as getCleanupHook } from '@angular/core/testing';
+import { afterEach, beforeEach } from 'vitest';
+import './custom-theme.scss';
+import './styles.css';
 
-import {
-  BrowserTestingModule,
-  platformBrowserTesting,
-} from '@angular/platform-browser/testing';
-import { getTestBed } from '@angular/core/testing';
+/* Workaround until https://github.com/analogjs/analog/pull/1995 is merged. */
+beforeEach(getCleanupHook(false));
+afterEach(getCleanupHook(true));
 
-getTestBed().initTestEnvironment(
-  BrowserTestingModule,
-  platformBrowserTesting()
-);
+setupTestBed();

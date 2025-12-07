@@ -32,6 +32,13 @@
       "inputs": ["default", "^production"]
     }
   },
+  "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {}
+    }
+  ],
+
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "none",
