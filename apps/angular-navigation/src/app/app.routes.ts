@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { redirectRecipePathToIdGuard } from './redirect-recipe-path-to-id.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -7,6 +8,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'viewer',
+    canActivate: [redirectRecipePathToIdGuard],
     loadComponent: () => import('./recipe-viewer.ng'),
   },
   {

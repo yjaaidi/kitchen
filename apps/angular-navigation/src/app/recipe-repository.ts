@@ -7,7 +7,7 @@ export class RecipeRepository {
   private _recipes: Recipe[] = [
     {
       id: 'rec_burger',
-      path: '/grand-ma-recipes/burger/',
+      path: '/grand-ma-recipes/burger',
       name: "Grandma's Burger",
       description: 'A classic burger with a side of fries',
     },
@@ -26,6 +26,13 @@ export class RecipeRepository {
   fetchRecipe(id: string): Observable<Recipe | undefined> {
     return this.fetchRecipes().pipe(
       map((recipes) => recipes.find((recipe) => recipe.id === id))
+    );
+  }
+
+  fetchRecipeByPath(recipePath: string) {
+    console.log('fetchRecipeByPath', recipePath);
+    return this.fetchRecipes().pipe(
+      map((recipes) => recipes.find((recipe) => recipe.path === recipePath))
     );
   }
 }

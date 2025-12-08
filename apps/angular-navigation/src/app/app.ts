@@ -1,9 +1,23 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  imports: [RouterOutlet, RouterLink],
+  template: `
+    <nav>
+      <a routerLink="/selector">Selector</a>
+      <a routerLink="/viewer">Viewer</a>
+    </nav>
+    <router-outlet />
+  `,
+  styles: [
+    `
+      nav {
+        display: flex;
+        gap: 1rem;
+      }
+    `,
+  ],
 })
 export class App {}
