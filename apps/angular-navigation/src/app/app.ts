@@ -6,8 +6,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet, RouterLink],
   template: `
     <nav>
-      <a routerLink="/selector">Selector</a>
-      <a routerLink="/viewer">Viewer</a>
+      <a routerLink="/selector" queryParamsHandling="merge">Selector</a>
+      <a routerLink="/viewer" queryParamsHandling="merge">Viewer</a>
     </nav>
     <router-outlet />
   `,
