@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { RecipeRepository } from './recipe-repository';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-recipe-selector',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   template: `
     <h1>Recipe Selector</h1>
     <ul>
@@ -27,16 +28,16 @@ import { RecipeRepository } from './recipe-repository';
       </li>
       }
     </ul>
+    <a routerLink="/viewer" [queryParams]="{ recipe_id: selectedRecipeIds() }">
+      <button [disabled]="!canView()">VIEW</button>
+    </a>
   `,
 })
 export class RecipeSelector {
-  private _repository = inject(RecipeRepository);
-
+  canView = computed(() => this.selectedRecipeIds().length > 0);
   recipes = rxResource({
     stream: () => this._repository.fetchRecipes(),
   });
-  selectedRecipeIds = signal<string[]>([]);
-
   recipesWithChecked = computed(() => {
     return (
       this.recipes.value()?.map((recipe) => ({
@@ -45,6 +46,9 @@ export class RecipeSelector {
       })) ?? []
     );
   });
+  selectedRecipeIds = signal<string[]>([]);
+
+  private _repository = inject(RecipeRepository);
 
   selectRecipe(id: string, isSelected: boolean) {
     this.selectedRecipeIds.update((ids) =>
