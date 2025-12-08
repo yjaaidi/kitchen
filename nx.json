@@ -30,6 +30,11 @@
     "@nx/vitest:test": {
       "cache": true,
       "inputs": ["default", "^production"]
+    },
+    "test": {
+      "options": {
+        "args": ["--project", "!wide"]
+      }
     }
   },
   "plugins": [

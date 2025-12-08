@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { createRecipe, Recipe } from './recipe';
-import { RecipeFilterCriteria } from './recipe-filter-criteria';
+import { createRecipe, Recipe } from '../recipe';
+import { RecipeFilterCriteria } from '../recipe-filter-criteria';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 

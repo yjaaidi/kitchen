@@ -4,8 +4,8 @@ import {
   makeEnvironmentProviders,
 } from '@angular/core';
 import { defer, Observable, of } from 'rxjs';
-import { Recipe } from './recipe';
-import { RecipeFilterCriteria } from './recipe-filter-criteria';
+import { Recipe } from '../recipe';
+import { RecipeFilterCriteria } from '../recipe-filter-criteria';
 import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
 
 @Injectable()
@@ -21,7 +21,12 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
       const recipes = this._recipes.filter((recipe) => {
         const conditions = [
           /* Filter by keywords. */
-          () => (keywords ? recipe.name.includes(keywords) : true),
+          () =>
+            keywords
+              ? recipe.name
+                  .toLocaleLowerCase()
+                  .includes(keywords.toLocaleLowerCase())
+              : true,
           /* Filter by max ingredients. */
           () =>
             maxIngredientCount != null

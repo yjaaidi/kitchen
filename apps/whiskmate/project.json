@@ -93,6 +93,13 @@
         "spa": true
       }
     },
+    "test-wide": {
+      "command": "vitest",
+      "options": {
+        "cwd": "{projectRoot}",
+        "args": ["--project", "wide"]
+      }
+    },
     "testronaut": {
       "command": "playwright test",
       "options": {

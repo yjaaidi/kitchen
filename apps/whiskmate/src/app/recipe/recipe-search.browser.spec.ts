@@ -5,7 +5,7 @@ import { MealPlanner } from '../meal-planner/meal-planner';
 import {
   provideRecipeRepositoryFake,
   RecipeRepositoryFake,
-} from './recipe-repository.fake';
+} from './recipe-repository/recipe-repository.fake';
 import { RecipeSearch } from './recipe-search.ng';
 import { recipeMother } from './recipe.mother';
 

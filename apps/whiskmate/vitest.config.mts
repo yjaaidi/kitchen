@@ -5,6 +5,7 @@ import viteConfigFn from './vite.config.mjs';
 
 const testsPatterns = ['**/*.spec.ts'];
 const browserTestsPatterns = ['**/*.browser.spec.ts'];
+const wideTestsPatterns = ['**/*.wide.spec.ts'];
 export default defineConfig((...args) => {
   return mergeConfig(
     viteConfigFn(...args),
@@ -28,7 +29,15 @@ export default defineConfig((...args) => {
               name: 'emulated',
               environment: 'jsdom',
               include: testsPatterns,
-              exclude: browserTestsPatterns,
+              exclude: [...browserTestsPatterns, ...wideTestsPatterns],
+            },
+          },
+          {
+            extends: true,
+            test: {
+              name: 'wide',
+              environment: 'jsdom',
+              include: wideTestsPatterns,
             },
           },
           {
