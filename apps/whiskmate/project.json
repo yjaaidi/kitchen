@@ -44,6 +44,14 @@
           "optimization": false,
           "extractLicenses": false,
           "sourceMap": true
+        },
+        "testronaut": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "browser": "apps/whiskmate/testronaut/main.ts",
+          "index": "apps/whiskmate/testronaut/index.html",
+          "tsConfig": "apps/whiskmate/testronaut/tsconfig.json"
         }
       },
       "defaultConfiguration": "production"
@@ -57,6 +65,11 @@
         },
         "development": {
           "buildTarget": "whiskmate:build:development"
+        },
+        "testronaut": {
+          "buildTarget": ":build:testronaut",
+          "liveReload": false,
+          "prebundle": false
         }
       },
       "defaultConfiguration": "development"
@@ -78,6 +91,12 @@
         "buildTarget": "whiskmate:build",
         "staticFilePath": "dist/apps/whiskmate/browser",
         "spa": true
+      }
+    },
+    "testronaut": {
+      "command": "playwright test",
+      "options": {
+        "cwd": "{projectRoot}"
       }
     }
   }
