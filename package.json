@@ -2,7 +2,9 @@
   "name": "@angular-navigation/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "21.0.3",
