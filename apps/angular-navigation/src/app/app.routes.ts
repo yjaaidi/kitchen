@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { recipeResolverConfig } from './recipe.resolver';
 
 export const appRoutes: Route[] = [
   {
@@ -8,6 +9,9 @@ export const appRoutes: Route[] = [
   {
     path: 'viewer',
     loadComponent: () => import('./recipe-viewer.ng'),
+    resolve: {
+      ...recipeResolverConfig,
+    },
   },
   {
     path: '',
