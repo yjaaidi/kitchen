@@ -20,19 +20,18 @@ export class RecipeRepository {
   ];
 
   fetchRecipes(): Observable<Recipe[]> {
-    return timer(1000).pipe(map(() => this._recipes));
+    return timer(500).pipe(map(() => this._recipes));
   }
 
   fetchRecipe(id: string): Observable<Recipe | undefined> {
     return this.fetchRecipes().pipe(
-      map((recipes) => recipes.find((recipe) => recipe.id === id))
+      map((recipes) => recipes.find((recipe) => recipe.id === id)),
     );
   }
 
   fetchRecipeByPath(recipePath: string) {
-    console.log('fetchRecipeByPath', recipePath);
     return this.fetchRecipes().pipe(
-      map((recipes) => recipes.find((recipe) => recipe.path === recipePath))
+      map((recipes) => recipes.find((recipe) => recipe.path === recipePath)),
     );
   }
 }

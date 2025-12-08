@@ -3,15 +3,14 @@ import {
   Component,
   computed,
   inject,
-  signal,
   linkedSignal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RecipeRepository } from './recipe-repository';
-import { RecipeStore } from './recipe.store';
 import { recipeViewerRouterHelper } from './recipe-viewer.router-helper';
+import { RecipeStore } from './recipe.store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

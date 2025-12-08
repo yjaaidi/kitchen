@@ -1,13 +1,25 @@
 import { Route } from '@angular/router';
-import { redirectRecipePathToIdGuard } from './redirect-recipe-path-to-id.guard';
-import { bindRecipeIdQueryParamToStore } from './bind-recipe-id-query-param-to-store';
 import { recipeViewerRouterHelper } from './recipe-viewer.router-helper';
+import { redirectRecipePathToIdGuard } from './guards/redirect-recipe-path-to-id.guard';
+import { syncRecipeIdQueryParamWithStoreGuard } from './guards/sync-recipe-id-query-param-with-store.guard';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    resolve: { _: bindRecipeIdQueryParamToStore },
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+    pathMatch: 'full',
+    redirectTo: 'landing',
+  },
+  {
+    path: 'landing',
+    loadComponent: () => import('./landing.ng'),
+  },
+  {
+    path: '',
+    canActivate: [
+      redirectRecipePathToIdGuard,
+      syncRecipeIdQueryParamWithStoreGuard,
+    ],
+    runGuardsAndResolvers: 'pathParamsOrQueryParamsChange',
     children: [
       {
         path: 'selector',
@@ -15,14 +27,8 @@ export const appRoutes: Route[] = [
       },
       {
         path: recipeViewerRouterHelper.PATH,
-        canActivate: [redirectRecipePathToIdGuard],
         loadComponent: () => import('./recipe-viewer.ng'),
       },
     ],
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'selector',
   },
 ];
