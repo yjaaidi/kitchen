@@ -5,15 +5,13 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { injectRecipeResolverData } from './recipe.resolver';
-import { RecipeRepository } from './recipe-repository';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { combineLatest, map, zip } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
+import { RecipeRepository } from './recipe-repository';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-recipe-viewer',
-  imports: [],
   template: `
     <h1>Recipe Viewer</h1>
     @for (recipe of recipes.value(); track recipe.id) {
@@ -47,6 +45,12 @@ export class RecipeViewer {
   });
 
   private _repository = inject(RecipeRepository);
+
+  constructor() {
+    effect(() => {
+      console.log(this.recipeIds());
+    });
+  }
 }
 
 export default RecipeViewer;
