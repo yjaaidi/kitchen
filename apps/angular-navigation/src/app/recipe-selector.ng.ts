@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RecipeRepository } from './recipe-repository';
 import { RecipeStore } from './recipe.store';
+import { recipeViewerRouterHelper } from './recipe-viewer.router-helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +34,10 @@ import { RecipeStore } from './recipe.store';
         </li>
       }
     </ul>
-    <a routerLink="/viewer" [queryParams]="viewRecipesQueryParams()">
+    <a
+      [routerLink]="viewRecipesRoute().path"
+      [queryParams]="viewRecipesRoute().queryParams"
+    >
       <button [disabled]="!canView()">VIEW</button>
     </a>
   `,
@@ -42,15 +46,6 @@ export class RecipeSelector {
   canView = computed(() => {
     const recipeIds = this.userSelectedRecipeIds();
     return recipeIds && recipeIds.length > 0;
-  });
-  viewRecipesQueryParams = computed(() => {
-    const recipeIds = this.userSelectedRecipeIds();
-    return recipeIds
-      ? {
-          recipe_id: recipeIds,
-          another: Array.from({ length: 100_000 }, () => 'a').join(''),
-        }
-      : null;
   });
   recipes = rxResource({
     stream: () => this._repository.fetchRecipes(),
@@ -65,6 +60,10 @@ export class RecipeSelector {
   });
   selectedRecipeIds = computed(() => this._recipeStore.selectedRecipeIds());
   userSelectedRecipeIds = linkedSignal(() => this.selectedRecipeIds());
+
+  viewRecipesRoute = computed(() =>
+    recipeViewerRouterHelper.route({ recipeIds: this.userSelectedRecipeIds() }),
+  );
 
   private _recipeStore = inject(RecipeStore);
   private _repository = inject(RecipeRepository);

@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { redirectRecipePathToIdGuard } from './redirect-recipe-path-to-id.guard';
 import { bindRecipeIdQueryParamToStore } from './bind-recipe-id-query-param-to-store';
+import { recipeViewerRouterHelper } from './recipe-viewer.router-helper';
 
 export const appRoutes: Route[] = [
   {
@@ -13,7 +14,7 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('./recipe-selector.ng'),
       },
       {
-        path: 'viewer',
+        path: recipeViewerRouterHelper.PATH,
         canActivate: [redirectRecipePathToIdGuard],
         loadComponent: () => import('./recipe-viewer.ng'),
       },
