@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { userEvent } from '@testing-library/user-event';
+import { screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
-import { page } from 'vitest/browser';
 import { MealPlanner } from '../meal-planner/meal-planner';
 import {
   provideRecipeRepositoryFake,
@@ -13,22 +14,26 @@ describe(RecipeSearch.name, () => {
   it('loads recipes', async () => {
     const { getRecipeNames } = mountRecipeSearch();
 
-    await expect.element(getRecipeNames()).toHaveLength(2);
+    await expect.poll(() => getRecipeNames()).toHaveLength(2);
   });
 
   it('filters recipes', async () => {
     const { getRecipeNames } = mountRecipeSearch();
 
-    await page.getByRole('textbox', { name: 'Keywords' }).fill('Bur');
+    await userEvent.type(
+      await screen.findByRole('textbox', { name: 'Keywords' }),
+      'Bur',
+    );
 
-    await expect.element(getRecipeNames()).toHaveLength(1);
-    await expect.element(getRecipeNames()).toHaveTextContent('Burger');
+    await expect.poll(() => getRecipeNames()).toHaveLength(1);
+    await expect.poll(() => getRecipeNames()[0]).toHaveTextContent('Burger');
   });
 
   it('adds recipes to the meal planner', async () => {
     const { getMealPlannerRecipes } = mountRecipeSearch();
 
-    await page.getByRole('button', { name: 'ADD' }).first().click();
+    const buttons = await screen.findAllByRole('button', { name: 'ADD' });
+    await userEvent.click(buttons[0]);
 
     await expect
       .poll(() => getMealPlannerRecipes())
@@ -53,7 +58,7 @@ function mountRecipeSearch() {
       return TestBed.inject(MealPlanner).recipes();
     },
     getRecipeNames() {
-      return page.getByRole('heading', { level: 2 });
+      return screen.getAllByRole('heading', { level: 2 });
     },
   };
 }
