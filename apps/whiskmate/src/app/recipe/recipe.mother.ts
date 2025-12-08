@@ -1,5 +1,5 @@
-import { createRecipe } from '../recipe/recipe';
-import { Recipe } from '../recipe/recipe';
+import { createRecipe } from './recipe';
+import { Recipe } from './recipe';
 
 class RecipeMother {
   private _recipePictures = [

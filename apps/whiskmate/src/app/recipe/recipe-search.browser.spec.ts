@@ -3,13 +3,12 @@ import { firstValueFrom } from 'rxjs';
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { MealPlanner } from '../meal-planner/meal-planner';
-import { provideMealRepositoryFake } from '../meal-planner/meal-repository.fake';
-import { recipeMother } from '../testing/recipe.mother';
 import {
   provideRecipeRepositoryFake,
   RecipeRepositoryFake,
 } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search.ng';
+import { recipeMother } from './recipe.mother';
 
 describe(RecipeSearch.name, () => {
   it('loads recipes', async () => {
@@ -40,7 +39,7 @@ describe(RecipeSearch.name, () => {
 
 function mountRecipeSearch() {
   TestBed.configureTestingModule({
-    providers: [provideRecipeRepositoryFake(), provideMealRepositoryFake()],
+    providers: [provideRecipeRepositoryFake()],
   });
 
   TestBed.inject(RecipeRepositoryFake).setRecipes([
@@ -52,7 +51,7 @@ function mountRecipeSearch() {
 
   return {
     async getMealPlannerRecipes() {
-      return firstValueFrom(TestBed.inject(MealPlanner).recipes$);
+      return TestBed.inject(MealPlanner).recipes();
     },
     getRecipeNames() {
       return page.getByRole('heading', { level: 2 });

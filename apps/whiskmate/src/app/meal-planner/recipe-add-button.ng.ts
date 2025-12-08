@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import type { Recipe } from '../recipe/recipe';
 import { MealPlanner } from './meal-planner';
-import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +15,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
   imports: [MatButtonModule],
   template: `
     <button
-      [disabled]="!canAdd.value()"
+      [disabled]="!canAdd()"
       (click)="addRecipe()"
       class="add-recipe-button"
       color="primary"
@@ -33,11 +33,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export class RecipeAddButton {
   recipe = input.required<Recipe>();
-  canAdd = rxResource({
-    params: () => this.recipe(),
-    stream: ({ params }) => this._mealPlanner.watchCanAddRecipe(params),
-    defaultValue: false,
-  });
+  canAdd = computed(() => this._mealPlanner.canAddRecipe(this.recipe()));
 
   private _mealPlanner = inject(MealPlanner);
 
