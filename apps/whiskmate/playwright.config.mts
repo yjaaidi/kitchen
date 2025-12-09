@@ -4,6 +4,7 @@ import {
   withTestronautAngular,
 } from '@testronaut/angular';
 import { fileURLToPath } from 'node:url';
+import { nxE2EPreset } from '@nx/playwright/preset';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -11,6 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig(
+  nxE2EPreset(__filename),
   withTestronautAngular({
     configPath: __filename,
     testServer: {

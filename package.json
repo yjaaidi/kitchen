@@ -35,6 +35,7 @@
     "@nx/eslint": "22.1.3",
     "@nx/eslint-plugin": "22.1.3",
     "@nx/js": "22.1.3",
+    "@nx/playwright": "22.2.0",
     "@nx/vite": "22.1.3",
     "@nx/vitest": "22.1.3",
     "@nx/web": "22.1.3",
