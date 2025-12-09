@@ -24,10 +24,12 @@ const test = base.extend<{
           providers: [provideRecipeRepositoryFake()],
         });
 
-        TestBed.inject(RecipeRepositoryFake).setRecipes([
-          recipeMother.withBasicInfo('Burger').build(),
-          recipeMother.withBasicInfo('Salad').build(),
-        ]);
+        TestBed.inject(RecipeRepositoryFake).configure({
+          recipes: [
+            recipeMother.withBasicInfo('Burger').build(),
+            recipeMother.withBasicInfo('Salad').build(),
+          ],
+        });
       });
 
       await mount(RecipeSearch);

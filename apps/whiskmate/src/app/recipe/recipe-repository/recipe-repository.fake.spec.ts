@@ -14,10 +14,12 @@ describe(RecipeRepositoryFake.name, () => {
     });
     const repository = TestBed.inject(RecipeRepositoryFake);
 
-    repository.setRecipes([
-      recipeMother.withBasicInfo('Burger').build(),
-      recipeMother.withBasicInfo('Salad').build(),
-    ]);
+    repository.configure({
+      recipes: [
+        recipeMother.withBasicInfo('Burger').build(),
+        recipeMother.withBasicInfo('Salad').build(),
+      ],
+    });
 
     return {
       repository,

@@ -12,6 +12,10 @@ import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
 export class RecipeRepositoryFake implements RecipeRepositoryDef {
   private _recipes: Recipe[] = [];
 
+  configure({ recipes }: { recipes: Recipe[] }) {
+    this._recipes = recipes;
+  }
+
   search({
     keywords,
     maxIngredientCount,
@@ -42,10 +46,6 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
       });
       return of(recipes);
     });
-  }
-
-  setRecipes(recipes: Recipe[]) {
-    this._recipes = recipes;
   }
 }
 
