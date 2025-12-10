@@ -5,14 +5,31 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
+    "@nx/eslint": "22.2.0",
+    "@nx/eslint-plugin": "22.2.0",
     "@nx/js": "22.2.0",
+    "@nx/vite": "22.2.0",
+    "@nx/vitest": "22.2.0",
     "@nx/web": "22.2.0",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/node": "20.19.9",
+    "@vitest/coverage-v8": "^4.0.0",
+    "@vitest/ui": "^4.0.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^10.0.0",
+    "jiti": "2.4.2",
+    "jsdom": "~22.1.0",
     "nx": "22.2.0",
     "prettier": "^2.6.2",
+    "swc-loader": "0.1.15",
     "tslib": "^2.3.0",
-    "typescript": "~5.9.2"
-  }
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.40.0",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.0"
+  },
+  "dependencies": {}
 }
