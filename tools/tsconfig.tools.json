@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist/out-tsc/tools",
+    "rootDir": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "types": ["node"],
+    "importHelpers": false
+  },
+  "include": ["**/*.ts"]
+}

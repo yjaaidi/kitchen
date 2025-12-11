@@ -1,0 +1,20 @@
+{
+  "name": "tools",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "tools",
+  "targets": {
+    "cascade-changes": {
+      "command": "node --experimental-strip-types {projectRoot}/cascade-changes.ts"
+    },
+    "clone-app": {
+      "command": "{projectRoot}/clone-app.sh"
+    },
+    "clone-changes": {
+      "command": "{projectRoot}/clone-changes.sh"
+    },
+    "sanity-check": {
+      "command": "node --experimental-strip-types {projectRoot}/sanity-check.ts"
+    }
+  }
+}

@@ -15,6 +15,9 @@ importers:
       '@eslint/js':
         specifier: ^9.8.0
         version: 9.39.1
+      '@nx/devkit':
+        specifier: 22.2.0
+        version: 22.2.0(nx@22.2.0(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
       '@nx/eslint':
         specifier: 22.2.0
         version: 22.2.0(@babel/traverse@7.28.5)(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(@zkochan/js-yaml@0.0.7)(eslint@9.39.1(jiti@2.4.2))(nx@22.2.0(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
@@ -51,6 +54,9 @@ importers:
       '@vitest/ui':
         specifier: ^4.0.0
         version: 4.0.15(vitest@4.0.15)
+      enquirer:
+        specifier: 2.4.1
+        version: 2.4.1
       eslint:
         specifier: ^9.8.0
         version: 9.39.1(jiti@2.4.2)
@@ -87,8 +93,11 @@ importers:
       vitest:
         specifier: ^4.0.0
         version: 4.0.15(@types/node@20.19.9)(@vitest/ui@4.0.15)(jiti@2.4.2)(jsdom@22.1.0)(terser@5.44.1)(yaml@2.8.2)
+      zx:
+        specifier: 8.8.5
+        version: 8.8.5
 
-  apps/101-display-recipes-starter: {}
+  tools: {}
 
 packages:
 
@@ -1737,6 +1746,10 @@ packages:
     resolution: {integrity: sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==}
     engines: {node: '>=8.6'}
 
+  enquirer@2.4.1:
+    resolution: {integrity: sha512-rRqJg/6gd538VHvR3PSrdRBb/1Vy2YfzHqzvbhGIQpDRKIa4FgV/54b5Q1xYSxOOwKvjXweS26E0Q+nAMwp2pQ==}
+    engines: {node: '>=8.6'}
+
   entities@6.0.1:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
     engines: {node: '>=0.12'}
@@ -2950,6 +2963,11 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zx@8.8.5:
+    resolution: {integrity: sha512-SNgDF5L0gfN7FwVOdEFguY3orU5AkfFZm9B5YSHog/UDHv+lvmd82ZAsOenOkQixigwH2+yyH198AwNdKhj+RA==}
+    engines: {node: '>= 12.17.0'}
+    hasBin: true
 
 snapshots:
 
@@ -4822,6 +4840,11 @@ snapshots:
     dependencies:
       ansi-colors: 4.1.3
 
+  enquirer@2.4.1:
+    dependencies:
+      ansi-colors: 4.1.3
+      strip-ansi: 6.0.1
+
   entities@6.0.1: {}
 
   error-ex@1.3.4:
@@ -6076,3 +6099,5 @@ snapshots:
       yargs-parser: 21.1.1
 
   yocto-queue@0.1.0: {}
+
+  zx@8.8.5: {}
