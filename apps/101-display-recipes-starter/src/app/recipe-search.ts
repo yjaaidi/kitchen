@@ -1,4 +1,4 @@
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRecipe, Recipe } from './recipe';
 
