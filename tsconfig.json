@@ -14,6 +14,12 @@
     },
     {
       "path": "./apps/102-filter-recipes-starter"
+    },
+    {
+      "path": "./apps/201-recipe-preview-solution"
+    },
+    {
+      "path": "./apps/201-recipe-preview-starter"
     }
   ]
 }
