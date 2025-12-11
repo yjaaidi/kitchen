@@ -1,6 +1,7 @@
-import { css, html, LitElement, nothing, PropertyValues } from 'lit';
+import { css, html, LitElement, PropertyValues } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { createRecipe, Recipe } from './recipe';
+import './recipe-preview';
 
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
@@ -59,49 +60,6 @@ export class RecipeSearch extends LitElement {
       list-style: none;
       padding: 0;
       margin: 0;
-    }
-
-    .recipe {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      margin: 1rem auto;
-      max-width: 400px;
-      overflow: hidden;
-    }
-
-    .image {
-      max-height: 150px;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .content {
-      padding: 1rem;
-    }
-
-    .name {
-      margin: 0;
-      text-align: center;
-    }
-
-    .description {
-      color: #444;
-    }
-
-    .ingredients {
-      color: #555;
-      font-size: 0.9em;
-    }
-
-    .steps {
-      color: #555;
-      font-size: 0.9em;
-    }
-
-    .section-title {
-      color: #444;
-      font-size: 0.9em;
-      font-weight: italic;
     }
   `;
 
@@ -177,33 +135,8 @@ export class RecipeSearch extends LitElement {
 
       <ul class="recipe-list">
         ${this._filteredRecipes.map(
-          (recipe) => html`
-            <li class="recipe">
-              <div>
-                <img
-                  class="image"
-                  src="${recipe.pictureUri}"
-                  alt="Picture of
-                ${recipe.name}"
-                />
-                <div class="content">
-                  <h2 class="name">${recipe.name}</h2>
-                  <p class="description">${recipe.description}</p>
-                  <ul class="ingredients">
-                    ${recipe.ingredients.map(
-                      (ingredient) => html`<li>
-                        ${ingredient.quantity
-                          ? html`${ingredient.quantity.amount}
-                            ${ingredient.quantity.unit} `
-                          : nothing}
-                        ${ingredient.name}
-                      </li>`
-                    )}
-                  </ul>
-                </div>
-              </div>
-            </li>
-          `
+          (recipe) =>
+            html` <wm-recipe-preview .recipe=${recipe}></wm-recipe-preview> `
         )}
       </ul>`;
   }
