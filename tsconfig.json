@@ -20,6 +20,12 @@
     },
     {
       "path": "./apps/201-recipe-preview-starter"
+    },
+    {
+      "path": "./apps/202-recipe-filter-solution"
+    },
+    {
+      "path": "./apps/202-recipe-filter-starter"
     }
   ]
 }
