@@ -38,6 +38,12 @@
     },
     {
       "path": "./apps/301-recipe-preview-customization-starter"
+    },
+    {
+      "path": "./apps/302-theming-solution"
+    },
+    {
+      "path": "./apps/302-theming-starter"
     }
   ]
 }

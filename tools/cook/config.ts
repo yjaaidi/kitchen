@@ -25,6 +25,10 @@ const exercises: Exercise[] = [
     id: '301-recipe-preview-customization',
     name: 'Recipe Preview Customization',
   },
+  {
+    id: '302-theming',
+    name: 'Theming',
+  },
 ];
 
 export const config: Config = {
