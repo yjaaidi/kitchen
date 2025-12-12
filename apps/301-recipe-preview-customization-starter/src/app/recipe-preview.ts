@@ -8,6 +8,11 @@ import { Recipe } from './recipe';
 @customElement('wm-recipe-preview')
 export class RecipePreview extends LitElement {
   static override styles = css`
+    .recipe,
+    .image {
+      transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
+    }
+
     .recipe {
       border: 1px solid #ddd;
       border-radius: 12px;
@@ -44,6 +49,21 @@ export class RecipePreview extends LitElement {
     .section-title {
       font-size: 0.9em;
       font-weight: italic;
+    }
+
+    .compact {
+      &.recipe {
+        max-width: 300px;
+      }
+
+      .image {
+        max-height: 100px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-style: italic;
+      }
     }
   `;
 
