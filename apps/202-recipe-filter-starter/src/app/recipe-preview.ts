@@ -8,6 +8,7 @@ export class RecipePreview extends LitElement {
     .recipe {
       border: 1px solid #ddd;
       border-radius: 12px;
+      color: #444;
       margin: 1rem auto;
       max-width: 400px;
       overflow: hidden;
@@ -18,7 +19,6 @@ export class RecipePreview extends LitElement {
       object-fit: cover;
       width: 100%;
     }
-
     .content {
       padding: 1rem;
     }
@@ -26,10 +26,6 @@ export class RecipePreview extends LitElement {
     .name {
       margin: 0;
       text-align: center;
-    }
-
-    .description {
-      color: #444;
     }
 
     .ingredients {
@@ -43,7 +39,6 @@ export class RecipePreview extends LitElement {
     }
 
     .section-title {
-      color: #444;
       font-size: 0.9em;
       font-weight: italic;
     }
