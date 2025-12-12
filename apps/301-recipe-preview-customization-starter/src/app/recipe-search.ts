@@ -11,13 +11,18 @@ import {
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
   static override styles = css`
-    .title {
-      text-align: center;
-      color: white;
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      margin: 0;
+      height: 80px;
       width: 100%;
-      line-height: 80px;
+    }
+
+    .title {
+      color: white;
+      margin: 0;
     }
 
     .recipe-list {
@@ -74,7 +79,9 @@ export class RecipeSearch extends LitElement {
   private _filteredRecipes: Recipe[] = this._recipes;
 
   protected override render() {
-    return html`<h1 class="title">Recipe Search</h1>
+    return html`<header class="toolbar">
+        <h1 class="title">Recipe Search</h1>
+      </header>
 
       <wm-recipe-filter
         .criteria=${this._criteria}
