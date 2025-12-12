@@ -26,6 +26,12 @@
     },
     {
       "path": "./apps/202-recipe-filter-starter"
+    },
+    {
+      "path": "./apps/203-recipe-filter-properties-solution"
+    },
+    {
+      "path": "./apps/203-recipe-filter-properties-starter"
     }
   ]
 }
