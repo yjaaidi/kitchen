@@ -136,7 +136,9 @@ export class RecipeSearch extends LitElement {
       </ul>`;
   }
 
-  protected override willUpdate(changedProperties: PropertyValues): void {
+  protected override willUpdate(
+    changedProperties: PropertyValues<{ _keywords?: string }>
+  ): void {
     if (changedProperties.has('_keywords')) {
       this._filteredRecipes = this._recipes.filter((recipe) => {
         if (!this._keywords) {
