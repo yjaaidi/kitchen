@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 @customElement('wm-selector')
@@ -43,19 +43,28 @@ export class Selector<T extends string> extends LitElement {
   @property()
   value?: T;
 
+  private _enrichedOptions: Array<{ value: T; onClick: () => void }> = [];
+
   protected override render() {
-    return html`
-      ${this.options.map(
-        (option) => html`
-          <button
-            @click=${() => this.dispatchEvent(new SelectorChange(option))}
-            ?disabled=${this.value === option}
-          >
-            ${option.toUpperCase()}
-          </button>
-        `
-      )}
-    `;
+    return this._enrichedOptions.map(
+      (option) => html`
+        <button
+          @click=${option.onClick}
+          ?disabled=${this.value === option.value}
+        >
+          ${option.value.toUpperCase()}
+        </button>
+      `
+    );
+  }
+
+  protected override willUpdate(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has('options')) {
+      this._enrichedOptions = this.options.map((option) => ({
+        value: option,
+        onClick: () => this.dispatchEvent(new SelectorChange(option)),
+      }));
+    }
   }
 }
 

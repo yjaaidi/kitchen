@@ -1,6 +1,12 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 
+/**
+ * @event criteria-change - Emitted when an input's value changes
+ * @event criteria-submit - Emitted when the form is submitted
+ *
+ * @property {RecipeFilterCriteria} criteria - The current filter criteria
+ */
 @customElement('wm-recipe-filter')
 export class RecipeFilter extends LitElement {
   static override styles = css`
@@ -64,11 +70,8 @@ export class RecipeFilter extends LitElement {
     return html`
       <form
         class="search-form"
-        @input=${() => this._emitCriteria()}
-        @submit=${(event: SubmitEvent) => {
-          event.preventDefault();
-          this._emitCriteria();
-        }}
+        @input=${this._handleInput}
+        @submit=${this._handleSubmit}
       >
         <input name="keywords" placeholder="Search recipes" type="text" />
         <input
@@ -83,15 +86,20 @@ export class RecipeFilter extends LitElement {
     `;
   }
 
-  private _emitCriteria() {
+  private _handleInput() {
+    this.dispatchEvent(new RecipeFilterCriteriaChange(this._buildCriteria()));
+  }
+
+  private _handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    this.dispatchEvent(new RecipeFilterCriteriaSubmit(this._buildCriteria()));
+  }
+
+  private _buildCriteria(): RecipeFilterCriteria {
     const keywords = this._searchInput?.value;
     const maxIngredients = _inputValueAsNumber(this._maxIngredientsInput);
     const maxSteps = _inputValueAsNumber(this._maxStepsInput);
-    this.dispatchEvent(
-      new RecipeFilterCriteriaChange(
-        createRecipeFilterCriteria({ keywords, maxIngredients, maxSteps })
-      )
-    );
+    return createRecipeFilterCriteria({ keywords, maxIngredients, maxSteps });
   }
 }
 
@@ -107,6 +115,14 @@ export class RecipeFilterCriteriaChange extends Event {
   criteria: RecipeFilterCriteria;
   constructor(criteria: RecipeFilterCriteria) {
     super('criteria-change');
+    this.criteria = criteria;
+  }
+}
+
+export class RecipeFilterCriteriaSubmit extends Event {
+  criteria: RecipeFilterCriteria;
+  constructor(criteria: RecipeFilterCriteria) {
+    super('criteria-submit');
     this.criteria = criteria;
   }
 }

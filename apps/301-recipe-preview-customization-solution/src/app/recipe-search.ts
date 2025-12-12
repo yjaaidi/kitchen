@@ -84,17 +84,13 @@ export class RecipeSearch extends LitElement {
 
       <wm-recipe-filter
         .criteria=${this._criteria}
-        @criteria-change=${({ criteria }: RecipeFilterCriteriaChange) => {
-          this._criteria = criteria;
-        }}
+        @criteria-change=${this._handleCriteriaChange}
       ></wm-recipe-filter>
 
       <wm-selector
         .options=${RECIPE_PREVIEW_MODES}
         .value=${this._recipePreviewMode}
-        @value-change=${({ value }: SelectorChange<RecipePreviewMode>) => {
-          this._recipePreviewMode = value;
-        }}
+        @value-change=${this._handleRecipePreviewModeChange}
       ></wm-selector>
 
       <ul class="recipe-list">
@@ -116,6 +112,16 @@ export class RecipeSearch extends LitElement {
     }
 
     super.willUpdate(changedProperties);
+  }
+
+  private _handleCriteriaChange(event: RecipeFilterCriteriaChange) {
+    this._criteria = event.criteria;
+  }
+
+  private _handleRecipePreviewModeChange(
+    event: SelectorChange<RecipePreviewMode>
+  ) {
+    this._recipePreviewMode = event.value;
   }
 
   private _updatedFilteredRecipes() {

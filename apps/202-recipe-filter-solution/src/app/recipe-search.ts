@@ -77,9 +77,7 @@ export class RecipeSearch extends LitElement {
     return html`<h1 class="title">Recipe Search</h1>
 
       <wm-recipe-filter
-        @criteria-change=${({ criteria }: RecipeFilterCriteriaChange) => {
-          this._criteria = criteria;
-        }}
+        @criteria-change=${this._handleCriteriaChange}
       ></wm-recipe-filter>
 
       <ul class="recipe-list">
@@ -98,6 +96,10 @@ export class RecipeSearch extends LitElement {
     }
 
     super.willUpdate(changedProperties);
+  }
+
+  private _handleCriteriaChange(event: RecipeFilterCriteriaChange) {
+    this._criteria = event.criteria;
   }
 
   private _updatedFilteredRecipes() {

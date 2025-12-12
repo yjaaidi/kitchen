@@ -113,11 +113,8 @@ export class RecipeSearch extends LitElement {
 
       <form
         class="search-form"
-        @input=${() => this._updateKeywords()}
-        @submit=${(event: SubmitEvent) => {
-          event.preventDefault();
-          this._updateKeywords();
-        }}
+        @input=${this._handleInput}
+        @submit=${this._handleSubmit}
       >
         <input
           class="search-input"
@@ -150,7 +147,16 @@ export class RecipeSearch extends LitElement {
     super.willUpdate(changedProperties);
   }
 
-  private _updateKeywords() {
+  private _handleInput() {
+    this._syncKeywordsFromInput();
+  }
+
+  private _handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    this._syncKeywordsFromInput();
+  }
+
+  private _syncKeywordsFromInput() {
     this._keywords = this._searchInput?.value;
   }
 }

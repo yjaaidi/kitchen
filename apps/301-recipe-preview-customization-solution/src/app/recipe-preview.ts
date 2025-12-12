@@ -92,7 +92,7 @@ export class RecipePreview extends LitElement {
         <div>
           <img
             class="image"
-            src="${this.recipe.pictureUri}"
+            src=${this.recipe.pictureUri}
             alt="Picture of
                 ${this.recipe.name}"
           />
