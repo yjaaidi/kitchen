@@ -32,6 +32,12 @@
     },
     {
       "path": "./apps/203-recipe-filter-two-way-binding-starter"
+    },
+    {
+      "path": "./apps/301-recipe-preview-customization-solution"
+    },
+    {
+      "path": "./apps/301-recipe-preview-customization-starter"
     }
   ]
 }
