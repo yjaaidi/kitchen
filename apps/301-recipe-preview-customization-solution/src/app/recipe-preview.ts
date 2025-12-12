@@ -100,7 +100,7 @@ export class RecipePreview extends LitElement {
                 ${this.recipe.name}"
           />
           <div class="content">
-            <h2 class="name">${this.recipe.name}</h2>
+            <h2 class="name" part="name">${this.recipe.name}</h2>
             <p class="description">${this.recipe.description}</p>
             ${this.mode === 'compact'
               ? html`<details>

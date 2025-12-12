@@ -27,6 +27,11 @@ export class RecipeSearch extends LitElement {
       padding: 0;
       margin: 0;
     }
+
+    wm-recipe-preview::part(name) {
+      color: #59258c;
+      font-family: Cursive;
+    }
   `;
 
   @state()
