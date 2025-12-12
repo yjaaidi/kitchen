@@ -2,7 +2,9 @@
   "name": "@lit-workshop/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "cook": "node --experimental-strip-types tools/cook/main.ts"
+  },
   "private": true,
   "dependencies": {
     "lit": "3.3.1"
