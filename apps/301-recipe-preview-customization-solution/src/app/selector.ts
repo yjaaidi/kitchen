@@ -1,6 +1,12 @@
 import { css, html, LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+/**
+ * @event value-change - Emitted when the selected value changes
+ *
+ * @property {T[]} options - The options to select from
+ * @property {T} value - The selected value
+ */
 @customElement('wm-selector')
 export class Selector<T extends string> extends LitElement {
   static override styles = css`

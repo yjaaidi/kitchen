@@ -3,6 +3,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { Recipe } from './recipe';
 import { classMap } from 'lit/directives/class-map.js';
 
+/**
+ * @property {Recipe} recipe - The recipe to display
+ */
 @customElement('wm-recipe-preview')
 export class RecipePreview extends LitElement {
   static override styles = css`

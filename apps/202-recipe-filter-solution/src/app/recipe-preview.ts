@@ -2,6 +2,9 @@ import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Recipe } from './recipe';
 
+/**
+ * @property {Recipe} recipe - The recipe to display
+ */
 @customElement('wm-recipe-preview')
 export class RecipePreview extends LitElement {
   static override styles = css`
