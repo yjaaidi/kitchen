@@ -3,7 +3,7 @@ import { customElement, state } from 'lit/decorators.js';
 import { createRecipe, Recipe } from './recipe';
 import './recipe-filter';
 import './recipe-preview';
-import { RecipeFilterChange } from './recipe-filter';
+import { RecipeFilterChange, RecipeFilterCriteria } from './recipe-filter';
 
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
@@ -24,7 +24,7 @@ export class RecipeSearch extends LitElement {
   `;
 
   @state()
-  private _keywords?: string;
+  private _criteria?: RecipeFilterCriteria;
   private _recipes: Recipe[] = [
     createRecipe({
       id: 'rec_burger',
@@ -74,8 +74,8 @@ export class RecipeSearch extends LitElement {
     return html`<h1 class="title">Recipe Search</h1>
 
       <wm-recipe-filter
-        @recipe-filter-change=${(event: RecipeFilterChange) => {
-          this._keywords = event.keywords;
+        @recipe-filter-change=${({ criteria }: RecipeFilterChange) => {
+          this._criteria = criteria;
         }}
       ></wm-recipe-filter>
 
@@ -88,16 +88,37 @@ export class RecipeSearch extends LitElement {
   }
 
   protected override willUpdate(
-    changedProperties: PropertyValues<{ _keywords?: string }>
+    changedProperties: PropertyValues<{ _criteria?: RecipeFilterCriteria }>
   ): void {
-    if (changedProperties.has('_keywords')) {
-      this._filteredRecipes = this._recipes.filter((recipe) => {
-        if (!this._keywords) {
-          return true;
-        }
-        return recipe.name.toLowerCase().includes(this._keywords.toLowerCase());
-      });
+    if (changedProperties.has('_criteria')) {
+      this._updatedFilteredRecipes();
     }
+
     super.willUpdate(changedProperties);
+  }
+
+  private _updatedFilteredRecipes() {
+    const { keywords, maxIngredients, maxSteps } = this._criteria ?? {};
+    let filteredRecipes = this._recipes;
+
+    if (keywords) {
+      filteredRecipes = filteredRecipes.filter((recipe) =>
+        recipe.name.toLowerCase().includes(keywords.toLowerCase())
+      );
+    }
+
+    if (maxIngredients) {
+      filteredRecipes = filteredRecipes.filter(
+        (recipe) => recipe.ingredients.length <= maxIngredients
+      );
+    }
+
+    if (maxSteps) {
+      filteredRecipes = filteredRecipes.filter(
+        (recipe) => recipe.steps.length <= maxSteps
+      );
+    }
+
+    this._filteredRecipes = filteredRecipes;
   }
 }

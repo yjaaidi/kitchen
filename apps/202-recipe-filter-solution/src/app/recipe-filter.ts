@@ -10,17 +10,22 @@ export class RecipeFilter extends LitElement {
 
     .search-form {
       display: flex;
-      max-width: 400px;
+      max-width: 600px;
       margin: 1rem auto;
 
       input {
         flex: 1;
         border: 1px solid #ccc;
-        border-radius: 8px 0 0 8px;
+        border-left: none;
         font-size: 1rem;
         padding: 0.5rem 1rem;
         outline: none;
         transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:first-child {
+          border-radius: 8px 0 0 8px;
+          border-left: 1px solid #ccc;
+        }
 
         &:focus {
           border-color: #667eea;
@@ -48,32 +53,71 @@ export class RecipeFilter extends LitElement {
   @query('input[name="keywords"]')
   private _searchInput?: HTMLInputElement;
 
+  @query('input[name="maxIngredients"]')
+  private _maxIngredientsInput?: HTMLInputElement;
+
+  @query('input[name="maxSteps"]')
+  private _maxStepsInput?: HTMLInputElement;
+
   protected override render() {
     return html`
       <form
         class="search-form"
-        @input=${() => this._updateKeywords()}
+        @input=${() => this._emitCriteria()}
         @submit=${(event: SubmitEvent) => {
           event.preventDefault();
-          this._updateKeywords();
+          this._emitCriteria();
         }}
       >
         <input name="keywords" placeholder="Search recipes" type="text" />
+        <input
+          min="0"
+          name="maxIngredients"
+          placeholder="Max ingredients"
+          type="number"
+        />
+        <input min="0" name="maxSteps" placeholder="Max steps" type="number" />
         <button type="submit">🔍</button>
       </form>
     `;
   }
 
-  private _updateKeywords() {
+  private _emitCriteria() {
     const keywords = this._searchInput?.value;
-    this.dispatchEvent(new RecipeFilterChange({ keywords }));
+    const maxIngredients = _inputValueAsNumber(this._maxIngredientsInput);
+    const maxSteps = _inputValueAsNumber(this._maxStepsInput);
+    this.dispatchEvent(
+      new RecipeFilterChange(
+        createRecipeFilterCriteria({ keywords, maxIngredients, maxSteps })
+      )
+    );
   }
 }
 
-export class RecipeFilterChange extends Event {
-  keywords?: string;
-  constructor({ keywords }: { keywords?: string }) {
-    super('recipe-filter-change');
-    this.keywords = keywords;
+function _inputValueAsNumber(input?: HTMLInputElement) {
+  const value = input?.valueAsNumber;
+  if (value == null || isNaN(value)) {
+    return undefined;
   }
+  return value;
+}
+
+export class RecipeFilterChange extends Event {
+  criteria: RecipeFilterCriteria;
+  constructor(criteria: RecipeFilterCriteria) {
+    super('recipe-filter-change');
+    this.criteria = criteria;
+  }
+}
+
+export function createRecipeFilterCriteria(
+  criteria: RecipeFilterCriteria
+): RecipeFilterCriteria {
+  return criteria;
+}
+
+export interface RecipeFilterCriteria {
+  keywords?: string;
+  maxIngredients?: number;
+  maxSteps?: number;
 }
