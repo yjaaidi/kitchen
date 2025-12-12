@@ -1,13 +1,20 @@
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Recipe } from './recipe';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('wm-recipe-preview')
 export class RecipePreview extends LitElement {
   static override styles = css`
+    .recipe,
+    .image {
+      transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
+    }
+
     .recipe {
       border: 1px solid #ddd;
       border-radius: 12px;
+      color: #444;
       margin: 1rem auto;
       max-width: 400px;
       overflow: hidden;
@@ -18,7 +25,6 @@ export class RecipePreview extends LitElement {
       object-fit: cover;
       width: 100%;
     }
-
     .content {
       padding: 1rem;
     }
@@ -26,10 +32,6 @@ export class RecipePreview extends LitElement {
     .name {
       margin: 0;
       text-align: center;
-    }
-
-    .description {
-      color: #444;
     }
 
     .ingredients {
@@ -43,11 +45,28 @@ export class RecipePreview extends LitElement {
     }
 
     .section-title {
-      color: #444;
       font-size: 0.9em;
       font-weight: italic;
     }
+
+    .compact {
+      &.recipe {
+        max-width: 300px;
+      }
+
+      .image {
+        max-height: 100px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-style: italic;
+      }
+    }
   `;
+
+  @property()
+  mode: RecipePreviewMode = 'detailed';
 
   @property()
   recipe?: Recipe;
@@ -57,8 +76,19 @@ export class RecipePreview extends LitElement {
       return;
     }
 
+    const ingredientsTpl = html`<ul class="ingredients">
+      ${this.recipe.ingredients.map(
+        (ingredient) => html`<li>
+          ${ingredient.quantity
+            ? html`${ingredient.quantity.amount} ${ingredient.quantity.unit} `
+            : nothing}
+          ${ingredient.name}
+        </li>`
+      )}
+    </ul>`;
+
     return html`
-      <li class="recipe">
+      <li class=${classMap({ recipe: true, compact: this.mode === 'compact' })}>
         <div>
           <img
             class="image"
@@ -69,20 +99,19 @@ export class RecipePreview extends LitElement {
           <div class="content">
             <h2 class="name">${this.recipe.name}</h2>
             <p class="description">${this.recipe.description}</p>
-            <ul class="ingredients">
-              ${this.recipe.ingredients.map(
-                (ingredient) => html`<li>
-                  ${ingredient.quantity
-                    ? html`${ingredient.quantity.amount}
-                      ${ingredient.quantity.unit} `
-                    : nothing}
-                  ${ingredient.name}
-                </li>`
-              )}
-            </ul>
+            ${this.mode === 'compact'
+              ? html`<details>
+                  <summary>Ingredients</summary>
+                  ${ingredientsTpl}
+                </details>`
+              : ingredientsTpl}
           </div>
         </div>
       </li>
     `;
   }
 }
+
+export const RECIPE_PREVIEW_MODES = ['compact', 'detailed'] as const;
+
+export type RecipePreviewMode = (typeof RECIPE_PREVIEW_MODES)[number];

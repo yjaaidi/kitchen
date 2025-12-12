@@ -2,11 +2,14 @@ import { css, html, LitElement, PropertyValues } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRecipe, Recipe } from './recipe';
 import './recipe-filter';
-import './recipe-preview';
 import {
-  RecipeFilterCriteriaChange,
   RecipeFilterCriteria,
+  RecipeFilterCriteriaChange,
 } from './recipe-filter';
+import './recipe-preview';
+import { RECIPE_PREVIEW_MODES, RecipePreviewMode } from './recipe-preview';
+import './selector';
+import { SelectorChange } from './selector';
 
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
@@ -73,6 +76,9 @@ export class RecipeSearch extends LitElement {
   @state()
   private _filteredRecipes: Recipe[] = this._recipes;
 
+  @state()
+  private _recipePreviewMode: RecipePreviewMode = 'detailed';
+
   protected override render() {
     return html`<h1 class="title">Recipe Search</h1>
 
@@ -83,10 +89,21 @@ export class RecipeSearch extends LitElement {
         }}
       ></wm-recipe-filter>
 
+      <wm-selector
+        .options=${RECIPE_PREVIEW_MODES}
+        .value=${this._recipePreviewMode}
+        @value-change=${({ value }: SelectorChange<RecipePreviewMode>) => {
+          this._recipePreviewMode = value;
+        }}
+      ></wm-selector>
+
       <ul class="recipe-list">
         ${this._filteredRecipes.map(
           (recipe) =>
-            html`<wm-recipe-preview .recipe=${recipe}></wm-recipe-preview>`
+            html`<wm-recipe-preview
+              .mode=${this._recipePreviewMode}
+              .recipe=${recipe}
+            ></wm-recipe-preview>`
         )}
       </ul>`;
   }
