@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Recipe } from './recipe';
 import { classMap } from 'lit/directives/class-map.js';
+import { Recipe } from './recipe';
 
 /**
  * @property {Recipe} recipe - The recipe to display
@@ -93,23 +93,21 @@ export class RecipePreview extends LitElement {
 
     return html`
       <li class=${classMap({ recipe: true, compact: this.mode === 'compact' })}>
-        <div>
-          <img
-            class="image"
-            src=${this.recipe.pictureUri}
-            alt="Picture of
+        <img
+          class="image"
+          src=${this.recipe.pictureUri}
+          alt="Picture of
                 ${this.recipe.name}"
-          />
-          <div class="content">
-            <h2 class="name" part="name">${this.recipe.name}</h2>
-            <p class="description">${this.recipe.description}</p>
-            ${this.mode === 'compact'
-              ? html`<details>
-                  <summary>Ingredients</summary>
-                  ${ingredientsTpl}
-                </details>`
-              : ingredientsTpl}
-          </div>
+        />
+        <div class="content">
+          <h2 class="name" part="name">${this.recipe.name}</h2>
+          <p class="description">${this.recipe.description}</p>
+          ${this.mode === 'compact'
+            ? html`<details>
+                <summary>Ingredients</summary>
+                ${ingredientsTpl}
+              </details>`
+            : ingredientsTpl}
         </div>
       </li>
     `;
