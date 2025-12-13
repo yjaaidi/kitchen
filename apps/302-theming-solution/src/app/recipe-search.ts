@@ -19,7 +19,11 @@ export class RecipeSearch extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        var(--secondary-color) 100%
+      );
       height: 80px;
       width: 100%;
     }
@@ -40,7 +44,7 @@ export class RecipeSearch extends LitElement {
     }
 
     wm-recipe-preview::part(name) {
-      color: light-dark(#59258c, white);
+      color: light-dark(var(--secondary-color), white);
       font-family: Cursive;
     }
   `;
