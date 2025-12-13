@@ -20,7 +20,6 @@ export class Selector<T extends string> extends LitElement {
 
       background: transparent;
       border: 1px solid #ccc;
-      border-right: none;
       cursor: pointer;
       font-size: 1rem;
       transition: background-color 0.2s, border-color 0.2s;
@@ -37,7 +36,6 @@ export class Selector<T extends string> extends LitElement {
       }
 
       &:last-child {
-        border-right: 1px solid #ccc;
         border-radius: 0 8px 8px 0;
       }
     }
