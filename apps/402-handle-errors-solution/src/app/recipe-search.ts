@@ -90,6 +90,7 @@ export class RecipeSearch extends LitElement {
         () => html`<div class="error" role="alert">
           <img src="https://marmicode.io/assets/error.gif" alt="Error" />
           <p>Oups, something went wrong.</p>
+          <button @click=${this._fetchRecipes}>RETRY</button>
         </div>`,
         () =>
           html`<ul class="recipe-list">
