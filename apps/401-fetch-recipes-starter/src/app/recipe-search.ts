@@ -3,10 +3,8 @@ import { customElement, state } from 'lit/decorators.js';
 import './color-scheme-toggle';
 import { createRecipe, Recipe } from './recipe';
 import './recipe-filter';
-import {
-  RecipeFilterCriteria,
-  RecipeFilterCriteriaChange,
-} from './recipe-filter';
+import { RecipeFilterCriteriaChange } from './recipe-filter';
+import { RecipeFilterCriteria } from './recipe-filter-criteria';
 import './recipe-preview';
 import { RECIPE_PREVIEW_MODES, RecipePreviewMode } from './recipe-preview';
 import './selector';

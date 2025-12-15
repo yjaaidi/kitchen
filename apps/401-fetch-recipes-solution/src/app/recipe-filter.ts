@@ -1,5 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import {
+  createRecipeFilterCriteria,
+  RecipeFilterCriteria,
+} from './recipe-filter-criteria';
 
 /**
  * @event criteria-change - Emitted when an input's value changes
@@ -141,16 +145,4 @@ export class RecipeFilterCriteriaSubmit extends Event {
     super('criteria-submit');
     this.criteria = criteria;
   }
-}
-
-export function createRecipeFilterCriteria(
-  criteria: RecipeFilterCriteria
-): RecipeFilterCriteria {
-  return criteria;
-}
-
-export interface RecipeFilterCriteria {
-  keywords?: string;
-  maxIngredients?: number;
-  maxSteps?: number;
 }
