@@ -87,7 +87,7 @@ export class RecipeSearch extends LitElement {
       </ul>`;
   }
 
-  protected override connectedCallback(): void {
+  override connectedCallback() {
     super.connectedCallback();
     this._fetchRecipes();
   }
