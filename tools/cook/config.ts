@@ -29,6 +29,10 @@ const exercises: Exercise[] = [
     id: '302-theming',
     name: 'Theming',
   },
+  {
+    id: '401-fetch-recipes',
+    name: 'Fetch Recipes',
+  },
 ];
 
 export const config: Config = {

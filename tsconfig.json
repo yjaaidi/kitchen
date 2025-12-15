@@ -44,6 +44,12 @@
     },
     {
       "path": "./apps/302-theming-starter"
+    },
+    {
+      "path": "./apps/401-fetch-recipes-solution"
+    },
+    {
+      "path": "./apps/401-fetch-recipes-starter"
     }
   ]
 }
