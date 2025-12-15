@@ -58,12 +58,13 @@ export class RecipeSearch extends LitElement {
   private _criteria?: RecipeFilterCriteria;
 
   @state()
+  private _error?: unknown;
+
+  @state()
   private _recipes: Recipe[] = [];
 
   @state()
   private _recipePreviewMode: RecipePreviewMode = 'detailed';
-
-  private _error?: unknown;
 
   protected override render() {
     return html`<header class="toolbar">
