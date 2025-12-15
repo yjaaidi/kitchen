@@ -143,9 +143,10 @@ export class RecipeSearch extends LitElement {
   private async _fetchRecipes() {
     try {
       this._recipes = await recipeRepository.searchRecipes(this._criteria);
+      this._error = undefined;
     } catch (error) {
-      this._error = error;
       this._recipes = [];
+      this._error = error;
     }
   }
 }

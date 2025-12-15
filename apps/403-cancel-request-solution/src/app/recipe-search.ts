@@ -151,9 +151,10 @@ export class RecipeSearch extends LitElement {
       this._recipes = await recipeRepository.searchRecipes(this._criteria, {
         signal: this._abortController.signal,
       });
+      this._error = undefined;
     } catch (error) {
-      this._error = error;
       this._recipes = [];
+      this._error = error;
     } finally {
       this._abortController = undefined;
     }
