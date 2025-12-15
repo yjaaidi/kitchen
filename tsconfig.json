@@ -62,6 +62,12 @@
     },
     {
       "path": "./apps/403-cancel-request-starter"
+    },
+    {
+      "path": "./apps/404-task-solution"
+    },
+    {
+      "path": "./apps/404-task-starter"
     }
   ]
 }

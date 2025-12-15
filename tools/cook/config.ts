@@ -33,6 +33,18 @@ const exercises: Exercise[] = [
     id: '401-fetch-recipes',
     name: 'Fetch Recipes',
   },
+  {
+    id: '402-handle-errors',
+    name: 'Handle Errors',
+  },
+  {
+    id: '403-cancel-request',
+    name: 'Cancel Request',
+  },
+  {
+    id: '404-task',
+    name: 'Task',
+  },
 ];
 
 export const config: Config = {
