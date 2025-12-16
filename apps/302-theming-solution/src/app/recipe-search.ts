@@ -137,8 +137,6 @@ export class RecipeSearch extends LitElement {
     if (changedProperties.has('_criteria')) {
       this._updateFilteredRecipes();
     }
-
-    super.willUpdate(changedProperties);
   }
 
   private _handleCriteriaChange(event: RecipeFilterCriteriaChange) {

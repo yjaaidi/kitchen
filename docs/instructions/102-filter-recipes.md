@@ -60,7 +60,6 @@ protected override willUpdate(changedProperties: PropertyValues<{ _keywords?: st
   if (changedProperties.has('_keywords')) {
     // TODO: filter recipes based on the keywords
   }
-  super.willUpdate(changedProperties);
 }
 ```
 

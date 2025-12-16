@@ -149,7 +149,6 @@ export class RecipeSearch extends LitElement {
         return recipe.name.toLowerCase().includes(this._keywords.toLowerCase());
       });
     }
-    super.willUpdate(changedProperties);
   }
 
   private _handleInput() {
