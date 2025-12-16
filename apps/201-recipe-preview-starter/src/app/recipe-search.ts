@@ -1,6 +1,7 @@
 import { css, html, LitElement, PropertyValues } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { createRecipe, Recipe } from './recipe';
+import { when } from 'lit/directives/when.js';
 
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
@@ -91,6 +92,10 @@ export class RecipeSearch extends LitElement {
     .ingredients {
       color: #555;
       font-size: 0.9em;
+    }
+
+    .quantity {
+      font-style: italic;
     }
 
     .steps {
@@ -190,10 +195,12 @@ export class RecipeSearch extends LitElement {
                   <ul class="ingredients">
                     ${recipe.ingredients.map(
                       (ingredient) => html`<li>
-                        ${ingredient.quantity
-                          ? html`${ingredient.quantity.amount}
-                            ${ingredient.quantity.unit} `
-                          : null}
+                        ${when(
+                          ingredient.quantity,
+                          (quantity) => html`<span class="quantity"
+                            >${quantity.amount}${quantity.unit}</span
+                          >`
+                        )}
                         ${ingredient.name}
                       </li>`
                     )}

@@ -1,5 +1,6 @@
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { Recipe } from './recipe';
 
 /**
@@ -57,28 +58,27 @@ export class RecipePreview extends LitElement {
 
     return html`
       <li class="recipe">
-        <div>
-          <img
-            class="image"
-            src=${this.recipe.pictureUri}
-            alt="Picture of
-                ${this.recipe.name}"
-          />
-          <div class="content">
-            <h2 class="name">${this.recipe.name}</h2>
-            <p class="description">${this.recipe.description}</p>
-            <ul class="ingredients">
-              ${this.recipe.ingredients.map(
-                (ingredient) => html`<li>
-                  ${ingredient.quantity
-                    ? html`${ingredient.quantity.amount}
-                      ${ingredient.quantity.unit} `
-                    : nothing}
-                  ${ingredient.name}
-                </li>`
-              )}
-            </ul>
-          </div>
+        <img
+          class="image"
+          src=${this.recipe.pictureUri}
+          alt="Picture of ${this.recipe.name}"
+        />
+        <div class="content">
+          <h2 class="name">${this.recipe.name}</h2>
+          <p class="description">${this.recipe.description}</p>
+          <ul class="ingredients">
+            ${this.recipe.ingredients.map(
+              (ingredient) => html`<li>
+                ${when(
+                  ingredient.quantity,
+                  (quantity) => html`<span class="quantity"
+                    >${quantity.amount}${quantity.unit}</span
+                  >`
+                )}
+                ${ingredient.name}
+              </li>`
+            )}
+          </ul>
         </div>
       </li>
     `;

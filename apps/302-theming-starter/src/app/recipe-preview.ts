@@ -1,6 +1,7 @@
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
 import { Recipe } from './recipe';
 
 /**
@@ -82,9 +83,12 @@ export class RecipePreview extends LitElement {
     const ingredientsTpl = html`<ul class="ingredients">
       ${this.recipe.ingredients.map(
         (ingredient) => html`<li>
-          ${ingredient.quantity
-            ? html`${ingredient.quantity.amount} ${ingredient.quantity.unit} `
-            : nothing}
+          ${when(
+            ingredient.quantity,
+            (quantity) => html`<span class="quantity"
+              >${quantity.amount}${quantity.unit}</span
+            >`
+          )}
           ${ingredient.name}
         </li>`
       )}
@@ -101,12 +105,15 @@ export class RecipePreview extends LitElement {
         <div class="content">
           <h2 class="name" part="name">${this.recipe.name}</h2>
           <p class="description">${this.recipe.description}</p>
-          ${this.mode === 'compact'
-            ? html`<details>
+          ${when(
+            this.mode === 'compact',
+            () =>
+              html`<details>
                 <summary>Ingredients</summary>
                 ${ingredientsTpl}
-              </details>`
-            : ingredientsTpl}
+              </details>`,
+            () => ingredientsTpl
+          )}
         </div>
       </li>
     `;
