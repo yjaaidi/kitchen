@@ -1,5 +1,6 @@
 ignoredBuiltDependencies:
   - esbuild
 packages:
+  - 'docs'
   - 'packages/*'
   - 'tools'
