@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { workspaceRoot } from '@nx/devkit';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path/posix';
@@ -10,10 +12,10 @@ function main() {
     .flat();
 
   const missingProjects = expectedProjects.filter(
-    (project) => !projects.includes(project),
+    (project) => !projects.includes(project)
   );
   const extraProjects = projects.filter(
-    (project) => !expectedProjects.includes(project),
+    (project) => !expectedProjects.includes(project)
   );
 
   if (!missingProjects.length && !extraProjects.length) {
