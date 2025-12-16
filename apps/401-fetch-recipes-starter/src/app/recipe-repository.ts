@@ -2,7 +2,9 @@ import { Recipe } from './recipe';
 import { RecipeFilterCriteria } from './recipe-filter-criteria';
 
 export class RecipeRepository {
-  async searchRecipes(filterCriteria: RecipeFilterCriteria): Promise<Recipe[]> {
+  async searchRecipes(
+    filterCriteria: RecipeFilterCriteria = {}
+  ): Promise<Recipe[]> {
     const url = new URL('https://recipes-api.marmicode.io/recipes');
     url.searchParams.set('embed', 'ingredients,steps');
     if (filterCriteria.keywords) {
