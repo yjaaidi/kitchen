@@ -20,9 +20,26 @@ Your goal is to:
 
 ### 📝 Steps
 
-#### 1. Add `mode` property to `RecipePreview`
+#### 1. Add mode constants and type to `recipe-preview.ts`
 
-#### 2. Set the `mode` property on `RecipePreview` in `RecipeSearch`
+```ts
+export const RECIPE_PREVIEW_MODES = ['compact', 'detailed'] as const;
+export type RecipePreviewMode = (typeof RECIPE_PREVIEW_MODES)[number];
+```
+
+#### 2. Add a `mode` selector to `RecipeSearch`
+
+```ts
+<wm-selector
+  .options=${RECIPE_PREVIEW_MODES}
+  .value=${this._recipePreviewMode}
+  @value-change=${this._handleRecipePreviewModeChange}
+></wm-selector>
+```
+
+#### 3. Handle the mode change event in `RecipeSearch`
+
+#### 4. Forward the mode to `RecipePreview`'s `mode` property
 
 ```ts
 <wm-recipe-preview
@@ -31,9 +48,19 @@ Your goal is to:
 ></wm-recipe-preview>
 ```
 
-#### 3. Add conditional CSS class using `classMap`
+#### 5. Add `mode` property to `RecipePreview`
 
-#### 4. Add a CSS part for the name
+#### 6. Add conditional CSS class using `classMap`
+
+#### 7. Hide ingredients in a `<details>` element when in compact mode
+
+```ts
+<details>
+  <summary>Ingredients</summary>${ingredientsTpl}
+</details>
+```
+
+#### 8. Add a CSS part for the name
 
 Add `part="name"` to the name heading:
 
@@ -43,7 +70,7 @@ Add `part="name"` to the name heading:
 </h2>
 ```
 
-#### 5. Style the recipe name using CSS parts
+#### 9. Style the recipe name using CSS parts
 
 Add this to the `RecipeSearch` styles:
 
