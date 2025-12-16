@@ -27,6 +27,11 @@ export class RecipeSearch extends LitElement {
       width: 100%;
     }
 
+    .error {
+      text-align: center;
+      color: var(--text-color);
+    }
+
     .title {
       color: white;
       margin: 0;
