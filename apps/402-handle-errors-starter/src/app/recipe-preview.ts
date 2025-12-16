@@ -6,6 +6,8 @@ import { Recipe } from './recipe';
 
 /**
  * @property {Recipe} recipe - The recipe to display
+ *
+ * @slot actions - The actions to display (displayed in all modes)
  */
 @customElement('wm-recipe-preview')
 export class RecipePreview extends LitElement {
