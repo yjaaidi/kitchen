@@ -1,0 +1,23 @@
+name: Setup
+
+description: Setup Node.js, cache and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - uses: nrwl/nx-set-shas@v3
+      with:
+        main-branch-name: main
+
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 10
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 24
+        cache: pnpm
+
+    - run: pnpm install
+      shell: sh

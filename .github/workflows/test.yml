@@ -1,0 +1,112 @@
+name: Test
+on:
+  push:
+
+jobs:
+  build:
+    name: 📦 Build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - run: pnpm nx affected -t build
+
+  lint:
+    name: 🧹 Lint
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - run: pnpm nx affected -t lint
+
+  sanity-check:
+    name: 🧹 Sanity Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - run: pnpm nx run tools:sanity-check
+
+  jest:
+    name: 🎪 Jest
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - run: pnpm nx affected -t jest --pass-with-no-tests
+
+  test:
+    name: ⚡️ Vitest
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - run: pnpm nx affected -t test --pass-with-no-tests
+
+  testronaut:
+    name: 🧑‍🚀 Testronaut
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Playwright browsers install
+        run: pnpm playwright install --with-deps
+      - run: pnpm nx affected -t testronaut --parallel=1 --pass-with-no-tests
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 🎭 Playwright Report
+          path: dist/.playwright
+          include-hidden-files: true
+          retention-days: 7
+
+  deploy-gh-pages:
+    name: 🚀 Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    needs:
+      - build
+      - jest
+      - lint
+      - sanity-check
+      - test
+      - testronaut
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build docs
+        run: pnpm nx build docs
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
