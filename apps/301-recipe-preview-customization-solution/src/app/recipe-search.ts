@@ -120,7 +120,7 @@ export class RecipeSearch extends LitElement {
     changedProperties: PropertyValues<{ _criteria?: RecipeFilterCriteria }>
   ): void {
     if (changedProperties.has('_criteria')) {
-      this._updatedFilteredRecipes();
+      this._updateFilteredRecipes();
     }
 
     super.willUpdate(changedProperties);
@@ -136,7 +136,7 @@ export class RecipeSearch extends LitElement {
     this._recipePreviewMode = event.value;
   }
 
-  private _updatedFilteredRecipes() {
+  private _updateFilteredRecipes() {
     const { keywords, maxIngredients, maxSteps } = this._criteria ?? {};
     let filteredRecipes = this._recipes;
 
