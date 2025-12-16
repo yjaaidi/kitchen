@@ -48,22 +48,18 @@ export class Selector<T extends string> extends LitElement {
   value?: T;
 
   protected override render() {
-    /* Disable lint rule as performance impact is negligible
-     * compare to the effort of preparing a callback list.
-     * e.g. attaching/removing callbacks is barely 10x slower than `toUpperCase()`. */
-
-    /* eslint-disable lit/no-template-arrow */
-    return this.options.map(
-      (option) => html`
-        <button
-          @click=${() => this.dispatchEvent(new SelectorChange(option))}
-          ?disabled=${this.value === option}
-        >
+    return this.options.map((option) => {
+      /* Using a variable to avoid eslint warning about arrow function.
+       * The performance impact is neglectable compared
+       * to the effort of preparing a callback list.
+       * e.g. attaching/removing callbacks is barely 10x slower than `toUpperCase()`. */
+      const handleClick = () => this.dispatchEvent(new SelectorChange(option));
+      return html`
+        <button @click=${handleClick} ?disabled=${this.value === option}>
           ${option.toUpperCase()}
         </button>
-      `
-    );
-    /* eslint-enable lit/no-template-arrow */
+      `;
+    });
   }
 }
 
