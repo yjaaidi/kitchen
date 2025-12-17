@@ -4,12 +4,6 @@ sidebar_label: 303. Slots
 
 # Slots
 
-## Prerequisites
-
-🚨 Did you set up `pnpm`? Are you on the right branch?
-
-👉 [Initial Setup](./000-setup.md)
-
 ## Setup
 
 ```sh
