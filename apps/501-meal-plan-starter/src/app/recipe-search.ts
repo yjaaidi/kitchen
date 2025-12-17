@@ -2,6 +2,7 @@ import { Task } from '@lit/task';
 import { css, html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './color-scheme-toggle';
+import './meal-plan';
 import './recipe-filter';
 import { RecipeFilterCriteriaChange } from './recipe-filter';
 import { RecipeFilterCriteria } from './recipe-filter-criteria';
@@ -27,10 +28,28 @@ export class RecipeSearch extends LitElement {
       width: 100%;
     }
 
-    .loading,
-    .error {
-      text-align: center;
-      color: var(--text-color);
+    .toolbar-actions {
+      position: absolute;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .meal-plan-button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .meal-plan-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
     }
 
     .title {
@@ -38,9 +57,10 @@ export class RecipeSearch extends LitElement {
       margin: 0;
     }
 
-    .color-scheme-toggle {
-      position: absolute;
-      right: 1rem;
+    .loading,
+    .error {
+      text-align: center;
+      color: var(--text-color);
     }
 
     .recipe-list {
@@ -60,6 +80,9 @@ export class RecipeSearch extends LitElement {
   @state()
   private _recipePreviewMode: RecipePreviewMode = 'detailed';
 
+  @state()
+  private _mealPlanOpen = false;
+
   private _task = new Task(this, {
     args: () => [this._criteria],
     task: ([criteria], { signal }) =>
@@ -69,10 +92,20 @@ export class RecipeSearch extends LitElement {
   protected override render() {
     return html`<header class="toolbar">
         <h1 class="title">Recipe Search</h1>
-        <wm-color-scheme-toggle
-          class="color-scheme-toggle"
-        ></wm-color-scheme-toggle>
+        <div class="toolbar-actions">
+          <button class="meal-plan-button" @click=${this._handleOpenMealPlan}>
+            🍽️
+          </button>
+          <wm-color-scheme-toggle
+            class="color-scheme-toggle"
+          ></wm-color-scheme-toggle>
+        </div>
       </header>
+
+      <wm-meal-plan
+        .open=${this._mealPlanOpen}
+        @close=${this._handleCloseMealPlan}
+      ></wm-meal-plan>
 
       <wm-recipe-filter
         .criteria=${this._criteria}
@@ -130,5 +163,13 @@ export class RecipeSearch extends LitElement {
 
   private async _fetchRecipes() {
     await this._task.run();
+  }
+
+  private _handleOpenMealPlan() {
+    this._mealPlanOpen = true;
+  }
+
+  private _handleCloseMealPlan() {
+    this._mealPlanOpen = false;
   }
 }
