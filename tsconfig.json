@@ -74,6 +74,9 @@
     },
     {
       "path": "./apps/404-task-starter"
+    },
+    {
+      "path": "./apps/501-meal-plan-starter"
     }
   ]
 }
