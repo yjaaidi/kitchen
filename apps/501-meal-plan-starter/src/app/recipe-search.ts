@@ -2,6 +2,7 @@ import { Task } from '@lit/task';
 import { css, html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './color-scheme-toggle';
+import './drawer';
 import './meal-plan';
 import './recipe-filter';
 import { RecipeFilterCriteriaChange } from './recipe-filter';
@@ -102,10 +103,13 @@ export class RecipeSearch extends LitElement {
         </div>
       </header>
 
-      <wm-meal-plan
+      <wm-drawer
         .open=${this._mealPlanOpen}
+        label="🍽️ Meal Plan"
         @close=${this._handleCloseMealPlan}
-      ></wm-meal-plan>
+      >
+        <wm-meal-plan></wm-meal-plan>
+      </wm-drawer>
 
       <wm-recipe-filter
         .criteria=${this._criteria}
