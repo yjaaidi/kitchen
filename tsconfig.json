@@ -80,6 +80,12 @@
     },
     {
       "path": "./apps/501-meal-plan-solution"
+    },
+    {
+      "path": "./apps/502-signals-solution"
+    },
+    {
+      "path": "./apps/502-signals-starter"
     }
   ]
 }

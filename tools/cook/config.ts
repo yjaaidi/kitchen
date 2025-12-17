@@ -53,6 +53,10 @@ const exercises: Exercise[] = [
     id: '501-meal-plan',
     name: '501. Meal Plan',
   },
+  {
+    id: '502-signals',
+    name: '502. Signals',
+  },
 ];
 
 export const config: Config = {
