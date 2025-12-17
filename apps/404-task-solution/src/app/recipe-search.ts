@@ -27,12 +27,6 @@ export class RecipeSearch extends LitElement {
       width: 100%;
     }
 
-    .loading,
-    .error {
-      text-align: center;
-      color: var(--text-color);
-    }
-
     .title {
       color: white;
       margin: 0;
@@ -41,6 +35,12 @@ export class RecipeSearch extends LitElement {
     .color-scheme-toggle {
       position: absolute;
       right: 1rem;
+    }
+
+    .loading,
+    .error {
+      text-align: center;
+      color: var(--text-color);
     }
 
     .recipe-list {
