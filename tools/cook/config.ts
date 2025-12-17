@@ -49,6 +49,10 @@ const exercises: Exercise[] = [
     id: '404-task',
     name: '404. Task',
   },
+  {
+    id: '501-meal-plan',
+    name: '501. Meal Plan',
+  },
 ];
 
 export const config: Config = {
