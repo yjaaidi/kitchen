@@ -40,6 +40,7 @@
     "jsdom": "~22.1.0",
     "lit-analyzer": "2.0.3",
     "nx": "22.2.0",
+    "playwright": "1.57.0",
     "prettier": "^2.6.2",
     "swc-loader": "0.1.15",
     "tslib": "^2.3.0",
