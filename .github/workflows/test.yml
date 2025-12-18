@@ -45,6 +45,7 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
+      - run: pnpm playwright install chromium --only-shell
       - run: pnpm nx affected -t test --pass-with-no-tests
 
   deploy-gh-pages:
