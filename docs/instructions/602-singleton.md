@@ -1,8 +1,8 @@
 ---
-sidebar_label: 602. Testable Singleton
+sidebar_label: 602. Singleton
 ---
 
-# Testable Singleton
+# Singleton
 
 ## Setup
 
