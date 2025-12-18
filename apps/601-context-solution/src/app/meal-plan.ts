@@ -1,9 +1,11 @@
+import { consume } from '@lit/context';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { mealPlanner } from './meal-planner';
-import { RxSubscribeController } from './rx-subscribe.controller';
 import { when } from 'lit/directives/when.js';
+import { MEAL_PLANNER_CONTEXT, MealPlanner } from './meal-planner';
 import './recipe-preview';
+import { RxSubscribeController } from './rx-subscribe.controller';
+import { assertNonNullable } from './util';
 
 @customElement('wm-meal-plan')
 export class MealPlan extends LitElement {
@@ -29,10 +31,13 @@ export class MealPlan extends LitElement {
     }
   `;
 
-  private _mealPlanner = mealPlanner;
+  @consume({ context: MEAL_PLANNER_CONTEXT })
+  private _mealPlanner?: MealPlanner;
+
   private _recipes = new RxSubscribeController(
     this,
-    this._mealPlanner.recipes$
+    () =>
+      assertNonNullable(this._mealPlanner, 'MealPlanner not provided').recipes$
   );
 
   protected override render() {

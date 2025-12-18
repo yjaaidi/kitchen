@@ -1,3 +1,4 @@
+import { createContext } from '@lit/context';
 import { BehaviorSubject } from 'rxjs';
 import { Recipe } from './recipe';
 
@@ -11,4 +12,6 @@ export class MealPlanner {
   }
 }
 
-export const mealPlanner = new MealPlanner();
+export const MEAL_PLANNER_CONTEXT = createContext<MealPlanner>(
+  Symbol('meal-planner')
+);
