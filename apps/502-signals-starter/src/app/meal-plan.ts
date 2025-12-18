@@ -32,7 +32,7 @@ export class MealPlan extends LitElement {
   private _mealPlanner = mealPlanner;
   private _recipes = new RxSubscribeController(
     this,
-    this._mealPlanner.recipes$
+    () => this._mealPlanner.recipes$
   );
 
   protected override render() {
