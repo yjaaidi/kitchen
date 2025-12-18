@@ -61,6 +61,10 @@ const exercises: Exercise[] = [
     id: '601-context',
     name: '601. Context',
   },
+  {
+    id: '602-singleton',
+    name: '602. Singleton',
+  },
 ];
 
 export const config: Config = {

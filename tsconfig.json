@@ -92,6 +92,12 @@
     },
     {
       "path": "./apps/601-context-solution"
+    },
+    {
+      "path": "./apps/602-singleton-solution"
+    },
+    {
+      "path": "./apps/602-singleton-starter"
     }
   ]
 }
