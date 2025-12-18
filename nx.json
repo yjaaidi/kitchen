@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -16,6 +13,10 @@
     "sharedGlobals": []
   },
   "plugins": [
+    {
+      "plugin": "./tools/implicit-modules.ts",
+      "options": {}
+    },
     {
       "plugin": "@nx/js/typescript",
       "options": {
@@ -61,9 +62,7 @@
   ],
   "targetDefaults": {
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   },
   "generators": {
