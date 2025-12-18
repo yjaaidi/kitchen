@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   root: import.meta.dirname,
@@ -13,4 +14,9 @@ export default defineConfig({
       formats: ['es'],
     },
   },
+  plugins: [
+    dts({
+      tsconfigPath: 'tsconfig.lib.json',
+    }),
+  ],
 });
