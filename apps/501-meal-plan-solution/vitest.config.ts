@@ -16,7 +16,9 @@ export default defineConfig({
     },
     browser: {
       enabled: true,
-      provider: playwright(),
+      provider: playwright({
+        actionTimeout: 1_000,
+      }),
       instances: [
         {
           browser: 'chromium',
