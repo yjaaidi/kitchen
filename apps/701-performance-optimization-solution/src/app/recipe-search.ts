@@ -189,37 +189,41 @@ export class RecipeSearch extends LitElement {
         ></wm-selector>
       </div>
 
-      ${when(this._showOptions === '🐵', () =>
-        this._task.render({
-          pending: () => html`<div class="loading">Loading...</div>`,
-          complete: (recipes) => {
-            if (this._sortDirection === '⬆️') {
-              recipes = [...recipes].reverse();
-            }
+      ${cache(
+        when(this._showOptions === '🐵', () =>
+          this._task.render({
+            pending: () => html`<div class="loading">Loading...</div>`,
+            complete: (recipes) => {
+              if (this._sortDirection === '⬆️') {
+                recipes = [...recipes].reverse();
+              }
 
-            return html`<ul class="recipe-list">
-              ${recipes.map(
-                (recipe) => html`<wm-recipe-preview
-                  .mode=${this._recipePreviewMode}
-                  .recipe=${recipe}
-                >
-                  <button
-                    slot="actions"
-                    data-recipe-id=${recipe.id}
-                    @click=${this._handleAddToMealPlanner}
+              return html`<ul class="recipe-list">
+                ${repeat(
+                  recipes,
+                  (recipe) => recipe.id,
+                  (recipe) => html`<wm-recipe-preview
+                    .mode=${this._recipePreviewMode}
+                    .recipe=${recipe}
                   >
-                    ADD
-                  </button>
-                </wm-recipe-preview>`
-              )}
-            </ul>`;
-          },
-          error: () => html`<div class="error" role="alert">
-            <img src="https://marmicode.io/assets/error.gif" alt="Error" />
-            <p>Oups, something went wrong.</p>
-            <button @click=${this._fetchRecipes}>RETRY</button>
-          </div>`,
-        })
+                    <button
+                      slot="actions"
+                      data-recipe-id=${recipe.id}
+                      @click=${this._handleAddToMealPlanner}
+                    >
+                      ADD
+                    </button>
+                  </wm-recipe-preview>`
+                )}
+              </ul>`;
+            },
+            error: () => html`<div class="error" role="alert">
+              <img src="https://marmicode.io/assets/error.gif" alt="Error" />
+              <p>Oups, something went wrong.</p>
+              <button @click=${this._fetchRecipes}>RETRY</button>
+            </div>`,
+          })
+        )
       )} `;
   }
 
