@@ -10,9 +10,9 @@ export class RecipeRepositoryFake implements Public<RecipeRepository> {
     this._recipes = recipes;
   }
 
-  async searchRecipes(criteria: RecipeFilterCriteria): Promise<Recipe[]> {
+  async searchRecipes(criteria: RecipeFilterCriteria = {}): Promise<Recipe[]> {
     for (const property of ['maxIngredients', 'maxSteps'] as const) {
-      if (criteria[property] != null) {
+      if (criteria?.[property] != null) {
         throw new Error(`RecipeRepositoryFake: '${property}' is not supported`);
       }
     }
