@@ -106,15 +106,11 @@ export class RecipeSearch extends LitElement {
   private _mealPlanner = mealPlannerSingleton.get();
 
   private _task = new Task(this, {
-    args: () => [this._criteria, this._recipeSearchMode, this._sortDirection],
-    task: async ([criteria, recipeSearchMode, sortDirection], { signal }) => {
+    args: () => [this._criteria, this._recipeSearchMode],
+    task: async ([criteria, recipeSearchMode], { signal }) => {
       const recipes = await recipeRepository.searchRecipes(criteria, {
         signal,
       });
-
-      if (sortDirection === '⬆️') {
-        recipes.reverse();
-      }
 
       if (recipeSearchMode === '1x') {
         return recipes;
@@ -128,6 +124,10 @@ export class RecipeSearch extends LitElement {
   });
 
   protected override render() {
+    const measureName = 'render RecipeSearch';
+    console.time(measureName);
+    this.updateComplete.then(() => console.timeEnd(measureName));
+
     return html`<header class="toolbar">
         <h1 class="title">Recipe Search</h1>
         <div class="toolbar-actions">
@@ -176,10 +176,14 @@ export class RecipeSearch extends LitElement {
 
       ${this._task.render({
         pending: () => html`<div class="loading">Loading...</div>`,
-        complete: (recipes) => html`<ul class="recipe-list">
-          ${recipes.map(
-            (recipe) =>
-              html`<wm-recipe-preview
+        complete: (recipes) => {
+          if (this._sortDirection === '⬆️') {
+            recipes = [...recipes].reverse();
+          }
+
+          return html`<ul class="recipe-list">
+            ${recipes.map(
+              (recipe) => html`<wm-recipe-preview
                 .mode=${this._recipePreviewMode}
                 .recipe=${recipe}
               >
@@ -191,8 +195,9 @@ export class RecipeSearch extends LitElement {
                   ADD
                 </button>
               </wm-recipe-preview>`
-          )}
-        </ul>`,
+            )}
+          </ul>`;
+        },
         error: () => html`<div class="error" role="alert">
           <img src="https://marmicode.io/assets/error.gif" alt="Error" />
           <p>Oups, something went wrong.</p>

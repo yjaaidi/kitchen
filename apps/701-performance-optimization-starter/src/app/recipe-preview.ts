@@ -89,6 +89,10 @@ export class RecipePreview extends LitElement {
       return;
     }
 
+    /* Simulate expensive render (~2ms). */
+    const start = performance.now();
+    while (performance.now() - start < 2);
+
     const ingredientsTpl = html`<ul class="ingredients">
       ${this.recipe.ingredients.map(
         (ingredient) => html`<li>
