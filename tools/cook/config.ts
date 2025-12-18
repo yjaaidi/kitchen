@@ -65,6 +65,10 @@ const exercises: Exercise[] = [
     id: '602-singleton',
     name: '602. Singleton',
   },
+  {
+    id: '701-performance-optimization',
+    name: '701. Performance Optimization',
+  },
 ];
 
 export const config: Config = {

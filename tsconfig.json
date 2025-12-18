@@ -98,6 +98,12 @@
     },
     {
       "path": "./apps/602-singleton-starter"
+    },
+    {
+      "path": "./apps/701-performance-optimization-solution"
+    },
+    {
+      "path": "./apps/701-performance-optimization-starter"
     }
   ]
 }
