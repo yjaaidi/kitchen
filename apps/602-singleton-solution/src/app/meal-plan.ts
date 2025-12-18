@@ -1,8 +1,7 @@
-import { consume } from '@lit/context';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { MEAL_PLANNER_CONTEXT, MealPlanner } from './meal-planner';
+import { mealPlannerSingleton } from './meal-planner';
 import './recipe-preview';
 import { RxSubscribeController } from './rx-subscribe.controller';
 import { assertNonNullable } from './util';
@@ -31,8 +30,7 @@ export class MealPlan extends LitElement {
     }
   `;
 
-  @consume({ context: MEAL_PLANNER_CONTEXT })
-  private _mealPlanner?: MealPlanner;
+  private _mealPlanner = mealPlannerSingleton.get();
 
   private _recipes = new RxSubscribeController(
     this,

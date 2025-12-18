@@ -1,6 +1,6 @@
-import { createContext } from '@lit/context';
 import { BehaviorSubject } from 'rxjs';
 import { Recipe } from './recipe';
+import { createSingleton } from './singleton';
 
 export class MealPlanner {
   private _recipes$ = new BehaviorSubject<Recipe[]>([]);
@@ -12,6 +12,4 @@ export class MealPlanner {
   }
 }
 
-export const MEAL_PLANNER_CONTEXT = createContext<MealPlanner>(
-  Symbol('meal-planner')
-);
+export const mealPlannerSingleton = createSingleton(() => new MealPlanner());

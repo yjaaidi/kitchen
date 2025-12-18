@@ -4,6 +4,7 @@ import { customElement, state } from 'lit/decorators.js';
 import './color-scheme-toggle';
 import './drawer';
 import './meal-plan';
+import { mealPlannerSingleton } from './meal-planner';
 import './recipe-filter';
 import { RecipeFilterCriteriaChange } from './recipe-filter';
 import { RecipeFilterCriteria } from './recipe-filter-criteria';
@@ -12,8 +13,6 @@ import { RECIPE_PREVIEW_MODES, RecipePreviewMode } from './recipe-preview';
 import { recipeRepository } from './recipe-repository';
 import './selector';
 import { SelectorChange } from './selector';
-import { MEAL_PLANNER_CONTEXT, MealPlanner } from './meal-planner';
-import { ContextProvider } from '@lit/context';
 
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
@@ -86,10 +85,7 @@ export class RecipeSearch extends LitElement {
   @state()
   private _mealPlanOpen = false;
 
-  private _mealPlanner = new ContextProvider(this, {
-    context: MEAL_PLANNER_CONTEXT,
-    initialValue: new MealPlanner(),
-  }).value;
+  private _mealPlanner = mealPlannerSingleton.get();
 
   private _task = new Task(this, {
     args: () => [this._criteria],
