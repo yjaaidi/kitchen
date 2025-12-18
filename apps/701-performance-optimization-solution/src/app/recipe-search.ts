@@ -14,6 +14,12 @@ import { recipeRepository } from './recipe-repository';
 import './selector';
 import { SelectorChange } from './selector';
 
+const RECIPE_SEARCH_MODES = ['1x', '200x'];
+type RecipeSearchMode = (typeof RECIPE_SEARCH_MODES)[number];
+
+const SORT_DIRECTIONS = ['⬇️', '⬆️'];
+type SortDirection = (typeof SORT_DIRECTIONS)[number];
+
 @customElement('wm-recipe-search')
 export class RecipeSearch extends LitElement {
   static override styles = css`
@@ -70,6 +76,12 @@ export class RecipeSearch extends LitElement {
       margin: 0;
     }
 
+    .selectors-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
     wm-recipe-preview::part(name) {
       color: light-dark(var(--secondary-color), white);
       font-family: Cursive;
@@ -83,14 +95,36 @@ export class RecipeSearch extends LitElement {
   private _recipePreviewMode: RecipePreviewMode = 'detailed';
 
   @state()
+  private _recipeSearchMode: RecipeSearchMode = '1x';
+
+  @state()
   private _mealPlanOpen = false;
+
+  @state()
+  private _sortDirection: SortDirection = '⬇️';
 
   private _mealPlanner = mealPlannerSingleton.get();
 
   private _task = new Task(this, {
-    args: () => [this._criteria],
-    task: ([criteria], { signal }) =>
-      recipeRepository.searchRecipes(criteria, { signal }),
+    args: () => [this._criteria, this._recipeSearchMode, this._sortDirection],
+    task: async ([criteria, recipeSearchMode, sortDirection], { signal }) => {
+      const recipes = await recipeRepository.searchRecipes(criteria, {
+        signal,
+      });
+
+      if (sortDirection === '⬆️') {
+        recipes.reverse();
+      }
+
+      if (recipeSearchMode === '1x') {
+        return recipes;
+      } else {
+        /* Multiply the recipes by 200. */
+        return Array.from({ length: 200 }).flatMap((_, i) =>
+          recipes.map((r) => ({ ...r, id: `${r.id}-${i}` }))
+        );
+      }
+    },
   });
 
   protected override render() {
@@ -120,11 +154,25 @@ export class RecipeSearch extends LitElement {
         @criteria-submit=${this._fetchRecipes}
       ></wm-recipe-filter>
 
-      <wm-selector
-        .options=${RECIPE_PREVIEW_MODES}
-        .value=${this._recipePreviewMode}
-        @value-change=${this._handleRecipePreviewModeChange}
-      ></wm-selector>
+      <div class="selectors-container">
+        <wm-selector
+          .options=${RECIPE_PREVIEW_MODES}
+          .value=${this._recipePreviewMode}
+          @value-change=${this._handleRecipePreviewModeChange}
+        ></wm-selector>
+
+        <wm-selector
+          .options=${RECIPE_SEARCH_MODES}
+          .value=${this._recipeSearchMode}
+          @value-change=${this._handleRecipeSearchModeChange}
+        ></wm-selector>
+
+        <wm-selector
+          .options=${SORT_DIRECTIONS}
+          .value=${this._sortDirection}
+          @value-change=${this._handleSortDirectionChange}
+        ></wm-selector>
+      </div>
 
       ${this._task.render({
         pending: () => html`<div class="loading">Loading...</div>`,
@@ -172,6 +220,16 @@ export class RecipeSearch extends LitElement {
     event: SelectorChange<RecipePreviewMode>
   ) {
     this._recipePreviewMode = event.value;
+  }
+
+  private _handleRecipeSearchModeChange(
+    event: SelectorChange<RecipeSearchMode>
+  ) {
+    this._recipeSearchMode = event.value;
+  }
+
+  private _handleSortDirectionChange(event: SelectorChange<SortDirection>) {
+    this._sortDirection = event.value;
   }
 
   private async _fetchRecipes() {
