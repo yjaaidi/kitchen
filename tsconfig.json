@@ -4,7 +4,7 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/801-testing-solution"
+      "path": "./apps/demo"
     },
     {
       "path": "./tools"

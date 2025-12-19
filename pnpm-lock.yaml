@@ -27,6 +27,9 @@ importers:
       '@eslint/js':
         specifier: ^9.8.0
         version: 9.39.1
+      '@lit-workshop/kitchen':
+        specifier: workspace:*
+        version: link:packages/kitchen
       '@nx/devkit':
         specifier: 22.2.0
         version: 22.2.0(nx@22.2.0(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
@@ -167,14 +170,7 @@ importers:
         specifier: ~5.6.2
         version: 5.6.3
 
-  packages/kitchen:
-    devDependencies:
-      '@vitest/browser-playwright':
-        specifier: '*'
-        version: 4.0.16(playwright@1.57.0)(vite@7.2.7(@types/node@20.19.9)(jiti@2.4.2)(terser@5.44.1)(yaml@2.8.2))(vitest@4.0.16)
-      vitest:
-        specifier: '*'
-        version: 4.0.16(@types/node@20.19.9)(@vitest/browser-playwright@4.0.16)(@vitest/ui@4.0.16)(jiti@2.4.2)(jsdom@22.1.0)(terser@5.44.1)(yaml@2.8.2)
+  packages/kitchen: {}
 
   tools: {}
 

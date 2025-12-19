@@ -31,5 +31,9 @@
     "eslint.config.mjs"
   ],
   "include": ["src/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../../packages/kitchen/tsconfig.lib.json"
+    }
+  ]
 }
