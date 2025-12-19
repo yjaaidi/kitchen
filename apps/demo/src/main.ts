@@ -1,1 +1,1 @@
-import '@lit-workshop/kitchen/recipe-search';
+import '@whiskmate/kitchen/recipe-search';

@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@lit-workshop/source"],
+    "customConditions": ["@whiskmate/source"],
     "paths": {
       "@kitchen/*": ["./packages/kitchen/src/*"]
     }
