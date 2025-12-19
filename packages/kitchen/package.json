@@ -18,9 +18,5 @@
       "import": "./dist/recipe-search.js",
       "default": "./dist/recipe-search.js"
     }
-  },
-  "peerDependencies": {
-    "@lit/task": "~1.0.3",
-    "lit": "~3.3.1"
   }
 }

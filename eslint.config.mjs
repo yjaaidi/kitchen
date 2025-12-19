@@ -1,5 +1,6 @@
 import nx from '@nx/eslint-plugin';
 import lit from 'eslint-plugin-lit';
+import depConstraints from './nx-dep-constraints.js';
 
 export default [
   ...nx.configs['flat/base'],
@@ -23,18 +24,19 @@ export default [
         {
           enforceBuildableLibDependency: false,
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
-          depConstraints: [
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
-            },
-          ],
+          depConstraints,
         },
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^__' },
       ],
+    },
+  },
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      '@nx/enforce-module-boundaries': 'off',
     },
   },
   {
