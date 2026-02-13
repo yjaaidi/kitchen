@@ -4,7 +4,7 @@ description: Interviews the user and generates a design doc
 
 # Goal
 
-Interview the user section by section to collaboratively produce a design document, then write it to the `design-docs/` folder.
+Interview the user section by section to collaboratively produce a design document, and write it to the `design-docs/` folder as you go.
 Adapt the interview process to the complexity of the feature.
 
 # Output File
@@ -74,6 +74,18 @@ Each test scenario should include:
 
 - a descriptive name
 - step-by-step instructions (arrange, act, assert)
+
+#### Example:
+
+```markdown
+## Cart component
+
+### Displays cart items:
+
+- Arrange fake cart repository to return 3 items: a keyboard, a mouse, and a monitor.
+- mount `Cart` component.
+- Assert that there are 3 items displayed with labels: "Keyboard", "Mouse", and "Monitor".
+```
 
 ### 6. PR Plan
 
