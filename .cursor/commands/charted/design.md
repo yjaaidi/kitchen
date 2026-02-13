@@ -4,7 +4,8 @@ description: Interviews the user and generates a design doc
 
 # Goal
 
-Interview the user section by section to collaboratively produce a design document, and write it to the `design-docs/` folder as you go.
+Interview the user section by section to collaboratively produce a design document, and write its current state to the `design-docs/` folder as you go.
+Update the design doc file after each section.
 Adapt the interview process to the complexity of the feature.
 
 # Output File
