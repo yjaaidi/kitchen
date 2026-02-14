@@ -66,6 +66,8 @@ class Rules {
 
 ### WIP tests example
 
+Note: test names start in lower case (e.g. "search rules ...").
+
 ```ts
 import { describe, it } from 'vitest';
 
