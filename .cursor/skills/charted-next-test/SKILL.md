@@ -1,4 +1,5 @@
 ---
+name: charted-next-test
 description: Writes the next failing test based on provided design doc and existing todo tests
 ---
 
@@ -9,7 +10,7 @@ description: Writes the next failing test based on provided design doc and exist
 
 # Task
 
-Based on the design doc at ${designDocPath}, implement the body of the next todo test in ${testFilePath} without enabling it (i.e. keep "it.todo").
+Based on the design doc at ${designDocPath} (if present), implement the body of the next todo test in ${testFilePath} without enabling it (i.e. keep "it.todo").
 
 - Remove the step-by-step comment instructions from the test body and replace them with actual code.
 - Remember that you love TDD and you want to write tests first.
