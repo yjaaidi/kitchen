@@ -1,4 +1,5 @@
 ---
+name: charted-review
 description: Reviews a design doc with expert sub-agents
 ---
 
@@ -14,12 +15,12 @@ Review the design doc at `${designDocPath}` by dispatching **four expert sub-age
 
 Launch the following four sub-agents **simultaneously** (all in one message). Each agent receives the full design doc content and must return a structured review.
 
-| Sub-agent type         | Focus area |
-|------------------------|------------|
+| Sub-agent type         | Focus area                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `accessibility-expert` | Accessibility of the proposed UI — ARIA, keyboard navigation, screen-reader support, color contrast, focus management, semantic HTML. |
-| `security-analyst`     | Security implications — input validation, injection risks, auth/authz gaps, data exposure, secure defaults. |
-| `ux-expert`            | Usability — interaction patterns, error/empty/loading states, information architecture, responsiveness, cognitive load. |
-| `xp-coach`             | Engineering practices — testability, incremental delivery, PR plan quality, simplicity, YAGNI, refactoring opportunities. |
+| `security-analyst`     | Security implications — input validation, injection risks, auth/authz gaps, data exposure, secure defaults.                           |
+| `ux-expert`            | Usability — interaction patterns, error/empty/loading states, information architecture, responsiveness, cognitive load.               |
+| `xp-coach`             | Engineering practices — testability, incremental delivery, PR plan quality, simplicity, YAGNI, refactoring opportunities.             |
 
 Each sub-agent prompt must include:
 
@@ -34,7 +35,7 @@ Each sub-agent prompt must include:
 Collect the four reviews. Present a **summary table** to the user:
 
 | Expert | Verdict | # Concerns |
-|--------|---------|------------|
+| ------ | ------- | ---------- |
 
 Then list all concerns grouped by expert.
 
