@@ -1,5 +1,6 @@
 ---
-description: Makes tests pass one by one
+name: charted-green
+description: Progressively activates todo tests one at a time, updates implementation code until each passes (verified via Wallaby), then moves to the next—following the design doc as the single source of truth.
 ---
 
 # Context
