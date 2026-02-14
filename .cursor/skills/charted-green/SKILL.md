@@ -19,7 +19,9 @@ Categorize each test in `${testFilePath}` as:
 - Implemented tests: tests that contain actual test code (not just empty or comments)
 - Empty tests: tests that are empty or only contain comments - TOTALLY IGNORE THESE
 
-For each implemented test, convert `it.todo(...)` into `it(...)`, but do it strictly one test at a time, then update the implementation just enough for that specific test to turn green — nothing more.
+For each implemented test, convert `it.todo(...)` into `it(...)`, but do it strictly one test at a time, then update the implementation just enough for that specific test to turn green — NOTHING MORE.
+
+DO NOT IMPLEMENT ANYTHING THAT IS NOT DIRECTLY RELATED TO THE CURRENT TEST.
 
 STOP when these tests are green.
 
