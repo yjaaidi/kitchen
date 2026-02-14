@@ -13,7 +13,7 @@ Review the design doc at `${designDocPath}` by dispatching **four expert sub-age
 
 # Step 1 — Parallel Expert Reviews
 
-Launch the following four sub-agents **simultaneously** (all in one message). Each agent receives the full design doc content and must return a structured review.
+Spawn the following four sub-agents **simultaneously** (all in one message). Each agent receives the full design doc content and must return a structured review.
 
 | Sub-agent type         | Focus area                                                                                                                            |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
