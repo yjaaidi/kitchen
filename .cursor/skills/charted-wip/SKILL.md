@@ -13,10 +13,13 @@ description: Writes wip code and tests based on design doc
 Based on the following design doc ${designDocPath}, write WIP code for implementation described in the design doc.
 
 - Focus only on the PR #${prNumber} if provided.
-- WIP classes, functions, and components are work-in-progress code that just throw "🚧 work in progress" errors but do not implement Angular component template or methods.
-- They are Wiprecated, meaning that they have the following tag in their jsdoc "@deprecated 🚧 work in progress".
+- If you add a new class, function, or method, make it throw a "🚧 work in progress" error and add the "@deprecated 🚧 work in progress" tag to its jsdoc.
+- If you add a new component, make it throw a "🚧 work in progress" error and add the "@deprecated 🚧 work in progress" tag to its jsdoc but do not implement the template or methods.
 - Do not implement anything additional.
-- Do not break anything existing.
+- **DO NOT CHANGE ANY EXISTING BEHAVIOR**.
+  - If you change a function or a method signature in a retro-compatible way, do not throw a "🚧 work in progress" error.
+  - If the function or method receives a new optional parameter, make it throw a "🚧 work in progress" error if the parameter is set.
+  - Even if the goal of the PR is to change the behavior of an existing function or method, do not throw a "🚧 work in progress" error. **KEEP THE EXISTING BEHAVIOR**.
 - For WIP tests, put the test's steps from the design doc as-is in a comment inside the body of the "it.todo" test.
 
 # Examples
