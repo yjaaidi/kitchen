@@ -77,7 +77,10 @@
       }
     },
     "test": {
-      "command": "vitest"
+      "command": "vitest --project !wide"
+    },
+    "test-wide": {
+      "command": "vitest --project wide"
     },
     "serve-static": {
       "continuous": true,

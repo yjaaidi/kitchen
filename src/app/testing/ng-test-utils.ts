@@ -1,4 +1,10 @@
-import { Provider, ProviderToken, Type } from '@angular/core';
+import {
+  inputBinding,
+  outputBinding,
+  Provider,
+  ProviderToken,
+  Type,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 export const t = {
@@ -11,49 +17,36 @@ function configure({ providers }: { providers?: Provider[] }) {
   TestBed.configureTestingModule({ providers });
 }
 
+interface MountOptions {
+  inputs?: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  outputs?: Record<string, (...args: any[]) => void>;
+
+  /**
+   * Wait for the component to be stable before returning.
+   * This is typically used when assertion retryability is not enough.
+   * For example, when asserting that an element is not present or visibile.
+   */
+  waitStable?: boolean;
+}
+
 async function mount<T extends object>(
   component: Type<T>,
-  {
-    inputs,
-    outputs,
-  }: {
-    inputs?: Record<string, unknown>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    outputs?: Record<string, (...args: any[]) => void>;
-  } = {}
+  { inputs, outputs, waitStable = false }: MountOptions = {},
 ) {
-  const fixture = TestBed.createComponent(component);
+  const fixture = TestBed.createComponent(component, {
+    bindings: [
+      ...Object.entries(inputs ?? {}).map(([key, value]) =>
+        inputBinding(key, () => value),
+      ),
+      ...Object.entries(outputs ?? {}).map(([key, callback]) =>
+        outputBinding(key, callback),
+      ),
+    ],
+  });
 
-  if (inputs) {
-    await setInputs(inputs);
-  }
-
-  if (outputs) {
-    await setOutputs(outputs);
-  }
-
-  await fixture.whenStable();
-
-  return {
-    setInputs,
-  };
-
-  async function setInputs(inputs: Record<string, unknown>) {
-    for (const [key, value] of Object.entries(inputs)) {
-      fixture.componentRef.setInput(key, value);
-    }
+  if (waitStable) {
     await fixture.whenStable();
-  }
-
-  async function setOutputs(outputs: Record<string, (...args: any[]) => void>) {
-    for (const [output, fn] of Object.entries(outputs)) {
-      const cmp = fixture.componentInstance;
-      if (!(output in cmp)) {
-        throw new Error(`Output ${output} is not a valid output`);
-      }
-      const sub = (cmp as any)[output].subscribe(fn);
-      fixture.componentRef.onDestroy(() => sub.unsubscribe());
-    }
   }
 }
 

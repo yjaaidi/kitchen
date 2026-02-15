@@ -1,7 +1,6 @@
 ---
-description:
-globs:
-alwaysApply: true
+name: angular
+description: Angular best practices and examples
 ---
 
 - use Angular MCP for best practices and examples
