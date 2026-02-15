@@ -46,6 +46,7 @@ export default defineConfig({
       },
     ],
     coverage: {
+      include: ['src/**/*.ts'],
       reportsDirectory: './coverage/whiskmate',
       provider: 'v8' as const,
     },
