@@ -15,24 +15,11 @@ export class RecipeNotFoundError extends Error {
 }
 
 class RecipeRepository {
-  private _recipes: Recipe[] = [
-    {
-      id: 'rec-burger',
-      createdAt: new Date(),
-      name: 'Burger',
-      type: 'plat',
-      pictureUri:
-        'https://www.ninkasi.fr/wp-content/uploads/2022/06/header_burger.jpg',
-    },
-    {
-      id: 'rec-salad',
-      createdAt: new Date(),
-      name: 'Salad',
-      type: 'entree',
-      pictureUri:
-        'https://www.ninkasi.fr/wp-content/uploads/2022/10/lyonnaise.png',
-    },
-  ];
+  private _recipes: Recipe[] = [];
+
+  constructor() {
+    this.reset();
+  }
 
   addRecipe(args: {
     name: string;
@@ -56,12 +43,46 @@ class RecipeRepository {
     return recipe;
   }
 
-  searchRecipes(keywords?: string): Recipe[] {
-    return keywords != null
-      ? this._recipes.filter(
-          (recipe) => recipe.name?.toLowerCase().includes(keywords)
-        )
-      : this._recipes;
+  searchRecipes({
+    keywords,
+    offset = 0,
+    limit = 10,
+  }: {
+    keywords?: string;
+    offset?: number;
+    limit?: number;
+  } = {}): { items: Recipe[]; total: number } {
+    const recipes =
+      keywords != null
+        ? this._recipes.filter((recipe) =>
+            recipe.name?.toLowerCase().includes(keywords),
+          )
+        : this._recipes;
+    return {
+      items: recipes.slice(offset, offset + limit),
+      total: recipes.length,
+    };
+  }
+
+  reset() {
+    this._recipes = [
+      {
+        id: 'rec-burger',
+        createdAt: new Date(),
+        name: 'Burger',
+        type: 'plat',
+        pictureUri:
+          'https://www.ninkasi.fr/wp-content/uploads/2022/06/header_burger.jpg',
+      },
+      {
+        id: 'rec-salad',
+        createdAt: new Date(),
+        name: 'Salad',
+        type: 'entree',
+        pictureUri:
+          'https://www.ninkasi.fr/wp-content/uploads/2022/10/lyonnaise.png',
+      },
+    ];
   }
 }
 

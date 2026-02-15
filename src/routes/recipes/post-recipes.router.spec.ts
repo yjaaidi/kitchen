@@ -39,10 +39,10 @@ describe('POST /recipes', () => {
       type: 'plat',
     } as PostRecipesRequestDto);
 
-    expect(recipeRepository.searchRecipes()).toContainEqual(
+    expect(recipeRepository.searchRecipes().items).toContainEqual(
       expect.objectContaining({
         name: 'Pizza',
-      })
+      }),
     );
   });
 

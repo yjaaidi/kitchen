@@ -13,6 +13,7 @@ import { GetRecipes200ResponseItemsInnerDto } from './get-recipes200-response-it
 
 
 export interface GetRecipes200ResponseDto { 
-    items?: Array<GetRecipes200ResponseItemsInnerDto>;
+    total: number;
+    items: Array<GetRecipes200ResponseItemsInnerDto>;
 }
 

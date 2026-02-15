@@ -6,7 +6,7 @@ import { getRecipesRouter } from './get-recipes.router';
 import { recipeRepository } from '../../infra/recipe.repository';
 
 describe('GET /recipes', () => {
-  it('should filter recipes by keyword', async () => {
+  it('filters recipes by keyword', async () => {
     const { client } = setUp();
 
     recipeRepository.addRecipe({
@@ -25,6 +25,7 @@ describe('GET /recipes', () => {
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({
+      total: 1,
       items: [
         expect.objectContaining({
           name: 'Pizza',
@@ -33,13 +34,42 @@ describe('GET /recipes', () => {
     });
   });
 
-  function setUp() {
-    const app = createApp({
-      spec: openapiSpecPath,
-      handlers: getRecipesRouter,
+  it('paginates recipes with offset', async () => {
+    const { client } = setUp();
+
+    const response = await client.get('/recipes').query({ offset: 1 });
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      total: 2,
+      items: [
+        expect.objectContaining({
+          name: 'Salad',
+        }),
+      ],
     });
-    return {
-      client: supertest(app),
-    };
-  }
+  });
+
+  it('limit recipes count to limit', async () => {
+    const { client } = setUp();
+
+    const response = await client.get('/recipes').query({ limit: 1 });
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      total: 2,
+      items: [expect.objectContaining({ name: 'Burger' })],
+    });
+  });
 });
+
+function setUp() {
+  recipeRepository.reset();
+  const app = createApp({
+    spec: openapiSpecPath,
+    handlers: getRecipesRouter,
+  });
+  return {
+    client: supertest(app),
+  };
+}

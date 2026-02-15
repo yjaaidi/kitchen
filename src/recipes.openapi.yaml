@@ -79,7 +79,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - total
+                  - items
                 properties:
+                  total:
+                    type: number
                   items:
                     type: array
                     items:
@@ -105,6 +110,14 @@ paths:
           in: query
           name: q
           description: Keywords
+        - schema:
+            type: number
+          in: query
+          name: offset
+        - schema:
+            type: number
+          in: query
+          name: limit
       tags:
         - Recipe
   '/recipes/{recipe_id}':
