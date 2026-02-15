@@ -28,33 +28,80 @@ describe(RecipeSearch.name, () => {
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
-  it.todo('displays first page of recipes', () => {
-    // arrange: fake repository with 7 recipes (limit=5)
-    // mount RecipeSearch component
-    // assert 5 recipes displayed
+  it('displays first page of recipes', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Soup').build(),
+      recipeMother.withBasicInfo('Steak').build(),
+      recipeMother.withBasicInfo('Fish').build(),
+      recipeMother.withBasicInfo('Chicken').build(),
+    ]);
+
+    const { recipeHeadings } = await mount();
+
+    await expect.element(recipeHeadings).toHaveLength(5);
   });
 
-  it.todo('navigates to next page', () => {
-    // arrange: fake repository with 7 recipes
-    // mount component, click "Next"
-    // assert next 2 recipes displayed
+  it('navigates to next page', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Soup').build(),
+      recipeMother.withBasicInfo('Steak').build(),
+      recipeMother.withBasicInfo('Fish').build(),
+      recipeMother.withBasicInfo('Chicken').build(),
+    ]);
+
+    const { recipeHeadings, nextButton } = await mount();
+
+    await nextButton.click();
+
+    await expect.element(recipeHeadings).toHaveLength(2);
+    await expect.element(recipeHeadings.nth(0)).toHaveTextContent('Fish');
+    await expect.element(recipeHeadings.nth(1)).toHaveTextContent('Chicken');
   });
 
-  it.todo('navigates back to previous page', () => {
-    // arrange: fake repository with 7 recipes
-    // navigate to page 2, then click "Previous"
-    // assert first 5 recipes displayed again
+  it('resets to first page on filter change', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Soup').build(),
+      recipeMother.withBasicInfo('Steak').build(),
+      recipeMother.withBasicInfo('Fish').build(),
+      recipeMother.withBasicInfo('Chicken').build(),
+    ]);
+
+    const { recipeHeadings, keywordsInput, nextButton } = await mount();
+
+    await nextButton.click();
+    await keywordsInput.fill('Fish');
+
+    await expect.element(recipeHeadings).toHaveLength(1);
+    await expect.element(recipeHeadings.nth(0)).toHaveTextContent('Fish');
   });
 
-  it.todo('resets to first page on filter change', () => {
-    // arrange: fake repository with 7 recipes
-    // navigate to page 2, then change keyword filter
-    // assert offset resets to 0 and first page of filtered results shown
-  });
+  it('shows spinner while loading', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
-  it.todo('shows spinner while loading', () => {
-    // mount RecipeSearch component
-    // assert spinner is visible while recipes are loading
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+    ]);
+    recipeRepoFake.pause();
+
+    const { spinner } = await mount();
+
+    await expect.element(spinner).toBeVisible();
   });
 });
 
@@ -76,11 +123,14 @@ async function setUpRecipeSearch() {
 
   return {
     recipeRepoFake: t.inject(RecipeRepositoryFake),
-    mount: () => {
-      t.mount(RecipeSearch);
+    mount: async () => {
+      await t.mount(RecipeSearch);
       return {
         keywordsInput: page.getByRole('textbox'),
+        nextButton: page.getByRole('button', { name: 'Next' }),
+        previousButton: page.getByRole('button', { name: 'Previous' }),
         recipeHeadings: page.getByRole('heading', { level: 2 }),
+        spinner: page.getByRole('progressbar'),
       };
     },
   };
