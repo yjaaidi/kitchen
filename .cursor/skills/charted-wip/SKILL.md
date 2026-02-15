@@ -14,9 +14,10 @@ Based on the following design doc ${designDocPath}, write WIP code for implement
 
 - Focus only on the PR #${prNumber} if provided.
 - If you add a new class, function, or method, make it throw a "🚧 work in progress" error and add the "@deprecated 🚧 work in progress" tag to its jsdoc.
-- If you add a new component, make it throw a "🚧 work in progress" error and add the "@deprecated 🚧 work in progress" tag to its jsdoc but do not implement the template or methods.
-- Do not implement anything additional.
-- **DO NOT CHANGE ANY EXISTING BEHAVIOR**.
+- If you add a new component, add the "@deprecated 🚧 work in progress" tag to its jsdoc but do not implement the template or methods.
+- **DO NOT ADD ANY NEW BEHAVIOR**.
+  - As an example, do not add child components in a component.
+- **DO NOT CHANGE ANY EXISTING BEHAVIOR**:
   - If you change a function or a method signature in a retro-compatible way, do not throw a "🚧 work in progress" error.
   - If the function or method receives a new optional parameter, make it throw a "🚧 work in progress" error if the parameter is set.
   - Even if the goal of the PR is to change the behavior of an existing function or method, do not throw a "🚧 work in progress" error. **KEEP THE EXISTING BEHAVIOR**.
