@@ -8,6 +8,7 @@ import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
   providedIn: 'root',
 })
 export class RecipeRepositoryFake implements RecipeRepositoryDef {
+  private _pauseGate = new PauseGate();
   private _recipes: Recipe[] = [];
 
   search({
@@ -15,7 +16,8 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
     maxIngredientCount,
     maxStepCount,
   }: RecipeFilter = {}): Observable<Recipe[]> {
-    return defer(() => {
+    return defer(async () => {
+      await this._pauseGate.whenResumed;
       const recipes = this._recipes.filter((recipe) => {
         const conditions = [
           /* Filter by keywords. */
@@ -33,12 +35,35 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
         /* Return true if all conditions are true. */
         return conditions.every((condition) => condition());
       });
-      return of(recipes);
+      return recipes;
     });
   }
 
   setRecipes(recipes: Recipe[]) {
     this._recipes = recipes;
+  }
+
+  pause() {
+    this._pauseGate.pause();
+  }
+}
+
+class PauseGate {
+  private _whenResumed = Promise.resolve();
+  private _resolveWhenResumed?: () => void;
+
+  get whenResumed() {
+    return this._whenResumed;
+  }
+
+  pause() {
+    this._whenResumed = new Promise(
+      (resolve) => (this._resolveWhenResumed = resolve),
+    );
+  }
+
+  resume() {
+    this._resolveWhenResumed?.();
   }
 }
 
