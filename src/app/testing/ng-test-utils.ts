@@ -1,4 +1,5 @@
 import {
+  EnvironmentProviders,
   inputBinding,
   outputBinding,
   Provider,
@@ -13,7 +14,11 @@ export const t = {
   mount,
 };
 
-function configure({ providers }: { providers?: Provider[] }) {
+function configure({
+  providers,
+}: {
+  providers?: Array<EnvironmentProviders | Provider>;
+}) {
   TestBed.configureTestingModule({ providers });
 }
 
