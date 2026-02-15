@@ -5,8 +5,15 @@ import { RecipeFilter } from './recipe-filter';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+export type RecipeSearchArgs = RecipeFilter & { offset: number; limit: number };
+
+export interface RecipePage {
+  recipes: Recipe[];
+  total: number;
+}
+
 export interface RecipeRepositoryDef {
-  search(filter: RecipeFilter): Observable<Recipe[]>;
+  search(args: RecipeSearchArgs): Observable<RecipePage>;
 }
 
 @Injectable({
@@ -15,9 +22,10 @@ export interface RecipeRepositoryDef {
 export class RecipeRepository implements RecipeRepositoryDef {
   private _httpClient = inject(HttpClient);
 
-  search({ keywords, maxIngredientCount }: RecipeFilter = {}): Observable<
-    Recipe[]
-  > {
+  search({
+    keywords,
+    maxIngredientCount,
+  }: RecipeSearchArgs): Observable<RecipePage> {
     const params: ResponseListQueryParams = {
       embed: 'ingredients',
       ...(keywords ? { q: keywords } : {}),
@@ -28,8 +36,8 @@ export class RecipeRepository implements RecipeRepositoryDef {
         params,
       })
       .pipe(
-        map((response) =>
-          response.items
+        map((response) => {
+          const recipes = response.items
             .map((item) =>
               createRecipe({
                 id: item.id,
@@ -38,15 +46,17 @@ export class RecipeRepository implements RecipeRepositoryDef {
                 pictureUri: item.picture_uri,
                 ingredients: item.ingredients ?? [],
                 steps: [],
-              })
+              }),
             )
-            /* Filter max ingredients locally meanwhile it is implemented server-side. */
-            .filter((recipe) =>
+            /* Filter max ingredients locally until it is implemented in the server. */
+            .filter((r) =>
               maxIngredientCount != null
-                ? recipe.ingredients.length <= maxIngredientCount
-                : true
-            )
-        )
+                ? r.ingredients.length <= maxIngredientCount
+                : true,
+            );
+          const total = response.total ?? response.items.length;
+          return { recipes, total };
+        }),
       );
   }
 }
@@ -58,6 +68,7 @@ type ResponseListQueryParams = {
 
 interface RecipeListResponseDto {
   items: RecipeDto[];
+  total?: number;
 }
 
 interface RecipeDto {

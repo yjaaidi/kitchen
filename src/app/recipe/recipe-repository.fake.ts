@@ -1,5 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
-import { RecipeFilter } from './recipe-filter';
+import { RecipeSearchArgs, RecipePage } from './recipe-repository';
 import { defer, Observable, of } from 'rxjs';
 import { Recipe } from './recipe';
 import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
@@ -15,10 +15,12 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
     keywords,
     maxIngredientCount,
     maxStepCount,
-  }: RecipeFilter = {}): Observable<Recipe[]> {
+    offset,
+    limit,
+  }: RecipeSearchArgs): Observable<RecipePage> {
     return defer(async () => {
       await this._pauseGate.whenResumed;
-      const recipes = this._recipes.filter((recipe) => {
+      const filtered = this._recipes.filter((recipe) => {
         const conditions = [
           /* Filter by keywords. */
           () => (keywords ? recipe.name.includes(keywords) : true),
@@ -35,7 +37,8 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
         /* Return true if all conditions are true. */
         return conditions.every((condition) => condition());
       });
-      return recipes;
+      const recipes = filtered.slice(offset, offset + limit);
+      return { recipes, total: filtered.length };
     });
   }
 
