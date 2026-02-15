@@ -39,7 +39,7 @@ describe(RuleSearch.name, () => {
         ruleMother.withBasicInfo('Some Strict Rule').build(),
     ])l;
 
-    t.mount(RulesSearch);
+    await t.mount(RulesSearch);
 
     return {
       ruleHeadings: page.getByRole('heading'),
@@ -55,11 +55,13 @@ describe(RuleList.name, () => {
   it('search rules without filtering', async () => {
     const ruleSelect = vi.fn<(rule: Rule) => void>();
 
-    t.mount(RuleList, { outputs: { ruleSelect }});
+    await t.mount(RuleList, { outputs: { ruleSelect } });
 
-    await page.getByRole('heading', {name: 'Burger'}).click();
+    await page.getByRole('heading', { name: 'Burger' }).click();
 
-    expect(ruleSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({name: 'Burger'}))
+    expect(ruleSelect).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ name: 'Burger' }),
+    );
   });
 });
 ```
@@ -100,7 +102,7 @@ describe(RuleSearch.name, () => {
     return {
       ruleRepoFake,
       async mount() {
-        t.mount(RuleSearch);
+        await t.mount(RuleSearch);
         return {
           ruleHeadings: page.getByRole('heading'),
         };
