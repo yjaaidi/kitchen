@@ -18,18 +18,4 @@ export class Paginator {
   limit = input.required<number>();
   total = input.required<number>();
   offsetChange = output<number>();
-
-  /**
-   * @deprecated 🚧 work in progress
-   */
-  onPrevious() {
-    throw new Error('🚧 work in progress');
-  }
-
-  /**
-   * @deprecated 🚧 work in progress
-   */
-  onNext() {
-    throw new Error('🚧 work in progress');
-  }
 }
