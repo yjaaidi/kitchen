@@ -36,7 +36,7 @@ jobs:
         run: pnpm install
       - name: Run Playwright tests
         run: pnpm test-wide --reporter=html
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
