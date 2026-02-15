@@ -4,7 +4,7 @@ import { t } from '../testing/ng-test-utils';
 import { Paginator } from './paginator.ng';
 
 describe(Paginator.name, () => {
-  it.todo('disables "Previous" on first page', async () => {
+  it('disables "Previous" on first page', async () => {
     await t.mount(Paginator, {
       inputs: { offset: 0, limit: 5, total: 20 },
     });
@@ -13,7 +13,7 @@ describe(Paginator.name, () => {
     await expect.element(previousButton).toBeDisabled();
   });
 
-  it.todo('disables "Next" on last page', async () => {
+  it('disables "Next" on last page', async () => {
     await t.mount(Paginator, {
       inputs: { offset: 15, limit: 5, total: 20 },
     });
@@ -22,7 +22,7 @@ describe(Paginator.name, () => {
     await expect.element(nextButton).toBeDisabled();
   });
 
-  it.todo('emits new offset on "Next" click', async () => {
+  it('emits new offset on "Next" click', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
 
     await t.mount(Paginator, {
@@ -35,7 +35,7 @@ describe(Paginator.name, () => {
     expect(offsetChange).toHaveBeenCalledExactlyOnceWith(5);
   });
 
-  it.todo('emits new offset on "Previous" click', async () => {
+  it('emits new offset on "Previous" click', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
 
     await t.mount(Paginator, {
@@ -48,7 +48,7 @@ describe(Paginator.name, () => {
     expect(offsetChange).toHaveBeenCalledExactlyOnceWith(5);
   });
 
-  it.todo('hides pagination when results fit in one page', async () => {
+  it('hides pagination when results fit in one page', async () => {
     await t.mount(Paginator, {
       inputs: { offset: 0, limit: 5, total: 3 },
       waitStable: true,
