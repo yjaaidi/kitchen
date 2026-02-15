@@ -27,6 +27,35 @@ describe(RecipeSearch.name, () => {
     /* This also checks that there is **only one** recipe heading. */
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
+
+  it.todo('displays first page of recipes', () => {
+    // arrange: fake repository with 7 recipes (limit=5)
+    // mount RecipeSearch component
+    // assert 5 recipes displayed
+  });
+
+  it.todo('navigates to next page', () => {
+    // arrange: fake repository with 7 recipes
+    // mount component, click "Next"
+    // assert next 2 recipes displayed
+  });
+
+  it.todo('navigates back to previous page', () => {
+    // arrange: fake repository with 7 recipes
+    // navigate to page 2, then click "Previous"
+    // assert first 5 recipes displayed again
+  });
+
+  it.todo('resets to first page on filter change', () => {
+    // arrange: fake repository with 7 recipes
+    // navigate to page 2, then change keyword filter
+    // assert offset resets to 0 and first page of filtered results shown
+  });
+
+  it.todo('shows spinner while loading', () => {
+    // mount RecipeSearch component
+    // assert spinner is visible while recipes are loading
+  });
 });
 
 async function mountRecipeSearch() {

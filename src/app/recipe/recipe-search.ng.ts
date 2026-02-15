@@ -21,16 +21,17 @@ const PAGE_SIZE = 5;
   template: `
     <wm-recipe-filter-form (filterChange)="filter.set($event)" />
     <wm-catalog>
-      @for (recipe of (recipes.value()?.recipes ?? []); track recipe.id) {
-      <wm-recipe-preview [recipe]="recipe">
-        <wm-recipe-add-button [recipe]="recipe" />
-      </wm-recipe-preview>
+      @for (recipe of recipes.value()?.recipes ?? []; track recipe.id) {
+        <wm-recipe-preview [recipe]="recipe">
+          <wm-recipe-add-button [recipe]="recipe" />
+        </wm-recipe-preview>
       }
     </wm-catalog>
   `,
 })
 export class RecipeSearch {
   filter = signal<RecipeFilter>({});
+  offset = signal(0);
   recipes = rxResource({
     params: this.filter,
     stream: ({ params }) =>
