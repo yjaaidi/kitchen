@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           cache: pnpm
-          node-version: '18.3.0'
+          node-version: 25
       - name: Install dependencies
         run: pnpm install
       - name: Run Vitest
@@ -26,12 +26,12 @@ jobs:
     steps:
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           cache: pnpm
-          node-version: '18.3.0'
+          node-version: 25
       - name: Install dependencies
         run: pnpm install
       - name: Run Playwright tests
