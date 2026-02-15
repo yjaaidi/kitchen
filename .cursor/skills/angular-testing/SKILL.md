@@ -1,18 +1,19 @@
 ---
-description: 
-globs: *.ts
-alwaysApply: false
+name: angular-testing
+description: Angular testing guidelines and examples
 ---
+
 - never use `vi.mock()` or mocks, spies, stubs in general, prefer fakes.
 - never use `beforeEach` / `afterEach`, prefer setup functions.
-- use our `ng-test-utils` instead of testing library or TestBed to configure/mount/inject.
-- use `{componentName}.spec.ts` name convention for component tests (e.g. `my-button.spec.ts`). Do not use `.ng.spec.ts`
+- use our `ng-test-utils` instead of TestBed to configure/mount/inject.
+- use `{componentName}.browser.spec.ts` name convention for component tests (e.g. `my-button.browser.spec.ts`). Do not use `.ng.spec.ts`
+- use `page` API from `vitest/browser` to interact with the DOM. See https://vitest.dev/api/browser/locators.html for more information on locators and assertions.
 
 ## Angular component test example
 
 ```ts
 import { describe, it } from 'vitest';
-import { screen } from '@testing-library/angular';
+import { page } from 'vitest/browser';
 import { Rules } from './rules.ng';
 import {
   provideRulesRepositoryFake,
@@ -23,9 +24,11 @@ import { t } from '../testing/ng-test-utils';
 
 describe(RuleSearch.name, () => {
   it('search rules without filtering', async () => {
-    const { getRules } = await renderComponent();
+    const { ruleHeadings } = await renderComponent();
 
-    expect(getRules()).toEqual(['Rule A', 'Rule B']);
+    await expect.element(ruleHeadings).toHaveLength(2);
+    await expect.element(ruleHeadings.nth(0)).toHaveTextContent('Rule A');
+    await expect.element(ruleHeadings.nth(1)).toHaveTextContent('Rule B');
   });
 
   async function renderComponent() {
@@ -36,12 +39,10 @@ describe(RuleSearch.name, () => {
         ruleMother.withBasicInfo('Some Strict Rule').build(),
     ])l;
 
-    await t.mount(RulesSearch);
+    t.mount(RulesSearch);
 
     return {
-      getRules() {
-        return screen.queryAllByRole('heading').map((el) => el.textContent);
-      },
+      ruleHeadings: page.getByRole('heading'),
     };
   }
 });
@@ -54,9 +55,9 @@ describe(RuleList.name, () => {
   it('search rules without filtering', async () => {
     const ruleSelect = vi.fn<(rule: Rule) => void>();
 
-    await t.mount(RuleList, { outputs: { ruleSelect }});
+    t.mount(RuleList, { outputs: { ruleSelect }});
 
-    await userEvent.click(screen.getByRole('heading', {name: 'Burger'}));
+    await page.getByRole('heading', {name: 'Burger'}).click();
 
     expect(ruleSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({name: 'Burger'}))
   });
@@ -67,7 +68,7 @@ describe(RuleList.name, () => {
 
 ```ts
 import { describe, it } from 'vitest';
-import { screen } from '@testing-library/angular';
+import { page } from 'vitest/browser';
 import { Rules } from './rules.ng';
 import {
   provideRulesRepositoryFake,
@@ -78,13 +79,13 @@ import { t } from '../testing/ng-test-utils';
 
 describe(RuleSearch.name, () => {
   it('search rules without filtering', async () => {
-    const { mount, ruleRepoFake, getRules } = await setUp();
+    const { mount, ruleRepoFake, ruleHeadings } = await setUp();
 
     ruleRepoFake.setRules([]);
 
     await mount();
 
-    expect(getRules()).toEqual([]);
+    await expect.element(ruleHeadings).toHaveLength(0);
   });
 
   async function setUp() {
@@ -96,20 +97,15 @@ describe(RuleSearch.name, () => {
       ruleMother.withBasicInfo('Some Strict Rule').build(),
     ])l;
 
-    await t.mount(RulesSearch);
-
     return {
       ruleRepoFake,
       async mount() {
         t.mount(RuleSearch);
-      },
-      getRules() {
-        return screen.queryAllByRole('heading').map((el) => el.textContent);
+        return {
+          ruleHeadings: page.getByRole('heading'),
+        };
       },
     };
   }
 });
 ```
-
-
-
