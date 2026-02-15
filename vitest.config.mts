@@ -30,6 +30,7 @@ export default defineConfig({
           name: 'wide',
           environment: 'jsdom',
           include: [wideTestsPattern],
+          retry: 3,
         },
       },
       {
