@@ -1,9 +1,10 @@
-FROM node:22-alpine3.20
+FROM node:25-alpine
 ENV NODE_ENV=production
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+
+RUN npm install -g pnpm
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app
