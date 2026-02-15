@@ -1,20 +1,34 @@
+import { firstValueFrom } from 'rxjs';
 import { describe, it } from 'vitest';
+import { t } from '../testing/ng-test-utils';
 import { RecipeRepository } from './recipe-repository';
 
 describe(RecipeRepository.name, () => {
-  it.todo('returns paginated results', () => {
-    // Call search({ offset: 0, limit: 2 }).
-    // Assert response has recipes (array of length <= 2) and total is a number >= 0.
+  it('returns paginated results', async () => {
+    const repo = t.inject(RecipeRepository);
+    const page = await firstValueFrom(repo.search({ offset: 0, limit: 2 }));
+    expect(page.recipes.length).toBeLessThanOrEqual(2);
+    expect(typeof page.total).toBe('number');
+    expect(page.total).toBeGreaterThanOrEqual(0);
   });
 
-  it.todo('second page returns different recipes', () => {
-    // Call search({ offset: 0, limit: 2 }) then search({ offset: 2, limit: 2 }).
-    // Assert the two pages return different recipe IDs.
+  it('second page returns different recipes', async () => {
+    const repo = t.inject(RecipeRepository);
+    const page1 = await firstValueFrom(repo.search({ offset: 0, limit: 2 }));
+    const page2 = await firstValueFrom(repo.search({ offset: 2, limit: 2 }));
+    const ids1 = new Set(page1.recipes.map((r) => r.id));
+    const ids2 = new Set(page2.recipes.map((r) => r.id));
+    expect(ids1).not.toEqual(ids2);
   });
 
-  it.todo('offset beyond total returns empty', () => {
-    // Call search({ offset: 0, limit: 1 }) to get total.
-    // Call search({ offset: total, limit: 1 }).
-    // Assert recipes is empty.
+  it('offset beyond total returns empty', async () => {
+    const repo = t.inject(RecipeRepository);
+    const { total } = await firstValueFrom(
+      repo.search({ offset: 0, limit: 1 }),
+    );
+    const beyondPage = await firstValueFrom(
+      repo.search({ offset: total, limit: 1 }),
+    );
+    expect(beyondPage.recipes).toHaveLength(0);
   });
 });

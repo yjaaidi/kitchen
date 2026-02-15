@@ -25,9 +25,13 @@ export class RecipeRepository implements RecipeRepositoryDef {
   search({
     keywords,
     maxIngredientCount,
+    offset,
+    limit,
   }: RecipeSearchArgs): Observable<RecipePage> {
     const params: ResponseListQueryParams = {
       embed: 'ingredients',
+      offset,
+      limit,
       ...(keywords ? { q: keywords } : {}),
     };
 
@@ -63,12 +67,14 @@ export class RecipeRepository implements RecipeRepositoryDef {
 
 type ResponseListQueryParams = {
   embed: 'ingredients' | 'steps' | 'ingredients,steps';
+  offset: number;
+  limit: number;
   q?: string;
 };
 
 interface RecipeListResponseDto {
   items: RecipeDto[];
-  total?: number;
+  total: number;
 }
 
 interface RecipeDto {
