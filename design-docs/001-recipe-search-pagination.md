@@ -72,12 +72,6 @@ type RecipeSearchArgs = RecipeFilter & { offset: number; limit: number };
 - Mount `Paginator` component.
 - Assert "Next" button is disabled.
 
-### Enables both buttons on a middle page:
-
-- Arrange: offset=5, limit=5, total=20.
-- Mount `Paginator` component.
-- Assert both "Previous" and "Next" buttons are enabled.
-
 ### Emits new offset on "Next" click:
 
 - Arrange: offset=0, limit=5, total=20.
