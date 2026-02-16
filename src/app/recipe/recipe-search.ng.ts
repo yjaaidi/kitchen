@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -53,11 +54,13 @@ export class RecipeSearch {
   protected readonly pageSize = PAGE_SIZE;
 
   filter = signal<RecipeFilter>({});
-  offset = signal(0);
+  offset = linkedSignal(() => {
+    this.filter();
+    return 0;
+  });
 
   protected onFilterChange(filter: RecipeFilter) {
     this.filter.set(filter);
-    this.offset.set(0);
   }
 
   recipes = rxResource({
