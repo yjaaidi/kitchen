@@ -11,7 +11,12 @@ description: Reviews a design doc with expert sub-agents
 
 Review the design doc at `${designDocPath}` by dispatching **four expert sub-agents in parallel**, then synthesize their feedback into a single, actionable review.
 
-# Step 1 — Parallel Expert Reviews
+# Step 1 - Set up agents
+
+If the sub-agents from [Step 2](#step-2--parallel-expert-reviews) are not already configured, ask me to install them.
+If I confirm, copy sub-agents from the [./assets/agents](./assets/agents) folder to the [{workspaceRoot}/.cursor/agents]({workspaceRoot}/.cursor/agents) folder if using Cursor. Adapt the paths if I am not using Cursor.
+
+# Step 2 — Parallel Expert Reviews
 
 Spawn the following four sub-agents **simultaneously** (all in one message). Each agent receives the full design doc content and must return a structured review.
 
@@ -30,7 +35,7 @@ Each sub-agent prompt must include:
    - **Concerns** — numbered list. Each concern has a short title, an explanation, and a concrete suggestion.
    - **Verdict** — one of: `approve`, `request-changes`, or `needs-discussion`.
 
-# Step 2 — Synthesize & Detect Conflicts
+# Step 3 — Synthesize & Detect Conflicts
 
 Collect the four reviews. Present a **summary table** to the user:
 
@@ -41,7 +46,7 @@ Then list all concerns grouped by expert.
 
 After listing, identify **conflicts** — cases where two or more experts give **contradictory guidance** (e.g., one says "add a confirmation dialog" and another says "reduce interaction steps", or one says "split into more PRs" and another says "too many PRs already").
 
-# Step 3 — Challenge Round (if conflicts exist)
+# Step 4 — Challenge Round (if conflicts exist)
 
 For **each conflict**:
 
@@ -55,7 +60,7 @@ For **each conflict**:
 
 After the challenge round, check if the experts now agree.
 
-# Step 4 — Resolution
+# Step 5 — Resolution
 
 - **If all conflicts are resolved**: present the final consolidated review with the agreed-upon changes.
 - **If any conflict remains unresolved**: present the remaining disagreement(s) to the user in a clear format:
@@ -70,7 +75,7 @@ After the challenge round, check if the experts now agree.
 
 Wait for the user's decision on each unresolved conflict before producing the final consolidated review.
 
-# Step 5 — Final Output
+# Step 6 — Final Output
 
 Produce a **consolidated review** with:
 
