@@ -1,7 +1,7 @@
 import NxWelcome from './nx-welcome';
 
 export function App() {
-  return <NxWelcome title="@react-demo/react-demo" />;
+  return <NxWelcome title="@marmicode/react-demo" />;
 }
 
 export default App;

@@ -11,8 +11,7 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getAllByText } = render(<App />);
     expect(
-      getAllByText(new RegExp('Welcome @react-demo/react-demo', 'i')).length >
-        0,
+      getAllByText(new RegExp('Welcome @marmicode/react-demo', 'i')).length > 0,
     ).toBeTruthy();
   });
 });
