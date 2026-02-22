@@ -1,12 +1,12 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
+import { createTestQueryClientWrapper } from '../testing';
 import { RecipeSearch } from './recipe-search';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
-    await render(<RecipeSearch />, { wrapper: WithQueryClient });
+    await setUp();
 
     await expect
       .element(page.getByRole('heading').nth(0))
@@ -18,9 +18,8 @@ describe(RecipeSearch.name, () => {
   });
 });
 
-function WithQueryClient({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+async function setUp() {
+  return await render(<RecipeSearch />, {
+    wrapper: createTestQueryClientWrapper(),
+  });
 }
