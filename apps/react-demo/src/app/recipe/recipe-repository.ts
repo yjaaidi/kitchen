@@ -1,10 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import type { Recipe } from './recipe';
 import type { RecipeFilterCriteria } from './recipe-filter-criteria';
 
 class RecipeRepository {
   async searchRecipes(
     { keywords, maxIngredientCount }: RecipeFilterCriteria = {},
-    signal?: AbortSignal,
+    { signal }: { signal?: AbortSignal } = {},
   ): Promise<Recipe[]> {
     const params = new URLSearchParams({ embed: 'ingredients' });
     if (keywords) {
@@ -35,6 +36,14 @@ class RecipeRepository {
 }
 
 export const recipeRepository = new RecipeRepository();
+
+export function useSearchRecipes(filter: RecipeFilterCriteria = {}) {
+  return useQuery({
+    queryKey: ['recipes', filter],
+    queryFn: ({ signal }) =>
+      recipeRepository.searchRecipes(filter, { signal }),
+  });
+}
 
 interface RecipeListResponseDto {
   items: RecipeDto[];
