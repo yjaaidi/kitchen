@@ -16,3 +16,7 @@ export interface Quantity {
   amount: number;
   unit: string;
 }
+
+export function createRecipe(recipe: Recipe): Recipe {
+  return recipe;
+}
