@@ -3,8 +3,7 @@ import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig({
   test: {
-    globals: true,
-    environment: 'jsdom',
+    watch: false,
     include: ['src/**/*.spec.ts', 'src/**/*.spec.tsx'],
     browser: {
       enabled: true,
