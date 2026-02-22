@@ -1,6 +1,6 @@
-import { describe, expect, it, onTestFinished } from 'vitest';
-import { render } from 'vitest-browser-react';
-import { page } from 'vitest/browser';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, onTestFinished, vi } from 'vitest';
 import { singletonTestingUtils } from '../shared/singleton';
 import { createTestQueryClientWrapper } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
@@ -11,29 +11,35 @@ import { mealPlanner } from '../meal-planner/meal-planner';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
-    const { headings } = await setUp();
+    const { findHeadings } = await setUp();
 
-    await expect.element(headings).toHaveLength(2);
-    await expect.element(headings.nth(0)).toHaveTextContent('Burger');
-    await expect.element(headings.nth(1)).toHaveTextContent('Salad');
+    const headings = await findHeadings();
+    expect(headings).toHaveLength(2);
+    expect(headings[0]).toHaveTextContent('Burger');
+    expect(headings[1]).toHaveTextContent('Salad');
   });
 
   it('filter recipes', async () => {
-    const { headings, keywordsInput: keywords } = await setUp();
+    const { findHeadings, typeKeywords } = await setUp();
 
-    await keywords.fill('Salad');
+    await typeKeywords('Salad');
 
-    await expect.element(headings).toHaveTextContent('Salad');
+    const headings = await findHeadings();
+    expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent('Salad');
   });
 
   it('adds "burger" to meal planner when clicking on "ADD" button', async () => {
-    const { recipePreviews } = await setUp();
+    const { findRecipePreviews } = await setUp();
 
-    await recipePreviews
-      .filter({ hasText: 'Burger' })
-      .getByRole('button', { name: 'ADD' })
-      .click();
-
+    const recipePreviews = await findRecipePreviews();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const burgerEl = recipePreviews.find((e) =>
+      within(e).queryByText('Burger'),
+    )!;
+    await userEvent.click(
+      within(burgerEl).getByRole('button', { name: 'ADD' }),
+    );
     expect(mealPlanner.recipes.value).toMatchObject([{ name: 'Burger' }]);
   });
 });
@@ -50,7 +56,7 @@ async function setUp() {
     return fake;
   });
 
-  await render(<RecipeSearch />, {
+  render(<RecipeSearch />, {
     wrapper: createTestQueryClientWrapper(),
   });
 
@@ -59,8 +65,9 @@ async function setUp() {
   });
 
   return {
-    keywordsInput: page.getByLabelText('Keywords'),
-    recipePreviews: page.getByRole('article'),
-    headings: page.getByRole('heading'),
+    findHeadings: () => screen.findAllByRole('heading'),
+    findRecipePreviews: () => screen.findAllByRole('article'),
+    typeKeywords: async (keywords: string) =>
+      userEvent.type(await screen.findByLabelText('Keywords'), keywords),
   };
 }
