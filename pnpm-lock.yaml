@@ -85,10 +85,10 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(playwright@1.58.2)(vite@7.3.1(@types/node@20.19.9)(jiti@2.4.2)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)
       '@vitest/coverage-v8':
-        specifier: ^4.0.0
+        specifier: 4.0.18
         version: 4.0.18(@vitest/browser@4.0.18(vite@7.3.1(@types/node@20.19.9)(jiti@2.4.2)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
       '@vitest/ui':
-        specifier: ^4.0.0
+        specifier: 4.0.18
         version: 4.0.18(vitest@4.0.18)
       eslint:
         specifier: ^9.8.0
@@ -133,7 +133,7 @@ importers:
         specifier: ^7.0.0
         version: 7.3.1(@types/node@20.19.9)(jiti@2.4.2)(terser@5.46.0)(yaml@2.8.2)
       vitest:
-        specifier: ^4.0.0
+        specifier: 4.0.18
         version: 4.0.18(@types/node@20.19.9)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.4.2)(jsdom@22.1.0)(terser@5.46.0)(yaml@2.8.2)
       vitest-browser-react:
         specifier: 2.0.5
