@@ -5,7 +5,7 @@ import type { Recipe } from './recipe';
 import { RecipeFilter } from './recipe-filter';
 import type { RecipeFilterCriteria } from './recipe-filter-criteria';
 import { RecipePreview } from './recipe-preview';
-import { searchRecipes } from './recipe-repository';
+import { recipeRepository } from './recipe-repository';
 
 export function RecipeSearch() {
   const [filter, setFilter] = useState<RecipeFilterCriteria>({});
@@ -14,7 +14,8 @@ export function RecipeSearch() {
   useEffect(() => {
     const abortController = new AbortController();
 
-    searchRecipes(filter, abortController.signal)
+    recipeRepository
+      .searchRecipes(filter, abortController.signal)
       .then(setRecipes)
       .catch((err) => {
         if (err.name !== 'AbortError') console.error(err);
