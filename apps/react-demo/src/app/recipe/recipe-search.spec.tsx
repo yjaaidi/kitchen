@@ -7,6 +7,7 @@ import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
+import { mealPlanner } from '../meal-planner/meal-planner';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
@@ -23,6 +24,17 @@ describe(RecipeSearch.name, () => {
     await keywords.fill('Salad');
 
     await expect.element(headings).toHaveTextContent('Salad');
+  });
+
+  it('adds "burger" to meal planner when clicking on "ADD" button', async () => {
+    const { recipePreviews } = await setUp();
+
+    await recipePreviews
+      .filter({ hasText: 'Burger' })
+      .getByRole('button', { name: 'ADD' })
+      .click();
+
+    expect(mealPlanner.recipes.value).toMatchObject([{ name: 'Burger' }]);
   });
 });
 
@@ -48,6 +60,7 @@ async function setUp() {
 
   return {
     keywordsInput: page.getByLabelText('Keywords'),
+    recipePreviews: page.getByRole('article'),
     headings: page.getByRole('heading'),
   };
 }
