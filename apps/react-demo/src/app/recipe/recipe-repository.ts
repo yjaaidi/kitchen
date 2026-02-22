@@ -40,8 +40,7 @@ export const recipeRepository = new RecipeRepository();
 export function useSearchRecipes(filter: RecipeFilterCriteria = {}) {
   return useQuery({
     queryKey: ['recipes', filter],
-    queryFn: ({ signal }) =>
-      recipeRepository.searchRecipes(filter, { signal }),
+    queryFn: ({ signal }) => recipeRepository.searchRecipes(filter, { signal }),
   });
 }
 
