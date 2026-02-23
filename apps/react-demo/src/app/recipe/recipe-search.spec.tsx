@@ -1,13 +1,13 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, onTestFinished, vi } from 'vitest';
+import { describe, expect, it, onTestFinished } from 'vitest';
+import { mealPlanner } from '../meal-planner/meal-planner';
 import { singletonTestingUtils } from '../shared/singleton';
 import { createTestQueryClientWrapper } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
-import { mealPlanner } from '../meal-planner/meal-planner';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
