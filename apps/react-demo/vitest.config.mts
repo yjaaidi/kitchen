@@ -29,7 +29,7 @@ export default defineConfig({
           include: emulatedTests,
           exclude: browserTests,
           environment: 'jsdom',
-          setupFiles: ['src/test-setup.ts'],
+          setupFiles: ['src/test-setup-tlr-cleanup.ts'],
         },
       },
     ],
