@@ -7,8 +7,8 @@ const emulatedTests = ['src/**/*.spec.ts', 'src/**/*.spec.tsx'];
 export default defineConfig({
   ...viteConfig,
   test: {
-    watch: false,
     testTimeout: 1_000,
+    watch: false,
     projects: [
       {
         extends: true,

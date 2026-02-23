@@ -1,3 +1,8 @@
+.card {
+  max-height: 200px;
+  overflow: clip;
+}
+
 .name {
   font-size: 1.2em;
   text-align: center;
