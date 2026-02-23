@@ -8,8 +8,10 @@ export default defineConfig({
   ...viteConfig,
   test: {
     watch: false,
+    testTimeout: 1_000,
     projects: [
       {
+        extends: true,
         test: {
           name: 'browser',
           include: browserTests,
@@ -21,6 +23,7 @@ export default defineConfig({
         },
       },
       {
+        extends: true,
         test: {
           name: 'emulated',
           include: emulatedTests,
