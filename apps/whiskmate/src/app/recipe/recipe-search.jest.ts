@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { userEvent } from '@testing-library/user-event';
 import { screen } from '@testing-library/angular';
+import { userEvent } from '@testing-library/user-event';
 import { MealPlanner } from '../meal-planner/meal-planner';
 import {
   provideRecipeRepositoryFake,
