@@ -1,12 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { createRecipe, Recipe } from '../recipe';
-import {
-  createDefaultRecipeFilterCriteria,
-  RecipeFilterCriteria,
-} from '../recipe-filter-criteria';
-import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { createRecipe, Recipe } from '../recipe';
+import { RecipeFilterCriteria } from '../recipe-filter-criteria';
 
 export interface RecipeRepositoryDef {
   search(filter: Partial<RecipeFilterCriteria>): Observable<Recipe[]>;
