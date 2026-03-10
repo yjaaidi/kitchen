@@ -46,5 +46,6 @@ Thumbs.db
 .angular
 
 vitest.config.*.timestamp*
+__screenshots__
 
 /test-results

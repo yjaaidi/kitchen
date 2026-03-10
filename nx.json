@@ -43,13 +43,12 @@
       "options": {}
     }
   ],
-
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "none",
       "linter": "eslint",
       "style": "css",
-      "unitTestRunner": "vitest"
+      "unitTestRunner": "vitest-analog"
     }
   }
 }

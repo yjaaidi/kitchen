@@ -4,7 +4,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Field, form } from '@angular/forms/signals';
+import { Field, form, FormField } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -15,22 +15,26 @@ import {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-recipe-filter',
-  imports: [Field, MatFormFieldModule, MatInputModule],
+  imports: [FormField, MatFormFieldModule, MatInputModule],
   template: `
     <form (input)="emitFilterChange()">
       <mat-form-field>
         <mat-label>Keywords</mat-label>
-        <input [field]="filterForm.keywords" matInput type="text" />
+        <input [formField]="filterForm.keywords" matInput type="text" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Max Ingredients</mat-label>
-        <input [field]="filterForm.maxIngredientCount" matInput type="number" />
+        <input
+          [formField]="filterForm.maxIngredientCount"
+          matInput
+          type="number"
+        />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Max Steps</mat-label>
-        <input [field]="filterForm.maxStepCount" matInput type="number" />
+        <input [formField]="filterForm.maxStepCount" matInput type="number" />
       </mat-form-field>
     </form>
   `,
