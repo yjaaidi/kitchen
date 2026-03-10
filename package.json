@@ -5,6 +5,7 @@
   "scripts": {
     "reset": "rm -rf node_modules/.vite; nx reset",
     "start": "nx serve",
+    "jest": "nx jest",
     "test": "nx test",
     "testronaut": "nx testronaut"
   },
