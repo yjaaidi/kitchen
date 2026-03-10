@@ -1,7 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { createRecipe, Recipe } from '../recipe';
-import { RecipeFilterCriteria } from '../recipe-filter-criteria';
+import {
+  createDefaultRecipeFilterCriteria,
+  RecipeFilterCriteria,
+} from '../recipe-filter-criteria';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
@@ -15,10 +18,12 @@ export interface RecipeRepositoryDef {
 export class RecipeRepository implements RecipeRepositoryDef {
   private _httpClient = inject(HttpClient);
 
-  search({
-    keywords,
-    maxIngredientCount,
-  }: RecipeFilterCriteria = {}): Observable<Recipe[]> {
+  search(
+    {
+      keywords,
+      maxIngredientCount,
+    }: RecipeFilterCriteria = createDefaultRecipeFilterCriteria(),
+  ): Observable<Recipe[]> {
     const params: ResponseListQueryParams = {
       embed: 'ingredients',
       ...(keywords ? { q: keywords } : {}),

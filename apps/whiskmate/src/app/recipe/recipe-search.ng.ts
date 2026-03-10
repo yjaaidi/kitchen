@@ -6,7 +6,10 @@ import {
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Catalog } from '../shared/catalog.ng';
-import { RecipeFilterCriteria } from './recipe-filter-criteria';
+import {
+  createDefaultRecipeFilterCriteria,
+  RecipeFilterCriteria,
+} from './recipe-filter-criteria';
 import { RecipeFilter } from './recipe-filter.ng';
 import { RecipePreview } from './recipe-preview.ng';
 import { RecipeRepository } from './recipe-repository/recipe-repository';
@@ -46,7 +49,7 @@ import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
   `,
 })
 export class RecipeSearch {
-  filter = signal<RecipeFilterCriteria>({});
+  filter = signal<RecipeFilterCriteria>(createDefaultRecipeFilterCriteria());
   recipes = rxResource({
     params: () => this.filter(),
     stream: ({ params }) => this._recipeRepository.search(params),

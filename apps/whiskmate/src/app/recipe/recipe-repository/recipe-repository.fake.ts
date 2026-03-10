@@ -5,7 +5,10 @@ import {
 } from '@angular/core';
 import { defer, Observable, of } from 'rxjs';
 import { Recipe } from '../recipe';
-import { RecipeFilterCriteria } from '../recipe-filter-criteria';
+import {
+  createDefaultRecipeFilterCriteria,
+  RecipeFilterCriteria,
+} from '../recipe-filter-criteria';
 import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
 
 @Injectable()
@@ -16,11 +19,13 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
     this._recipes = recipes;
   }
 
-  search({
-    keywords,
-    maxIngredientCount,
-    maxStepCount,
-  }: RecipeFilterCriteria = {}): Observable<Recipe[]> {
+  search(
+    {
+      keywords,
+      maxIngredientCount,
+      maxStepCount,
+    }: RecipeFilterCriteria = createDefaultRecipeFilterCriteria(),
+  ): Observable<Recipe[]> {
     return defer(() => {
       const recipes = this._recipes.filter((recipe) => {
         const conditions = [
