@@ -17,8 +17,7 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts",
-    "src/app/meal-planner/meal-repository.fake.spec.ts"
+    "src/**/*.d.ts"
   ],
   "files": ["src/test-setup.ts"]
 }

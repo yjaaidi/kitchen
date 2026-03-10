@@ -7,3 +7,4 @@ onlyBuiltDependencies:
   - lmdb
   - msgpackr-extract
   - nx
+  - unrs-resolver

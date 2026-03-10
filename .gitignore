@@ -45,6 +45,8 @@ Thumbs.db
 
 .angular
 
+.swc
+
 vitest.config.*.timestamp*
 __screenshots__
 

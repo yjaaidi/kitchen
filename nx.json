@@ -39,6 +39,12 @@
   },
   "plugins": [
     {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "jest"
+      }
+    },
+    {
       "plugin": "@nx/vite/plugin",
       "options": {}
     }
