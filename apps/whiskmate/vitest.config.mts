@@ -47,6 +47,7 @@ export default defineConfig((...args) => {
               include: browserTestsPatterns,
               browser: {
                 enabled: true,
+                headless: false,
                 provider: playwright(),
                 instances: [{ browser: 'chromium' }],
               },

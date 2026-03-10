@@ -21,20 +21,21 @@ import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 
     @if (recipes.isLoading()) {
       <img alt="Loading" src="https://marmicode.io/assets/loading.gif" />
-    }
-
-    @if (recipes.hasValue() && recipes.value().length === 0) {
+    } @else if (recipes.error()) {
+      <img alt="Sad Marmicode" src="https://marmicode.io/assets/error.gif" />
+      <p role="alert">Oups! Something went wrong.</p>
+    } @else if (recipes.value()?.length === 0) {
       <img alt="Sad Marmicode" src="https://marmicode.io/assets/error.gif" />
       <p role="alert">No recipes found.</p>
+    } @else {
+      <wm-catalog>
+        @for (recipe of recipes.value(); track recipe.id) {
+          <wm-recipe-preview [recipe]="recipe" data-testid="recipe-preview">
+            <wm-recipe-add-button [recipe]="recipe" />
+          </wm-recipe-preview>
+        }
+      </wm-catalog>
     }
-
-    <wm-catalog>
-      @for (recipe of recipes.value(); track recipe.id) {
-        <wm-recipe-preview [recipe]="recipe" data-testid="recipe-preview">
-          <wm-recipe-add-button [recipe]="recipe" />
-        </wm-recipe-preview>
-      }
-    </wm-catalog>
   `,
   styles: `
     :host {
