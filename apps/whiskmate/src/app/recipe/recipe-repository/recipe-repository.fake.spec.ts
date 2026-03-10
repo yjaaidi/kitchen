@@ -5,7 +5,6 @@ import {
 import { applyRecipeRepositoryContract } from './recipe-repository.contract';
 import { TestBed } from '@angular/core/testing';
 import { recipeMother } from '../recipe.mother';
-import { describe } from 'vitest';
 
 describe(RecipeRepositoryFake.name, () => {
   applyRecipeRepositoryContract(async () => {

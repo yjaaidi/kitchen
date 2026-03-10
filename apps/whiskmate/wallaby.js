@@ -1,5 +1,3 @@
 module.exports = {
-  testFramework: {
-    configFile: './vitest.config.mts',
-  },
+  autoDetect: ['jest'],
 };

@@ -1,4 +1,3 @@
-import { expect, test } from 'vitest';
 import { RecipeRepositoryDef } from './recipe-repository';
 import { lastValueFrom } from 'rxjs';
 
@@ -8,17 +7,15 @@ export function applyRecipeRepositoryContract(
   test('returns recipes', async () => {
     const { repository } = await setUp();
     const recipes = await lastValueFrom(repository.search({}));
-    expect.soft(recipes.length).toBeGreaterThan(1);
-    expect
-      .soft(recipes)
-      .toContainEqual(expect.objectContaining({ name: 'Burger' }));
+    expect(recipes.length).toBeGreaterThan(1);
+    expect(recipes).toContainEqual(expect.objectContaining({ name: 'Burger' }));
   });
 
   test('filters recipes', async () => {
     const { repository } = await setUp();
     const recipes = await lastValueFrom(repository.search({ keywords: 'bur' }));
-    expect.soft(recipes).toHaveLength(1);
-    expect.soft(recipes[0].name).toBe('Burger');
+    expect(recipes).toHaveLength(1);
+    expect(recipes[0].name).toBe('Burger');
   });
 
   test('return empty array if no recipes are found', async () => {
@@ -26,7 +23,7 @@ export function applyRecipeRepositoryContract(
     const recipes = await lastValueFrom(
       repository.search({ keywords: 'BurgerWithNutellaAndHam' }),
     );
-    expect.soft(recipes).toHaveLength(0);
+    expect(recipes).toHaveLength(0);
   });
 }
 
