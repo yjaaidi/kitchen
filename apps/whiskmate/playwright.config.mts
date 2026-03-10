@@ -3,21 +3,19 @@ import {
   devices,
   withTestronautAngular,
 } from '@testronaut/angular';
-import { fileURLToPath } from 'node:url';
 import { nxE2EPreset } from '@nx/playwright/preset';
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = import.meta.filename;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig(
-  nxE2EPreset(__filename),
+  nxE2EPreset(__filename, {}),
   withTestronautAngular({
     configPath: __filename,
     testServer: {
-      command:
-        'pnpm exec nx serve whiskmate --configuration testronaut --port {port}',
+      command: 'nx serve whiskmate --configuration testronaut --port {port}',
     },
   }),
   {
@@ -25,9 +23,6 @@ export default defineConfig(
     use: {
       trace: 'on-first-retry',
     },
-  },
-  {
-    /* Configure projects for major browsers */
     projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   },
 );
