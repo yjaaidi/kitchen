@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 export interface RecipeRepositoryDef {
-  search(filter: RecipeFilterCriteria): Observable<Recipe[]>;
+  search(filter: Partial<RecipeFilterCriteria>): Observable<Recipe[]>;
 }
 
 @Injectable({
@@ -18,12 +18,10 @@ export interface RecipeRepositoryDef {
 export class RecipeRepository implements RecipeRepositoryDef {
   private _httpClient = inject(HttpClient);
 
-  search(
-    {
-      keywords,
-      maxIngredientCount,
-    }: RecipeFilterCriteria = createDefaultRecipeFilterCriteria(),
-  ): Observable<Recipe[]> {
+  search({
+    keywords,
+    maxIngredientCount,
+  }: Partial<RecipeFilterCriteria> = {}): Observable<Recipe[]> {
     const params: ResponseListQueryParams = {
       embed: 'ingredients',
       ...(keywords ? { q: keywords } : {}),
