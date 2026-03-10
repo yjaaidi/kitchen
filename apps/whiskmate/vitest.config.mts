@@ -3,7 +3,7 @@ import { mergeConfig } from 'vite';
 import { defineConfig } from 'vitest/config';
 import viteConfigFn from './vite.config.mjs';
 
-const testsPatterns = ['**/*.spec.ts'];
+const emulatedTestsPatterns = ['**/!(*.browser|*.wide).spec.ts'];
 const browserTestsPatterns = ['**/*.browser.spec.ts'];
 const wideTestsPatterns = ['**/*.wide.spec.ts'];
 export default defineConfig((...args) => {
@@ -28,8 +28,7 @@ export default defineConfig((...args) => {
             test: {
               name: 'emulated',
               environment: 'jsdom',
-              include: testsPatterns,
-              exclude: [...browserTestsPatterns, ...wideTestsPatterns],
+              include: emulatedTestsPatterns,
             },
           },
           {
