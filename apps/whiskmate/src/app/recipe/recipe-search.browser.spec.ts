@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { MealPlanner } from '../meal-planner/meal-planner';
+import { setUpTimeMachine } from '../testing/time-machine';
 import {
   provideRecipeRepositoryFake,
   RecipeRepositoryFake,
@@ -36,6 +37,8 @@ describe(RecipeSearch, () => {
 });
 
 function mountRecipeSearch() {
+  setUpTimeMachine().play();
+
   TestBed.configureTestingModule({
     providers: [provideRecipeRepositoryFake()],
   });

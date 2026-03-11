@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, model } from '@angular/core';
-import { form, FormField, FormRoot } from '@angular/forms/signals';
+import { debounce, form, FormField, FormRoot } from '@angular/forms/signals';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import {
@@ -45,5 +45,7 @@ import {
 export class RecipeFilter {
   filter = model<RecipeFilterCriteria>(createDefaultRecipeFilterCriteria());
 
-  filterForm = form(this.filter);
+  filterForm = form(this.filter, (path) => {
+    debounce(path, 300);
+  });
 }

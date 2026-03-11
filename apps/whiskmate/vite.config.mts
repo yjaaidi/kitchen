@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => ({
     globals: true,
     watch: false,
     testTimeout: 1_500,
+    expect: {
+      poll: {
+        interval: 10,
+      },
+    },
 
     projects: [
       {
