@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { screen } from '@testing-library/angular';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
+import { MealPlanner } from '../meal-planner/meal-planner';
 import {
   provideRecipeRepositoryFake,
   RecipeRepositoryFake,
@@ -30,6 +31,16 @@ describe(RecipeSearch, () => {
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent('Burger');
   });
+
+  it('adds recipes to meal plan', async () => {
+    const { findAddButtons, getMealPlannerRecipes } = mountRecipeSearch();
+
+    const addButtons = await findAddButtons();
+
+    await userEvent.click(addButtons[0]);
+
+    expect(getMealPlannerRecipes()).toMatchObject([{ name: 'Burger' }]);
+  });
 });
 
 function mountRecipeSearch() {
@@ -47,11 +58,11 @@ function mountRecipeSearch() {
   TestBed.createComponent(RecipeSearch);
 
   return {
+    findRecipeHeadings: () => screen.findAllByRole('heading', { level: 2 }),
+    findAddButtons: () => screen.findAllByRole('button', { name: 'ADD' }),
+    getMealPlannerRecipes: () => TestBed.inject(MealPlanner).recipes(),
     typeKeywords: async (keywords: string) => {
       await userEvent.type(await screen.findByLabelText('Keywords'), keywords);
-    },
-    findRecipeHeadings: async () => {
-      return await screen.findAllByRole('heading', { level: 2 });
     },
   };
 }
