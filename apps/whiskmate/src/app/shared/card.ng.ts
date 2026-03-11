@@ -18,8 +18,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       overflow: clip;
       text-align: left;
       width: 300px;
-
-      max-height: 320px;
     }
 
     .picture {

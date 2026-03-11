@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { screen } from '@testing-library/angular';
-import { userEvent } from '@testing-library/user-event';
+import { userEvent } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
 import { MealPlanner } from '../meal-planner/meal-planner';
 import {
