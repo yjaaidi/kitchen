@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from "vitest";
 import { outputBinding } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { screen } from '@testing-library/angular';
@@ -18,7 +19,7 @@ describe(RecipeFilter.name, () => {
 });
 
 function mountRecipeFilter() {
-  const filterChangeSpy = jest.fn();
+  const filterChangeSpy = vi.fn();
   TestBed.createComponent(RecipeFilter, {
     bindings: [outputBinding('filterChange', filterChangeSpy)],
   });

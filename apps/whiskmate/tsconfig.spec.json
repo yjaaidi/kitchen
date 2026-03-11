@@ -2,8 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["jest", "node"]
+    "types": ["node"],
+    "target": "es2022"
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
-  "files": ["src/test-setup-jest.ts"]
+  "files": ["src/test-setup.ts", "vite.config.mts"]
 }

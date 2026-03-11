@@ -4,7 +4,7 @@ module.exports = {
   displayName: 'whiskmate',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup-jest.ts'],
-  testMatch: ['**/+(*.)+(spec).+(ts|js)?(x)'],
+  testMatch: ['**/+(*.)+(jest).+(ts|js)?(x)'],
   coverageDirectory: '../../coverage/apps/whiskmate',
   transform: {
     '^.+\\.m?(t|j)sx?$': swcAngularJestTransformer(),

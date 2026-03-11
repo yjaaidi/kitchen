@@ -1,12 +1,13 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 describe('clock', () => {
-  beforeEach(() => jest.useFakeTimers());
+  beforeEach(() => vi.useFakeTimers());
 
-  afterEach(() => jest.useRealTimers());
+  afterEach(() => vi.useRealTimers());
 
   it('works', async () => {
     const now = Date.now();
 
-    await jest.advanceTimersByTimeAsync(1_000);
+    await vi.advanceTimersByTimeAsync(1_000);
 
     expect(Date.now() - now).toBe(1_000);
   });

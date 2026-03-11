@@ -27,6 +27,9 @@
       "path": "./tsconfig.app.json"
     },
     {
+      "path": "./tsconfig.jest.json"
+    },
+    {
       "path": "./tsconfig.spec.json"
     }
   ]
