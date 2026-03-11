@@ -28,7 +28,9 @@ export default [
   },
   {
     files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
+    rules: {
+      /* Simplify demo example by ignoring alt text. */
+      '@angular-eslint/template/alt-text': 'off',
+    },
   },
 ];
