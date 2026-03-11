@@ -6,7 +6,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [angular(), nxViteTsPaths()],
+  plugins: [angular({ jit: false }), nxViteTsPaths()],
 
   test: {
     globals: true,
