@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => ({
   test: {
     globals: true,
     watch: false,
-    testTimeout: 1_500,
 
     environment: 'jsdom',
 
