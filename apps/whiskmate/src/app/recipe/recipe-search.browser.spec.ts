@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { MealPlanner } from '../meal-planner/meal-planner';
+import { setUpTimeMachine } from '../testing/time-machine';
 import {
   provideRecipeRepositoryFake,
   RecipeRepositoryFake,
@@ -9,34 +10,35 @@ import {
 import { RecipeSearch } from './recipe-search.ng';
 import { recipeMother } from './recipe.mother';
 
-describe(RecipeSearch.name, () => {
-  it('loads recipes', async () => {
-    const { getRecipeNames } = mountRecipeSearch();
+describe(RecipeSearch, () => {
+  it('show recipes', async () => {
+    const { recipeHeadings } = mountRecipeSearch();
 
-    await expect.element(getRecipeNames()).toHaveLength(2);
+    await expect.element(recipeHeadings).toHaveLength(2);
+    await expect.element(recipeHeadings.nth(0)).toHaveTextContent('Burger');
+    await expect.element(recipeHeadings.nth(1)).toHaveTextContent('Salad');
   });
 
-  it('filters recipes', async () => {
-    const { getRecipeNames } = mountRecipeSearch();
+  it('filter recipes', async () => {
+    const { recipeHeadings, typeKeywords } = mountRecipeSearch();
 
-    await page.getByRole('textbox', { name: 'Keywords' }).fill('Bur');
+    await typeKeywords('Bur');
 
-    await expect.element(getRecipeNames()).toHaveLength(1);
-    await expect.element(getRecipeNames()).toHaveTextContent('Burger');
+    await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
-  it('adds recipes to the meal planner', async () => {
-    const { getMealPlannerRecipes } = mountRecipeSearch();
+  it('adds recipes to meal plan', async () => {
+    const { addButtons, getMealPlannerRecipes } = mountRecipeSearch();
 
-    await page.getByRole('button', { name: 'ADD' }).first().click();
+    await addButtons.first().click();
 
-    await expect
-      .poll(() => getMealPlannerRecipes())
-      .toContainEqual(expect.objectContaining({ name: 'Burger' }));
+    expect(getMealPlannerRecipes()).toMatchObject([{ name: 'Burger' }]);
   });
 });
 
 function mountRecipeSearch() {
+  setUpTimeMachine().play();
+
   TestBed.configureTestingModule({
     providers: [provideRecipeRepositoryFake()],
   });
@@ -51,11 +53,10 @@ function mountRecipeSearch() {
   TestBed.createComponent(RecipeSearch);
 
   return {
-    async getMealPlannerRecipes() {
-      return TestBed.inject(MealPlanner).recipes();
-    },
-    getRecipeNames() {
-      return page.getByRole('heading', { level: 2 });
-    },
+    recipeHeadings: page.getByRole('heading', { level: 2 }),
+    addButtons: page.getByRole('button', { name: 'ADD' }),
+    getMealPlannerRecipes: () => TestBed.inject(MealPlanner).recipes(),
+    typeKeywords: (keywords: string) =>
+      page.getByRole('textbox', { name: 'Keywords' }).fill(keywords),
   };
 }

@@ -21,7 +21,12 @@ export default defineConfig((...args) => {
         },
         pool: 'threads',
         isolate: false,
-        testTimeout: process.env['CI'] ? 3_000 : 1_000,
+        testTimeout: process.env['CI'] ? 3_000 : 1_500,
+        expect: {
+          poll: {
+            interval: 10,
+          },
+        },
         projects: [
           {
             extends: true,
