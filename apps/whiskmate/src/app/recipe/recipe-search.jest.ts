@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { screen } from '@testing-library/angular';
+import { screen, waitFor } from '@testing-library/angular';
 import { userEvent } from '@testing-library/user-event';
 import { MealPlanner } from '../meal-planner/meal-planner';
 import {
@@ -17,16 +17,18 @@ describe(RecipeSearch.name, () => {
   });
 
   it('filters recipes', async () => {
-    const { findRecipeNames } = mountRecipeSearch();
+    const { getRecipeNames } = mountRecipeSearch();
 
     await userEvent.type(
       await screen.findByRole('textbox', { name: 'Keywords' }),
       'Bur',
     );
 
-    const recipeNames = await findRecipeNames();
-    expect(recipeNames).toHaveLength(1);
-    expect(recipeNames[0]).toHaveTextContent('Burger');
+    await waitFor(() => {
+      const recipeNames = getRecipeNames();
+      expect(recipeNames).toHaveLength(1);
+      expect(recipeNames[0]).toHaveTextContent('Burger');
+    });
   });
 
   it('adds recipes to the meal planner', async () => {
@@ -58,6 +60,9 @@ function mountRecipeSearch() {
   return {
     getMealPlannerRecipes() {
       return TestBed.inject(MealPlanner).recipes();
+    },
+    getRecipeNames() {
+      return screen.getAllByRole('heading', { level: 2 });
     },
     findRecipeNames() {
       return screen.findAllByRole('heading', { level: 2 });
