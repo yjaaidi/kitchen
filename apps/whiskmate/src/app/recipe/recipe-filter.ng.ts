@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, model } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {
   createDefaultRecipeFilterCriteria,
   RecipeFilterCriteria,
@@ -8,33 +11,41 @@ import {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-recipe-filter',
-  imports: [FormField, FormRoot],
+  imports: [
+    FormField,
+    FormRoot,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   template: `
-    <form [formRoot]="filterForm">
-      <input
-        [formField]="filterForm.keywords"
-        aria-label="Keywords"
-        placeholder="keywords"
-        type="text"
-      />
-      <input
-        [formField]="filterForm.maxIngredientCount"
-        aria-label="Max Ingredients"
-        formControlName="maxIngredientCount"
-        placeholder="max ingredients"
-        type="number"
-      />
-      <input
-        [formField]="filterForm.maxStepCount"
-        aria-label="Max Steps"
-        placeholder="max steps"
-        type="number"
-      />
+    <form class="filter-form" [formRoot]="filterForm">
+      <mat-form-field>
+        <mat-label>Keywords</mat-label>
+        <input [formField]="filterForm.keywords" matInput type="text" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Max Ingredients</mat-label>
+        <input
+          [formField]="filterForm.maxIngredientCount"
+          matInput
+          type="number"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Max Steps</mat-label>
+        <input [formField]="filterForm.maxStepCount" matInput type="number" />
+      </mat-form-field>
     </form>
   `,
   styles: `
-    :host {
-      text-align: center;
+    .filter-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+
+      margin-top: 1rem;
     }
   `,
 })

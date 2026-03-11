@@ -19,10 +19,7 @@
             "input": "apps/whiskmate/public"
           }
         ],
-        "styles": [
-          "apps/whiskmate/src/custom-theme.scss",
-          "apps/whiskmate/src/styles.css"
-        ]
+        "styles": ["apps/whiskmate/src/styles.css"]
       },
       "configurations": {
         "production": {
