@@ -1,16 +1,14 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from 'vitest';
 import { outputBinding } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { screen } from '@testing-library/angular';
-import { userEvent } from '@testing-library/user-event';
+import { page } from 'vitest/browser';
 import { RecipeFilter } from './recipe-filter.ng';
 
 describe(RecipeFilter.name, () => {
   it('filters recipes', async () => {
-    const { filterChangeSpy, keywordsInput: findKeywordsInput } =
-      mountRecipeFilter();
+    const { filterChangeSpy, keywordsInput } = mountRecipeFilter();
 
-    await userEvent.type(await findKeywordsInput(), 'Bur');
+    await keywordsInput.fill('Bur');
 
     expect(filterChangeSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({ keywords: 'Bur' }),
@@ -26,8 +24,6 @@ function mountRecipeFilter() {
 
   return {
     filterChangeSpy,
-    async keywordsInput() {
-      return screen.findByRole('textbox', { name: 'Keywords' });
-    },
+    keywordsInput: page.getByRole('textbox', { name: 'Keywords' }),
   };
 }
