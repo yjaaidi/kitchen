@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -48,12 +49,30 @@ import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
     }
   `,
 })
-export class RecipeSearch {
-  filter = signal<RecipeFilterCriteria>(createDefaultRecipeFilterCriteria());
+export class RecipeSearch implements OnInit {
+  filter = signal<RecipeFilterCriteria | undefined>(undefined);
   recipes = rxResource({
     params: () => this.filter(),
     stream: ({ params }) => this._recipeRepository.search(params),
   });
 
   private _recipeRepository = inject(RecipeRepository);
+
+  /* This is a realistic scenario that can lead Angular to think
+   * that the app is stable before it really is. */
+  async ngOnInit() {
+    let filter = await this._getLastCachedFilter();
+    filter ??= await this._getInitialFilter();
+    this.filter.set(filter);
+  }
+
+  private async _getInitialFilter() {
+    return createDefaultRecipeFilterCriteria();
+  }
+
+  private async _getLastCachedFilter(): Promise<
+    RecipeFilterCriteria | undefined
+  > {
+    return undefined;
+  }
 }
