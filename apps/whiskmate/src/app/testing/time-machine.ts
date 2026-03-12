@@ -7,20 +7,22 @@ export function setUpTimeMachine(): TimeMachine {
   });
 
   return {
-    play: () => vi.setTimerTickMode('nextTimerAsync'),
-    flush: async () => {
-      await vi.runAllTimersAsync();
-    },
+    play: () => vi.setTimerTickMode('interval'),
     pause: () => vi.setTimerTickMode('manual'),
+    fastForward: () => vi.setTimerTickMode('nextTimerAsync'),
     seek: async (duration) => {
       await vi.advanceTimersByTimeAsync(duration);
+    },
+    flush: async () => {
+      await vi.runAllTimersAsync();
     },
   };
 }
 
 interface TimeMachine {
   play: () => void;
-  flush: () => Promise<void>;
   pause: () => void;
+  fastForward: () => void;
   seek: (duration: number) => Promise<void>;
+  flush: () => Promise<void>;
 }
