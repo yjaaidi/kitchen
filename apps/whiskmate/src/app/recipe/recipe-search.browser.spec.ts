@@ -37,7 +37,7 @@ describe(RecipeSearch, () => {
 });
 
 function mountRecipeSearch() {
-  setUpTimeMachine().play();
+  setUpTimeMachine().fastForward();
 
   TestBed.configureTestingModule({
     providers: [provideRecipeRepositoryFake()],
