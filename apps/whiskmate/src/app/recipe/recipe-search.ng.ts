@@ -1,11 +1,12 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 import { Catalog } from '../shared/catalog.ng';
 import {
   createDefaultRecipeFilterCriteria,
@@ -14,7 +15,6 @@ import {
 import { RecipeFilter } from './recipe-filter.ng';
 import { RecipePreview } from './recipe-preview.ng';
 import { RecipeRepository } from './recipe-repository/recipe-repository';
-import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,7 +49,7 @@ import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
     }
   `,
 })
-export class RecipeSearch implements OnInit {
+export class RecipeSearch {
   filter = signal<RecipeFilterCriteria | undefined>(undefined);
   recipes = rxResource({
     params: () => this.filter(),
@@ -60,10 +60,14 @@ export class RecipeSearch implements OnInit {
 
   /* This is a realistic scenario that can lead Angular to think
    * that the app is stable before it really is. */
-  async ngOnInit() {
-    let filter = await this._getLastCachedFilter();
-    filter ??= await this._getInitialFilter();
-    this.filter.set(filter);
+  constructor() {
+    afterNextRender({
+      read: async () => {
+        let filter = await this._getLastCachedFilter();
+        filter ??= await this._getInitialFilter();
+        this.filter.set(filter);
+      },
+    });
   }
 
   private async _getInitialFilter() {
