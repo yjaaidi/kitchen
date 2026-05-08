@@ -10,6 +10,7 @@ import { RecipeRepository, RecipeRepositoryDef } from './recipe-repository';
 export class RecipeRepositoryFake implements RecipeRepositoryDef {
   private _pauseGate = new PauseGate();
   private _recipes: Recipe[] = [];
+  private _error: Error | null = null;
 
   search({
     keywords,
@@ -18,6 +19,9 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
   }: RecipeFilter = {}): Observable<Recipe[]> {
     return defer(async () => {
       await this._pauseGate.whenResumed;
+      if (this._error) {
+        throw this._error;
+      }
       const recipes = this._recipes.filter((recipe) => {
         const conditions = [
           /* Filter by keywords. */
@@ -45,6 +49,14 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
 
   pause() {
     this._pauseGate.pause();
+  }
+
+  simulateError(error: Error = new Error('Search failed')) {
+    this._error = error;
+  }
+
+  clearError() {
+    this._error = null;
   }
 }
 
