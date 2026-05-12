@@ -1,0 +1,10 @@
+{
+  "name": "@react-vitest-mini-workshop/react-vitest-mini-workshop-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@react-vitest-mini-workshop/react-vitest-mini-workshop"
+    ]
+  }
+}
