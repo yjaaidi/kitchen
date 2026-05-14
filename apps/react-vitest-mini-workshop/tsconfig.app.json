@@ -21,7 +21,7 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx"
-  ],
+, "test-setup-tlr-cleanup.ts"  ],
   "exclude": [
     "out-tsc",
     "dist",

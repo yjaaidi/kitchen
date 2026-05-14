@@ -1,12 +1,14 @@
-// Uncomment this line to use CSS modules
-// import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
+import { RecipeSearch } from './recipe/recipe-search';
+import { Title } from './shared/title';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="@react-vitest-mini-workshop/react-vitest-mini-workshop" />
-    </div>
+    <>
+      <Title>
+        <h1>Welcome to Whiskmate</h1>
+      </Title>
+      <RecipeSearch />
+    </>
   );
 }
 
