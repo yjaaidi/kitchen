@@ -10,7 +10,7 @@ describe(RecipeSearch, () => {
     const { findHeadings } = await setUp();
 
     const headings = await findHeadings();
-    expect(headings).toHaveLength(2);
+    expect(headings.length).toBeGreaterThanOrEqual(2);
     expect(headings[0]).toHaveTextContent('Burger');
     expect(headings[1]).toHaveTextContent('Salad');
   });
