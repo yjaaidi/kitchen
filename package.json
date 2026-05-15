@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "playwright install",
     "start": "nx serve",
-    "test": "nx test --no-tui --watch",
+    "test": "nx test --no-tui --watch --browser.headless false",
     "build": "nx build",
     "cook": "node --experimental-strip-types tools/cook/main.ts",
     "e2e": "nx e2e",

@@ -206,8 +206,6 @@ importers:
         specifier: ^19.0.0
         version: 19.2.3(@types/react@19.2.14)
 
-  apps/react-vitest-mini-workshop-e2e: {}
-
 packages:
 
   '@adobe/css-tools@4.4.4':
