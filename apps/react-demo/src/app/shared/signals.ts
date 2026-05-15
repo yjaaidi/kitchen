@@ -1,10 +1,19 @@
-import { useSignalEffect } from '@preact/signals-react';
-import { useCallback, useState } from 'react';
+import {
+  Signal,
+  untracked,
+  useComputed,
+  useSignalEffect,
+} from '@preact/signals-react';
+import { useState } from 'react';
+
+export function useSignalValue<T>(signal: Signal<T>): T {
+  const [value, setValue] = useState(untracked(() => signal.value));
+  useSignalEffect(() => {
+    setValue(signal.value);
+  });
+  return value;
+}
 
 export function useComputedValue<T>(fn: () => T): T {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  fn = useCallback(fn, []);
-  const [value, setValue] = useState(fn());
-  useSignalEffect(() => setValue(fn()));
-  return value;
+  return useSignalValue(useComputed(fn));
 }

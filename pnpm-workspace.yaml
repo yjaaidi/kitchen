@@ -1,6 +1,11 @@
 packages:
   - apps/*
 
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  nx: true
+
 autoInstallPeers: true
 
 onlyBuiltDependencies:
