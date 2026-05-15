@@ -8,6 +8,12 @@
     },
     {
       "path": "./apps/101-component-testing-starter"
+    },
+    {
+      "path": "./apps/101-component-testing-solution"
+    },
+    {
+      "path": "./tools"
     }
   ]
 }

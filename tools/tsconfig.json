@@ -8,7 +8,7 @@
     "outDir": "../dist/out-tsc/tools",
     "rootDir": ".",
     "target": "esnext",
-    "types": ["node"],
+    "types": ["node"]
   },
   "include": ["**/*.ts"]
 }

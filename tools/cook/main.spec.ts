@@ -5,6 +5,7 @@ import {
   FileSystemAdapter,
   GitAdapter,
   PromptAdapter,
+  PromptOptions,
 } from './infra';
 import { Exercise } from './core';
 import { type Public } from './util';
@@ -289,13 +290,14 @@ class PromptFake implements Public<PromptAdapter> {
     this._interactive = false;
   }
 
-  prompt<T>(options) {
-    const { name, initial } = options;
+  prompt<T>(options: PromptOptions<T>) {
+    const { name: nameOrFn, initial } = options;
+    const name = typeof nameOrFn === 'function' ? nameOrFn() : nameOrFn;
     if (!this._interactive) {
       return initial !== undefined ? ({ [name]: initial } as T) : null;
     }
     return Promise.resolve({
-      [options.name]: this._choices[options.name] ?? options.initial,
+      [name]: this._choices[name] ?? initial,
     } as T);
   }
 }

@@ -115,7 +115,7 @@ export class PromptAdapter {
   }
 }
 
-type PromptOptions<T> = Exclude<
+export type PromptOptions<T> = Exclude<
   Parameters<typeof prompt<T>>[0],
   ((...args: unknown[]) => unknown) | unknown[]
 >;

@@ -22,7 +22,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 9.8.0
+          version: 11
           run_install: false
 
       # This enables task distribution via Nx Cloud
@@ -34,7 +34,7 @@ jobs:
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 25
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
