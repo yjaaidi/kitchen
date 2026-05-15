@@ -30,7 +30,7 @@ describe(RecipeSearch.name, () => {
   });
 
   it('adds "burger" to meal planner when clicking on "ADD" button', async () => {
-    const { findRecipePreviews } = await setUp();
+    const { findRecipePreviews, getMealPlannerRecipes } = await setUp();
 
     const recipePreviews = await findRecipePreviews();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -40,9 +40,7 @@ describe(RecipeSearch.name, () => {
     await userEvent.click(
       within(burgerEl).getByRole('button', { name: 'ADD' }),
     );
-    expect(useMealPlannerStore.getState().recipes).toMatchObject([
-      { name: 'Burger' },
-    ]);
+    expect(getMealPlannerRecipes()).toMatchObject([{ name: 'Burger' }]);
   });
 });
 
@@ -70,6 +68,7 @@ async function setUp() {
   return {
     findHeadings: () => screen.findAllByRole('heading'),
     findRecipePreviews: () => screen.findAllByRole('article'),
+    getMealPlannerRecipes: () => useMealPlannerStore.getState().recipes,
     typeKeywords: async (keywords: string) =>
       userEvent.type(await screen.findByLabelText('Keywords'), keywords),
   };

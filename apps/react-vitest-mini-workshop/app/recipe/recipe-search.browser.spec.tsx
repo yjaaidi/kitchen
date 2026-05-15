@@ -1,16 +1,13 @@
 import { describe, expect, it, onTestFinished } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
+import { useMealPlannerStore } from '../meal-planner/meal-planner';
 import { singletonTestingUtils } from '../shared/singleton';
 import { createTestQueryClientWrapper, resetStore } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
-import {
-  resetMealPlannerStore,
-  useMealPlannerStore,
-} from '../meal-planner/meal-planner';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
@@ -30,16 +27,14 @@ describe(RecipeSearch.name, () => {
   });
 
   it('adds "burger" to meal planner when clicking on "ADD" button', async () => {
-    const { recipePreviews } = await setUp();
+    const { recipePreviews, getMealPlannerRecipes } = await setUp();
 
     await recipePreviews
       .filter({ hasText: 'Burger' })
       .getByRole('button', { name: 'ADD' })
       .click();
 
-    expect(useMealPlannerStore.getState().recipes).toMatchObject([
-      { name: 'Burger' },
-    ]);
+    expect(getMealPlannerRecipes()).toMatchObject([{ name: 'Burger' }]);
   });
 });
 
@@ -65,6 +60,7 @@ async function setUp() {
   });
 
   return {
+    getMealPlannerRecipes: () => useMealPlannerStore.getState().recipes,
     keywordsInput: page.getByLabelText('Keywords'),
     recipePreviews: page.getByRole('article'),
     headings: page.getByRole('heading'),
