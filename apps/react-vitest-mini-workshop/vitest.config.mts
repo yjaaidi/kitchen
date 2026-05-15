@@ -20,6 +20,7 @@ export default defineConfig({
           include: browserTests,
           browser: {
             enabled: true,
+            headless: true,
             provider: playwright(),
             instances: [{ browser: 'chromium' }],
           },
