@@ -5,24 +5,28 @@ const initialState: State = {
   recipes: [] as Recipe[],
 };
 
-export const stateCreator: StateCreator<MealPlannerStore> = (set, get) => ({
-  ...initialState,
-  addRecipe(recipe) {
-    const { recipes } = get();
-    if (recipes.some((r) => r.id === recipe.id)) {
-      throw new Error('Recipe already added');
-    }
-    set({ recipes: [...recipes, recipe] });
-  },
-  canAddRecipe(recipe) {
+export const stateCreator: StateCreator<MealPlannerStore> = (set, get) => {
+  const canAddRecipe = (recipe: Recipe) => {
     const { recipes } = get();
     return !recipes.some((r) => r.id === recipe.id);
-  },
-  removeRecipe(recipe) {
-    const { recipes } = get();
-    set({ recipes: recipes.filter((r) => r.id !== recipe.id) });
-  },
-});
+  };
+
+  return {
+    ...initialState,
+    addRecipe(recipe) {
+      const { recipes } = get();
+      if (!canAddRecipe(recipe)) {
+        throw new Error('Recipe already added');
+      }
+      set({ recipes: [...recipes, recipe] });
+    },
+    canAddRecipe,
+    removeRecipe(recipe) {
+      const { recipes } = get();
+      set({ recipes: recipes.filter((r) => r.id !== recipe.id) });
+    },
+  };
+};
 
 export const useMealPlannerStore = create(stateCreator);
 
