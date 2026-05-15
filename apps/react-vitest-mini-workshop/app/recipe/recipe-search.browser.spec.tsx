@@ -7,7 +7,10 @@ import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
-import { mealPlanner } from '../meal-planner/meal-planner';
+import {
+  resetMealPlannerStore,
+  useMealPlannerStore,
+} from '../meal-planner/meal-planner';
 
 describe(RecipeSearch.name, () => {
   it('shows all recipes', async () => {
@@ -34,7 +37,9 @@ describe(RecipeSearch.name, () => {
       .getByRole('button', { name: 'ADD' })
       .click();
 
-    expect(mealPlanner.recipes.value).toMatchObject([{ name: 'Burger' }]);
+    expect(useMealPlannerStore.getState().recipes).toMatchObject([
+      { name: 'Burger' },
+    ]);
   });
 });
 
@@ -56,6 +61,7 @@ async function setUp() {
 
   onTestFinished(() => {
     singletonTestingUtils.reset();
+    resetMealPlannerStore();
   });
 
   return {

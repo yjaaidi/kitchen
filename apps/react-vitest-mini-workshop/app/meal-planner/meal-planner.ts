@@ -1,28 +1,33 @@
-import type { ReadonlySignal } from '@preact/signals-react';
-import { signal } from '@preact/signals-react';
+import { create } from 'zustand';
 import type { Recipe } from '../recipe/recipe';
 
-class MealPlanner {
-  private _recipes = signal<Recipe[]>([]);
+type MealPlannerState = {
+  recipes: Recipe[];
+  addRecipe: (recipe: Recipe) => void;
+  removeRecipe: (recipe: Recipe) => void;
+  canAddRecipe: (recipe: Recipe) => boolean;
+};
 
-  get recipes(): ReadonlySignal<Recipe[]> {
-    return this._recipes;
-  }
+const initialState = {
+  recipes: [] as Recipe[],
+};
 
-  addRecipe(recipe: Recipe): void {
-    if (this._recipes.value.some((r) => r.id === recipe.id)) {
+export const useMealPlannerStore = create<MealPlannerState>((set, get) => ({
+  ...initialState,
+  addRecipe(recipe) {
+    if (get().recipes.some((r) => r.id === recipe.id)) {
       throw new Error('Recipe already added');
     }
-    this._recipes.value = [...this._recipes.value, recipe];
-  }
+    set({ recipes: [...get().recipes, recipe] });
+  },
+  canAddRecipe(recipe) {
+    return !get().recipes.some((r) => r.id === recipe.id);
+  },
+  removeRecipe(recipe) {
+    set({ recipes: get().recipes.filter((r) => r.id !== recipe.id) });
+  },
+}));
 
-  canAddRecipe(recipe: Recipe) {
-    return !this._recipes.value.some((r) => r.id === recipe.id);
-  }
-
-  removeRecipe(recipe: Recipe): void {
-    this._recipes.value = this._recipes.value.filter((r) => r.id !== recipe.id);
-  }
+export function resetMealPlannerStore(): void {
+  useMealPlannerStore.setState(initialState);
 }
-
-export const mealPlanner = new MealPlanner();

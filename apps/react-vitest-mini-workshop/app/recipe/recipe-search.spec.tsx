@@ -1,7 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, onTestFinished } from 'vitest';
-import { mealPlanner } from '../meal-planner/meal-planner';
+import {
+  resetMealPlannerStore,
+  useMealPlannerStore,
+} from '../meal-planner/meal-planner';
 import { singletonTestingUtils } from '../shared/singleton';
 import { createTestQueryClientWrapper } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
@@ -40,7 +43,9 @@ describe(RecipeSearch.name, () => {
     await userEvent.click(
       within(burgerEl).getByRole('button', { name: 'ADD' }),
     );
-    expect(mealPlanner.recipes.value).toMatchObject([{ name: 'Burger' }]);
+    expect(useMealPlannerStore.getState().recipes).toMatchObject([
+      { name: 'Burger' },
+    ]);
   });
 });
 
@@ -62,6 +67,7 @@ async function setUp() {
 
   onTestFinished(() => {
     singletonTestingUtils.reset();
+    resetMealPlannerStore();
   });
 
   return {
