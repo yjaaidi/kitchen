@@ -1,33 +1,37 @@
 import { create } from 'zustand';
 import type { Recipe } from '../recipe/recipe';
 
-type MealPlannerState = {
-  recipes: Recipe[];
-  addRecipe: (recipe: Recipe) => void;
-  removeRecipe: (recipe: Recipe) => void;
-  canAddRecipe: (recipe: Recipe) => boolean;
-};
-
 const initialState = {
   recipes: [] as Recipe[],
 };
 
-export const useMealPlannerStore = create<MealPlannerState>((set, get) => ({
+export const useMealPlannerStore = create<MealPlannerStore>((set, get) => ({
   ...initialState,
   addRecipe(recipe) {
-    if (get().recipes.some((r) => r.id === recipe.id)) {
+    const { recipes } = get();
+    if (recipes.some((r) => r.id === recipe.id)) {
       throw new Error('Recipe already added');
     }
-    set({ recipes: [...get().recipes, recipe] });
+    set({ recipes: [...recipes, recipe] });
   },
   canAddRecipe(recipe) {
-    return !get().recipes.some((r) => r.id === recipe.id);
+    const { recipes } = get();
+    return !recipes.some((r) => r.id === recipe.id);
   },
   removeRecipe(recipe) {
-    set({ recipes: get().recipes.filter((r) => r.id !== recipe.id) });
+    const { recipes } = get();
+    set({ recipes: recipes.filter((r) => r.id !== recipe.id) });
   },
 }));
 
-export function resetMealPlannerStore(): void {
-  useMealPlannerStore.setState(initialState);
+interface State {
+  recipes: Recipe[];
 }
+
+interface Actions {
+  addRecipe: (recipe: Recipe) => void;
+  canAddRecipe: (recipe: Recipe) => boolean;
+  removeRecipe: (recipe: Recipe) => void;
+}
+
+type MealPlannerStore = State & Actions;

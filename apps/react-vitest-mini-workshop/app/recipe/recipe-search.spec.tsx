@@ -1,12 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, onTestFinished } from 'vitest';
-import {
-  resetMealPlannerStore,
-  useMealPlannerStore,
-} from '../meal-planner/meal-planner';
+import { useMealPlannerStore } from '../meal-planner/meal-planner';
 import { singletonTestingUtils } from '../shared/singleton';
-import { createTestQueryClientWrapper } from '../testing';
+import { createTestQueryClientWrapper, resetStore } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
@@ -67,7 +64,7 @@ async function setUp() {
 
   onTestFinished(() => {
     singletonTestingUtils.reset();
-    resetMealPlannerStore();
+    resetStore(useMealPlannerStore);
   });
 
   return {
