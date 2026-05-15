@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "importHelpers": false,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "outDir": "../dist/out-tsc/tools",
+    "rootDir": ".",
+    "target": "esnext",
+    "types": ["node"],
+  },
+  "include": ["**/*.ts"]
+}

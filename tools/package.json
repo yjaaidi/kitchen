@@ -1,0 +1,5 @@
+{
+  "name": "@whiskmate/tools",
+  "type": "module",
+  "private": true
+}
