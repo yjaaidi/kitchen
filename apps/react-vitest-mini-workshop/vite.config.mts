@@ -1,10 +1,12 @@
-/// <reference types='vitest' />
-import { defineConfig } from 'vite';
 import { reactRouter } from '@react-router/dev/vite';
+import { join, sep } from 'node:path';
+import { defineConfig } from 'vite';
 
-export default defineConfig(() => ({
+const projectName = __dirname.split(sep).pop() ?? 'whiskmate';
+
+export default defineConfig({
   root: import.meta.dirname,
-  cacheDir: '../../node_modules/.vite/apps/react-vitest-mini-workshop',
+  cacheDir: join('../../node_modules/.vite/apps', projectName),
   server: {
     port: 4200,
     host: 'localhost',
@@ -22,4 +24,4 @@ export default defineConfig(() => ({
       transformMixedEsModules: true,
     },
   },
-}));
+});
