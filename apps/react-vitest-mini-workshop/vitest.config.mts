@@ -3,7 +3,10 @@ import { playwright } from '@vitest/browser-playwright';
 import viteConfig from './vite.config.mjs';
 
 const browserTests = ['./**/*.browser.spec.ts', './**/*.browser.spec.tsx'];
-const emulatedTests = ['./**/*.spec.ts', './**/*.spec.tsx'];
+const emulatedTests = [
+  './**/!(*.browser).spec.ts',
+  './**/!(*.browser).spec.tsx',
+];
 export default defineConfig({
   ...viteConfig,
   test: {
@@ -27,7 +30,6 @@ export default defineConfig({
         test: {
           name: 'emulated',
           include: emulatedTests,
-          exclude: browserTests,
           environment: 'jsdom',
           setupFiles: [
             '@testing-library/jest-dom/vitest',
