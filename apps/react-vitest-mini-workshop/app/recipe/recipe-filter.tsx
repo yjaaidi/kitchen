@@ -7,13 +7,7 @@ export function RecipeFilter(props: {
   onFilterChange: (filter: RecipeFilterCriteria) => void;
 }) {
   const { onFilterChange } = props;
-  const [localFilter, setLocalFilter] = useState(props.filter);
-  const prevFilterRef = useRef(props.filter);
-
-  const filter =
-    prevFilterRef.current !== props.filter
-      ? (prevFilterRef.current = props.filter)
-      : localFilter;
+  const [filter, setFilter] = useLocalState(props.filter);
 
   return (
     <div className={styles.filter}>
@@ -61,7 +55,30 @@ export function RecipeFilter(props: {
             : Number(value)
           : value || undefined,
     };
-    setLocalFilter(next);
+    setFilter(next);
     onFilterChange(next);
   }
+}
+
+/**
+ * Creates a local state that is reset when the prop changes.
+ */
+function useLocalState<T>(prop: T): [T, (next: T) => void] {
+  const [localValue, setLocalValue] = useState(prop);
+  const prevPropRef = useRef(prop);
+  const isDirtyRef = useRef(false);
+
+  if (prevPropRef.current !== prop) {
+    prevPropRef.current = prop;
+    isDirtyRef.current = false;
+  }
+
+  /* Local state changed. */
+  return [
+    isDirtyRef.current ? localValue : prop,
+    (next: T) => {
+      isDirtyRef.current = true;
+      setLocalValue(next);
+    },
+  ];
 }
