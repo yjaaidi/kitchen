@@ -9,6 +9,8 @@ import {
   type LinksFunction,
 } from 'react-router';
 
+import './styles.css';
+
 export const meta: MetaFunction = () => [
   {
     title: 'New Nx React Router App',
