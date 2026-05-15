@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { RecipeAddButton } from '../meal-planner/recipe-add-button';
 import { Catalog } from '../shared/catalog';
-import { RecipeFilter } from './recipe-filter';
-import type { RecipeFilterCriteria } from './recipe-filter-criteria';
+import { RecipeFilterForm } from './recipe-filter-form';
+import type { RecipeFilter } from './recipe-filter';
 import { RecipePreview } from './recipe-preview';
 import { useSearchRecipes } from './recipe-repository';
 
 export function RecipeSearch() {
-  const [filter, setFilter] = useState<RecipeFilterCriteria>({});
+  const [filter, setFilter] = useState<RecipeFilter>({});
   const { data: recipes, isLoading } = useSearchRecipes(filter);
 
   return (
     <>
-      <RecipeFilter filter={filter} onFilterChange={setFilter} />
+      <RecipeFilterForm filter={filter} onFilterChange={setFilter} />
       <Catalog>
         {isLoading ? (
           <div role="status">Loading...</div>

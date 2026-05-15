@@ -1,10 +1,10 @@
 import { ChangeEvent, useRef, useState } from 'react';
-import type { RecipeFilterCriteria } from './recipe-filter-criteria';
-import styles from './recipe-filter.module.css';
+import type { RecipeFilter } from './recipe-filter';
+import styles from './recipe-filter-form.module.css';
 
-export function RecipeFilter(props: {
-  filter: RecipeFilterCriteria;
-  onFilterChange: (filter: RecipeFilterCriteria) => void;
+export function RecipeFilterForm(props: {
+  filter: RecipeFilter;
+  onFilterChange: (filter: RecipeFilter) => void;
 }) {
   const { onFilterChange } = props;
   const [filter, setFilter] = useLocalState(props.filter);
@@ -46,7 +46,7 @@ export function RecipeFilter(props: {
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    const next: RecipeFilterCriteria = {
+    const next: RecipeFilter = {
       ...filter,
       [name]:
         e.target.type === 'number'

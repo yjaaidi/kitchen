@@ -1,5 +1,5 @@
 import type { Recipe } from './recipe';
-import type { RecipeFilterCriteria } from './recipe-filter-criteria';
+import type { RecipeFilter } from './recipe-filter';
 
 export class RecipeRepositoryFake {
   private recipes: Recipe[] = [];
@@ -9,7 +9,7 @@ export class RecipeRepositoryFake {
   }
 
   async searchRecipes(
-    { keywords, maxIngredientCount }: RecipeFilterCriteria = {},
+    { keywords, maxIngredientCount }: RecipeFilter = {},
     { signal }: { signal?: AbortSignal } = {},
   ): Promise<Recipe[]> {
     if (signal?.aborted) {

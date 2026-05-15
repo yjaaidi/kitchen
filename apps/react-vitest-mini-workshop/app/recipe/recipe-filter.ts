@@ -1,4 +1,4 @@
-export interface RecipeFilterCriteria {
+export interface RecipeFilter {
   keywords?: string;
   maxIngredientCount?: number;
   maxStepCount?: number;

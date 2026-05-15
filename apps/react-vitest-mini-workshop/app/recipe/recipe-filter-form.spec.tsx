@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { RecipeFilter } from './recipe-filter';
+import { RecipeFilterForm } from './recipe-filter-form';
 
-describe(RecipeFilter, () => {
+describe(RecipeFilterForm, () => {
   it('shows filter values from props', () => {
     render(
-      <RecipeFilter
+      <RecipeFilterForm
         filter={{
           keywords: 'pasta',
           maxIngredientCount: 5,
@@ -22,7 +22,7 @@ describe(RecipeFilter, () => {
   });
 
   it('shows empty inputs when filter fields are undefined', () => {
-    render(<RecipeFilter filter={{}} onFilterChange={vi.fn()} />);
+    render(<RecipeFilterForm filter={{}} onFilterChange={vi.fn()} />);
 
     expect(screen.getByLabelText('Keywords')).toHaveValue('');
     expect(screen.getByLabelText('Max Ingredients')).toHaveValue(null);
@@ -31,7 +31,7 @@ describe(RecipeFilter, () => {
 
   it('calls onFilterChange with merged keywords as the user types', async () => {
     const onFilterChange = vi.fn();
-    render(<RecipeFilter filter={{}} onFilterChange={onFilterChange} />);
+    render(<RecipeFilterForm filter={{}} onFilterChange={onFilterChange} />);
 
     await userEvent.type(screen.getByLabelText('Keywords'), 'soup');
 
@@ -43,7 +43,7 @@ describe(RecipeFilter, () => {
   it('calls onFilterChange with numeric maxIngredientCount and preserves other fields', async () => {
     const onFilterChange = vi.fn();
     render(
-      <RecipeFilter
+      <RecipeFilterForm
         filter={{ keywords: 'pie' }}
         onFilterChange={onFilterChange}
       />,
@@ -60,7 +60,7 @@ describe(RecipeFilter, () => {
   it('sets maxIngredientCount to undefined when the field is cleared', async () => {
     const onFilterChange = vi.fn();
     render(
-      <RecipeFilter
+      <RecipeFilterForm
         filter={{ maxIngredientCount: 4 }}
         onFilterChange={onFilterChange}
       />,
@@ -76,7 +76,7 @@ describe(RecipeFilter, () => {
   it('sets keywords to undefined when the field is cleared', async () => {
     const onFilterChange = vi.fn();
     render(
-      <RecipeFilter
+      <RecipeFilterForm
         filter={{ keywords: 'toast' }}
         onFilterChange={onFilterChange}
       />,

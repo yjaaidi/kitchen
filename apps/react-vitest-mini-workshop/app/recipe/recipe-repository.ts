@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Recipe } from './recipe';
-import type { RecipeFilterCriteria } from './recipe-filter-criteria';
+import type { RecipeFilter } from './recipe-filter';
 import { defineSingleton } from '../shared/singleton';
 
 class RecipeRepository {
   async searchRecipes(
-    { keywords, maxIngredientCount }: RecipeFilterCriteria = {},
+    { keywords, maxIngredientCount }: RecipeFilter = {},
     { signal }: { signal?: AbortSignal } = {},
   ): Promise<Recipe[]> {
     const params = new URLSearchParams({ embed: 'ingredients' });
@@ -40,7 +40,7 @@ export const recipeRepositorySingleton = defineSingleton(
   () => new RecipeRepository(),
 );
 
-export function useSearchRecipes(filter: RecipeFilterCriteria = {}) {
+export function useSearchRecipes(filter: RecipeFilter = {}) {
   return useQuery({
     queryKey: ['recipes', filter],
     queryFn: ({ signal }) =>
