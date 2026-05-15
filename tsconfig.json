@@ -4,10 +4,10 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/react-vitest-mini-workshop-e2e"
+      "path": "./apps/react-vitest-mini-workshop"
     },
     {
-      "path": "./apps/react-vitest-mini-workshop"
+      "path": "./apps/101-component-testing-starter"
     }
   ]
 }
