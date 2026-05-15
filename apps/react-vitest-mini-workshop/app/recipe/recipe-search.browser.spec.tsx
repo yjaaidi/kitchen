@@ -9,7 +9,7 @@ import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
 
-describe(RecipeSearch.name, () => {
+describe(RecipeSearch, () => {
   it('shows all recipes', async () => {
     const { headings } = await setUp();
 

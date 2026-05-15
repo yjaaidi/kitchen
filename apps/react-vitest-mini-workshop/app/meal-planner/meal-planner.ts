@@ -1,7 +1,7 @@
 import { create, StateCreator } from 'zustand';
 import type { Recipe } from '../recipe/recipe';
 
-const initialState = {
+const initialState: State = {
   recipes: [] as Recipe[],
 };
 
