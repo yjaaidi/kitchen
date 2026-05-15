@@ -1,26 +1,19 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import type { RecipeFilterCriteria } from './recipe-filter-criteria';
 import styles from './recipe-filter.module.css';
 
-export function RecipeFilter({
-  filter,
-  onFilterChange,
-}: {
+export function RecipeFilter(props: {
   filter: RecipeFilterCriteria;
   onFilterChange: (filter: RecipeFilterCriteria) => void;
 }) {
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    onFilterChange({
-      ...filter,
-      [name]:
-        e.target.type === 'number'
-          ? value === ''
-            ? undefined
-            : Number(value)
-          : value || undefined,
-    });
-  }
+  const { onFilterChange } = props;
+  const [localFilter, setLocalFilter] = useState(props.filter);
+  const prevFilterRef = useRef(props.filter);
+
+  const filter =
+    prevFilterRef.current !== props.filter
+      ? (prevFilterRef.current = props.filter)
+      : localFilter;
 
   return (
     <div className={styles.filter}>
@@ -56,4 +49,19 @@ export function RecipeFilter({
       </div>
     </div>
   );
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    const next: RecipeFilterCriteria = {
+      ...filter,
+      [name]:
+        e.target.type === 'number'
+          ? value === ''
+            ? undefined
+            : Number(value)
+          : value || undefined,
+    };
+    setLocalFilter(next);
+    onFilterChange(next);
+  }
 }
