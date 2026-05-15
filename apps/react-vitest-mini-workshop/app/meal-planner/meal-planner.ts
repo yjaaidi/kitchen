@@ -1,11 +1,11 @@
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
 import type { Recipe } from '../recipe/recipe';
 
 const initialState = {
   recipes: [] as Recipe[],
 };
 
-export const useMealPlannerStore = create<MealPlannerStore>((set, get) => ({
+export const stateCreator: StateCreator<MealPlannerStore> = (set, get) => ({
   ...initialState,
   addRecipe(recipe) {
     const { recipes } = get();
@@ -22,7 +22,9 @@ export const useMealPlannerStore = create<MealPlannerStore>((set, get) => ({
     const { recipes } = get();
     set({ recipes: recipes.filter((r) => r.id !== recipe.id) });
   },
-}));
+});
+
+export const useMealPlannerStore = create(stateCreator);
 
 interface State {
   recipes: Recipe[];
