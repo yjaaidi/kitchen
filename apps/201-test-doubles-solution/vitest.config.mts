@@ -12,17 +12,17 @@ const wideTests = ['./**/*.wide.spec.ts', './**/*.wide.spec.tsx'];
 
 const emulatedSharedConfig: ProjectConfig = {
   environment: 'jsdom',
-  setupFiles: [
-    '@testing-library/jest-dom/vitest',
-    './test-setup-tlr-cleanup.ts',
-  ],
+  setupFiles: ['@testing-library/jest-dom/vitest'],
 };
 
 export default defineConfig({
   ...viteConfig,
   test: {
     watch: false,
-    testTimeout: 1_000,
+    /* We should not need this in browser mode as we are using vitest/browser,
+     * but we are keeping it to allow React Testing Library tests to run in browser mode. */
+    setupFiles: ['./test-setup-tlr-cleanup.ts'],
+    testTimeout: 100,
     projects: [
       {
         extends: true,
@@ -51,6 +51,7 @@ export default defineConfig({
           name: 'wide',
           include: wideTests,
           retry: 3,
+          testTimeout: 1_000,
           ...emulatedSharedConfig,
         },
       },
