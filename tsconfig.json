@@ -31,19 +31,22 @@
       "path": "./apps/202-contract-testing-starter"
     },
     {
+      "path": "./apps/301-browser-mode-solution"
+    },
+    {
+      "path": "./apps/301-browser-mode-starter"
+    },
+    {
       "path": "./apps/302-full-browser-mode-solution"
     },
     {
       "path": "./apps/302-full-browser-mode-starter"
     },
     {
+      "path": "./apps/303-page-api-solution"
+    },
+    {
       "path": "./tools"
-    },
-    {
-      "path": "./apps/301-browser-mode-solution"
-    },
-    {
-      "path": "./apps/301-browser-mode-starter"
     }
   ]
 }
