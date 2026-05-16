@@ -7,3 +7,5 @@ allowBuilds:
   nx: true
 
 autoInstallPeers: true
+
+injectWorkspacePackages: true
