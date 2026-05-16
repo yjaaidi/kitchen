@@ -19,6 +19,8 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
+      - uses: nrwl/nx-set-shas@v5
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -38,12 +40,12 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps
+      - run: pnpm playwright install --with-deps
 
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
       # - run: pnpm exec nx record -- echo Hello World
       # When you enable task distribution, run the e2e-ci task instead of e2e
-      - run: pnpm exec nx run-many -t lint test build typecheck e2e
+      - run: pnpm nx affected -t lint test build typecheck e2e
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
-      - run: pnpm exec nx fix-ci
+      - run: pnpm nx fix-ci
         if: always()
