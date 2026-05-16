@@ -8,15 +8,22 @@ class RecipeRepository {
     { keywords, maxIngredientCount }: RecipeFilter = {},
     { signal }: { signal?: AbortSignal } = {},
   ): Promise<Recipe[]> {
-    const params = new URLSearchParams({ embed: 'ingredients' });
+    const url = new URL('https://recipe-api.marmicode.io/recipes');
+    url.searchParams.set('embed', 'ingredients');
     if (keywords) {
-      params.set('q', keywords);
+      url.searchParams.set('q', encodeURIComponent(keywords));
     }
 
-    const response = await fetch(
-      `https://recipe-api.marmicode.io/recipes?${params}`,
-      { signal },
-    );
+    const response = await fetch(url, { signal });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch recipes:
+${url.toString()}
+${response.status} ${response.statusText}
+${JSON.stringify(await response.json(), null, 2)}
+        `);
+    }
+
     const data: RecipeListResponseDto = await response.json();
 
     return data.items

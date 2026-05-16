@@ -26,6 +26,9 @@
     },
     {
       "path": "./apps/201-test-doubles-starter"
+    },
+    {
+      "path": "./apps/202-contract-testing-solution"
     }
   ]
 }
