@@ -4,9 +4,6 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/react-vitest-mini-workshop"
-    },
-    {
       "path": "./apps/101-component-testing-starter"
     },
     {
@@ -44,6 +41,12 @@
     },
     {
       "path": "./apps/303-page-api-solution"
+    },
+    {
+      "path": "./apps/303-page-api-starter"
+    },
+    {
+      "path": "./apps/401-fake-timers-solution"
     },
     {
       "path": "./tools"

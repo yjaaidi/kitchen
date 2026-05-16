@@ -3,7 +3,7 @@ import { describe, expect, it, onTestFinished } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { useMealPlannerStore } from '../meal-planner/meal-planner';
-import { singletonTestingUtils } from '../shared/singleton';
+import { singletonTestingUtils } from '../util/singleton';
 import { createTestQueryClientWrapper, resetStore } from '../testing';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';

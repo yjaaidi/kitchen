@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
+import { defineConfig } from 'vitest/config';
+import type { ProjectConfig } from 'vitest/node';
 import viteConfig from './vite.config.mjs';
-import { ProjectConfig } from 'vitest/node';
 
 const browserTests = ['./**/*.browser.spec.ts', './**/*.browser.spec.tsx'];
 const emulatedTests = [

@@ -19,6 +19,18 @@ const exercises: Exercise[] = [
     id: '202-contract-testing',
     name: '202 - Contract Testing',
   },
+  {
+    id: '301-browser-mode',
+    name: '301 - Browser Mode',
+  },
+  {
+    id: '302-full-browser-mode',
+    name: '302 - Full Browser Mode',
+  },
+  {
+    id: '303-page-api',
+    name: '303 - Page API',
+  },
 ];
 
 export const config: Config = {

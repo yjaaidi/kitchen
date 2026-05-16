@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { defineSingleton } from '../shared/singleton';
+import { defineSingleton } from '../util/singleton';
 import type { Recipe } from './recipe';
 import type { RecipeFilter } from './recipe-filter';
 

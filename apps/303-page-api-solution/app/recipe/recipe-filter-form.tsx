@@ -1,4 +1,5 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { useModel } from '../shared/use-model';
 import type { RecipeFilter } from './recipe-filter';
 import styles from './recipe-filter-form.module.css';
 
@@ -6,8 +7,10 @@ export function RecipeFilterForm(props: {
   filter: RecipeFilter;
   onFilterChange: (filter: RecipeFilter) => void;
 }) {
-  const { onFilterChange } = props;
-  const [filter, setFilter] = useLocalState(props.filter);
+  const { liveValue: filter, setValue } = useModel({
+    initialValue: props.filter,
+    onChange: props.onFilterChange,
+  });
 
   return (
     <div className={styles.filter}>
@@ -55,30 +58,6 @@ export function RecipeFilterForm(props: {
             : Number(value)
           : value || undefined,
     };
-    setFilter(next);
-    onFilterChange(next);
+    setValue(next);
   }
-}
-
-/**
- * Creates a local state that is reset when the prop changes.
- */
-function useLocalState<T>(prop: T): [T, (next: T) => void] {
-  const [localValue, setLocalValue] = useState(prop);
-  const prevPropRef = useRef(prop);
-  const isDirtyRef = useRef(false);
-
-  if (prevPropRef.current !== prop) {
-    prevPropRef.current = prop;
-    isDirtyRef.current = false;
-  }
-
-  /* Local state changed. */
-  return [
-    isDirtyRef.current ? localValue : prop,
-    (next: T) => {
-      isDirtyRef.current = true;
-      setLocalValue(next);
-    },
-  ];
 }

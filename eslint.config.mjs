@@ -58,6 +58,7 @@ export default [
             '**/vitest.config.mts',
             '**/vite.config.mts',
             '**/test-setup-*.ts',
+            '**/testing/**/*.ts',
           ],
         },
       ],
