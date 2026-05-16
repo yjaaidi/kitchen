@@ -1,0 +1,21 @@
+{
+  "name": "@whiskmate/102-props-and-callbacks-solution",
+  "private": true,
+  "type": "module",
+  "scripts": {},
+  "sideEffects": false,
+  "dependencies": {
+    "@react-router/node": "^7.14.2",
+    "@react-router/serve": "^7.14.2",
+    "isbot": "^4.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.14.2"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.14.2",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}
