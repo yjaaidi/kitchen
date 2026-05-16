@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { defineSingleton } from '../shared/singleton';
 import type { Recipe } from './recipe';
 import type { RecipeFilter } from './recipe-filter';
-import { defineSingleton } from '../shared/singleton';
 
 class RecipeRepository {
   async searchRecipes(
@@ -35,6 +35,8 @@ class RecipeRepository {
       );
   }
 }
+
+export type { RecipeRepository };
 
 export const recipeRepositorySingleton = defineSingleton(
   () => new RecipeRepository(),

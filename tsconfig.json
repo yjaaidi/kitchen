@@ -20,6 +20,12 @@
     },
     {
       "path": "./apps/102-props-and-callbacks-starter"
+    },
+    {
+      "path": "./apps/201-test-doubles-solution"
+    },
+    {
+      "path": "./apps/201-test-doubles-starter"
     }
   ]
 }
