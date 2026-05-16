@@ -4,10 +4,10 @@ import type { RecipeFilter } from './recipe-filter';
 import type { RecipeRepository } from './recipe-repository';
 
 export class RecipeRepositoryFake implements Public<RecipeRepository> {
-  private recipes: Recipe[] = [];
+  private _recipes: Recipe[] = [];
 
   configure({ recipes }: { recipes: Recipe[] }): void {
-    this.recipes = [...recipes];
+    this._recipes = [...recipes];
   }
 
   async searchRecipes(
@@ -18,7 +18,7 @@ export class RecipeRepositoryFake implements Public<RecipeRepository> {
       throw new DOMException('Aborted', 'AbortError');
     }
 
-    let results = [...this.recipes];
+    let results = [...this._recipes];
 
     if (keywords) {
       const lowerKeywords = keywords.toLowerCase();
