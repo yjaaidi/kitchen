@@ -1,4 +1,5 @@
 import nx from '@nx/eslint-plugin';
+import * as jsoncParser from 'jsonc-eslint-parser';
 
 export default [
   ...nx.configs['flat/base'],
@@ -28,6 +29,33 @@ export default [
               sourceTag: '*',
               onlyDependOnLibsWithTags: ['*'],
             },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/*.json'],
+    languageOptions: {
+      parser: jsoncParser,
+    },
+    rules: {
+      '@nx/dependency-checks': [
+        'error',
+        {
+          ignoredDependencies: [
+            '@react-router/dev',
+            '@react-router/node',
+            '@react-router/serve',
+            'isbot',
+            'react-dom',
+          ],
+          ignoredFiles: [
+            '**/*.spec.ts',
+            '**/*.spec.tsx',
+            '**/vitest.config.mts',
+            '**/vite.config.mts',
+            '**/test-setup-*.ts',
           ],
         },
       ],
