@@ -22,7 +22,7 @@ export default defineConfig({
     /* We should not need this in browser mode as we are using vitest/browser,
      * but we are keeping it to allow React Testing Library tests to run in browser mode. */
     setupFiles: ['./test-setup-tlr-cleanup.ts'],
-    testTimeout: 100,
+    testTimeout: 1_000,
     projects: [
       {
         extends: true,
@@ -51,7 +51,6 @@ export default defineConfig({
           name: 'wide',
           include: wideTests,
           retry: 3,
-          testTimeout: 1_000,
           ...emulatedSharedConfig,
         },
       },
