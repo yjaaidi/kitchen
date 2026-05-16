@@ -13,9 +13,6 @@
       "path": "./apps/101-component-testing-solution"
     },
     {
-      "path": "./tools"
-    },
-    {
       "path": "./apps/102-props-and-callbacks-solution"
     },
     {
@@ -29,6 +26,24 @@
     },
     {
       "path": "./apps/202-contract-testing-solution"
+    },
+    {
+      "path": "./apps/202-contract-testing-starter"
+    },
+    {
+      "path": "./apps/301-vitest-browser-solution"
+    },
+    {
+      "path": "./apps/301-vitest-browser-starter"
+    },
+    {
+      "path": "./apps/302-full-browser-mode-solution"
+    },
+    {
+      "path": "./apps/302-full-browser-mode-starter"
+    },
+    {
+      "path": "./tools"
     }
   ]
 }
