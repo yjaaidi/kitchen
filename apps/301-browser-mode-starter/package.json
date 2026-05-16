@@ -1,5 +1,5 @@
 {
-  "name": "@whiskmate/301-vitest-browser-solution",
+  "name": "@whiskmate/301-browser-mode-starter",
   "private": true,
   "type": "module",
   "scripts": {},

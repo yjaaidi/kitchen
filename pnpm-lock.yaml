@@ -499,7 +499,7 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.6)
 
-  apps/301-vitest-browser-solution:
+  apps/301-browser-mode-solution:
     dependencies:
       '@react-router/node':
         specifier: 7.15.1
@@ -539,7 +539,7 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.6)
 
-  apps/301-vitest-browser-starter:
+  apps/301-browser-mode-starter:
     dependencies:
       '@react-router/node':
         specifier: 7.15.1
