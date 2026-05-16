@@ -51,6 +51,8 @@ export default [
             'react-dom',
           ],
           ignoredFiles: [
+            '**/*.contract.ts',
+            '**/*.contract.tsx',
             '**/*.spec.ts',
             '**/*.spec.tsx',
             '**/vitest.config.mts',
