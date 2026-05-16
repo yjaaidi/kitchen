@@ -1,12 +1,23 @@
 import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import viteConfig from './vite.config.mjs';
+import { ProjectConfig } from 'vitest/node';
 
 const browserTests = ['./**/*.browser.spec.ts', './**/*.browser.spec.tsx'];
 const emulatedTests = [
-  './**/!(*.browser).spec.ts',
-  './**/!(*.browser).spec.tsx',
+  './**/!(*.(browser|wide)).spec.ts',
+  './**/!(*.(browser|wide)).spec.tsx',
 ];
+const wideTests = ['./**/*.wide.spec.ts', './**/*.wide.spec.tsx'];
+
+const emulatedSharedConfig: ProjectConfig = {
+  environment: 'jsdom',
+  setupFiles: [
+    '@testing-library/jest-dom/vitest',
+    './test-setup-tlr-cleanup.ts',
+  ],
+};
+
 export default defineConfig({
   ...viteConfig,
   test: {
@@ -31,11 +42,16 @@ export default defineConfig({
         test: {
           name: 'emulated',
           include: emulatedTests,
-          environment: 'jsdom',
-          setupFiles: [
-            '@testing-library/jest-dom/vitest',
-            './test-setup-tlr-cleanup.ts',
-          ],
+          ...emulatedSharedConfig,
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'wide',
+          include: wideTests,
+          retry: 3,
+          ...emulatedSharedConfig,
         },
       },
     ],
