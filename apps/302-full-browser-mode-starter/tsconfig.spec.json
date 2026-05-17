@@ -4,10 +4,10 @@
     "outDir": "./out-tsc/vitest",
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "types": [
-      "vitest/importMeta",
-      "vite/client",
       "node",
+      "vite/client",
       "vitest",
+      "vitest/importMeta",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
       "@react-router/node"
