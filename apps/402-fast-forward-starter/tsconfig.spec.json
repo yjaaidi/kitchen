@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/vitest",
+    "types": [
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest",
+      "@nx/react/typings/cssmodule.d.ts",
+      "@nx/react/typings/image.d.ts"
+    ],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "test-setup-*.ts",
+    "vite.config.mts",
+    "vitest.config.mts",
+    "app/**/*.spec.ts",
+    "app/**/*.spec.tsx",
+    "app/**/*.d.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}
