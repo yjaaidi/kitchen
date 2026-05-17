@@ -1,33 +1,33 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { setUpTimeMachine } from '../testing/time-machine';
+import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form';
 
 describe(RecipeFilterForm, () => {
-  it('shows filter values from props', () => {
-    mountRecipeFilterForm({
+  it('shows filter values from props', async () => {
+    const { getInput } = await mountRecipeFilterForm({
       filter: { keywords: 'pasta', maxIngredientCount: 5, maxStepCount: 10 },
     });
 
-    expect(screen.getByLabelText('Keywords')).toHaveValue('pasta');
-    expect(screen.getByLabelText('Max Ingredients')).toHaveValue(5);
-    expect(screen.getByLabelText('Max Steps')).toHaveValue(10);
+    expect(getInput('Keywords')).toHaveValue('pasta');
+    expect(getInput('Max Ingredients')).toHaveValue(5);
+    expect(getInput('Max Steps')).toHaveValue(10);
   });
 
-  it('shows empty inputs when filter fields are undefined', () => {
-    mountRecipeFilterForm();
+  it('shows empty inputs when filter fields are undefined', async () => {
+    const { getInput } = await mountRecipeFilterForm();
 
-    expect(screen.getByLabelText('Keywords')).toHaveValue('');
-    expect(screen.getByLabelText('Max Ingredients')).toHaveValue(null);
-    expect(screen.getByLabelText('Max Steps')).toHaveValue(null);
+    expect(getInput('Keywords')).toHaveValue('');
+    expect(getInput('Max Ingredients')).toHaveValue(null);
+    expect(getInput('Max Steps')).toHaveValue(null);
   });
 
   it('calls onFilterChange with merged keywords as the user types', async () => {
-    const { onFilterChange } = mountRecipeFilterForm();
+    const { onFilterChange, fillInput } = await mountRecipeFilterForm();
 
-    await userEvent.type(screen.getByLabelText('Keywords'), 'soup');
+    await fillInput('Keywords', 'soup');
 
     await expect
       .poll(() => onFilterChange)
@@ -63,11 +63,11 @@ describe(RecipeFilterForm, () => {
   });
 
   it('calls onFilterChange with numeric maxIngredientCount and preserves other fields', async () => {
-    const { onFilterChange } = mountRecipeFilterForm({
+    const { fillInput, onFilterChange } = await mountRecipeFilterForm({
       filter: { keywords: 'pie' },
     });
 
-    await userEvent.type(screen.getByLabelText('Max Ingredients'), '7');
+    await fillInput('Max Ingredients', '7');
 
     await expect
       .poll(() => onFilterChange)
@@ -75,11 +75,11 @@ describe(RecipeFilterForm, () => {
   });
 
   it('sets maxIngredientCount to undefined when the field is cleared', async () => {
-    const { onFilterChange } = mountRecipeFilterForm({
+    const { clearInput, onFilterChange } = await mountRecipeFilterForm({
       filter: { maxIngredientCount: 4 },
     });
 
-    await userEvent.clear(screen.getByLabelText('Max Ingredients'));
+    await clearInput('Max Ingredients');
 
     await expect
       .poll(() => onFilterChange)
@@ -87,11 +87,11 @@ describe(RecipeFilterForm, () => {
   });
 
   it('sets keywords to undefined when the field is cleared', async () => {
-    const { onFilterChange } = mountRecipeFilterForm({
+    const { clearInput, onFilterChange } = await mountRecipeFilterForm({
       filter: { keywords: 'toast' },
     });
 
-    await userEvent.clear(screen.getByLabelText('Keywords'));
+    await clearInput('Keywords');
 
     await expect
       .poll(() => onFilterChange)
@@ -99,10 +99,28 @@ describe(RecipeFilterForm, () => {
   });
 });
 
-function mountRecipeFilterForm({
+async function mountRecipeFilterForm({
   filter = {},
 }: { filter?: RecipeFilter } = {}) {
   const onFilterChange = vi.fn<(recipeFilter: RecipeFilter) => void>();
-  render(<RecipeFilterForm filter={filter} onFilterChange={onFilterChange} />);
-  return { onFilterChange };
+
+  await render(
+    <RecipeFilterForm filter={filter} onFilterChange={onFilterChange} />,
+  );
+
+  const clearInput = (label: FilterInputLabel) =>
+    userEvent.clear(getInput(label));
+  const getInput = (label: FilterInputLabel) => screen.getByLabelText(label);
+
+  return {
+    onFilterChange,
+    getInput,
+    clearInput,
+    fillInput: async (label: FilterInputLabel, text: string) => {
+      await clearInput(label);
+      await userEvent.type(getInput(label), text);
+    },
+  };
 }
+
+type FilterInputLabel = 'Keywords' | 'Max Ingredients' | 'Max Steps';
