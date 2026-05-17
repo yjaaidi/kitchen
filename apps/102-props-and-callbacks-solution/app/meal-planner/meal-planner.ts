@@ -5,7 +5,7 @@ const initialState: State = {
   recipes: [] as Recipe[],
 };
 
-export const stateCreator: StateCreator<MealPlannerStore> = (set, get) => {
+export const _stateCreator: StateCreator<MealPlannerStore> = (set, get) => {
   const canAddRecipe = (recipe: Recipe) => {
     const { recipes } = get();
     return !recipes.some((r) => r.id === recipe.id);
@@ -28,7 +28,7 @@ export const stateCreator: StateCreator<MealPlannerStore> = (set, get) => {
   };
 };
 
-export const useMealPlannerStore = create(stateCreator);
+export const useMealPlannerStore = create(_stateCreator);
 
 interface State {
   recipes: Recipe[];

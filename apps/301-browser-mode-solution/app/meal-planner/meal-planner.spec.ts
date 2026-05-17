@@ -1,12 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createStore } from 'zustand';
 import { recipeMother } from '../recipe/recipe.mother';
-import {
-  stateCreator as _stateCreator,
-  useMealPlannerStore,
-} from './meal-planner';
+import { _stateCreator } from './meal-planner';
 
-describe(useMealPlannerStore.name, () => {
+describe('MealPlannerStore', () => {
   it('adds a recipe', () => {
     const { burger, salad, getState } = setUpMealPlannerStore();
     const { addRecipe } = getState();
