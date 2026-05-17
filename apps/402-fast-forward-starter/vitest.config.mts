@@ -54,6 +54,7 @@ export default defineConfig({
           name: 'wide',
           include: wideTests,
           retry: 3,
+          testTimeout: 1_000,
           ...emulatedSharedConfig,
         },
       },
