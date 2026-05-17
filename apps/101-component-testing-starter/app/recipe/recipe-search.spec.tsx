@@ -2,7 +2,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, onTestFinished } from 'vitest';
 import { useMealPlannerStore } from '../meal-planner/meal-planner';
-import { createTestQueryClientWrapper, resetStore } from '../testing';
+import { resetStore } from '../testing/reset-store';
+import { createTestQueryClientWrapper } from '../testing/test-query-client';
 import { RecipeSearch } from './recipe-search';
 
 describe(RecipeSearch, () => {
