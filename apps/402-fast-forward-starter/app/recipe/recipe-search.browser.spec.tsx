@@ -18,7 +18,7 @@ describe(RecipeSearch, () => {
     await expect.element(recipeTitles.nth(1)).toHaveTextContent('Salad');
   });
 
-  it.fails('filter recipes', async () => {
+  it('filter recipes', async () => {
     const { recipeTitles, typeKeywords } = await setUp();
 
     await typeKeywords('sal');

@@ -37,10 +37,8 @@ describe(RecipeFilterForm, () => {
   });
 
   it('does not call onFilterChange before debounce delay', async () => {
-    const { onFilterChange, keywordsInput, timeMachine } =
-      await mountRecipeFilterForm();
-
-    timeMachine.pause();
+    const timeMachine = setUpTimeMachine();
+    const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
     await keywordsInput.fill('soup');
 
@@ -50,10 +48,8 @@ describe(RecipeFilterForm, () => {
   });
 
   it('calls onFilterChange after debounce delay', async () => {
-    const { onFilterChange, keywordsInput, timeMachine } =
-      await mountRecipeFilterForm();
-
-    timeMachine.pause();
+    const timeMachine = setUpTimeMachine();
+    const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
     await keywordsInput.fill('soup');
 
@@ -106,9 +102,6 @@ describe(RecipeFilterForm, () => {
 async function mountRecipeFilterForm({
   filter = {},
 }: { filter?: RecipeFilter } = {}) {
-  const timeMachine = setUpTimeMachine();
-  timeMachine.fastForward();
-
   const onFilterChange = vi.fn<(recipeFilter: RecipeFilter) => void>();
 
   await render(
@@ -117,7 +110,6 @@ async function mountRecipeFilterForm({
 
   return {
     onFilterChange,
-    timeMachine,
     keywordsInput: page.getByLabelText('Keywords'),
     maxIngredientsInput: page.getByLabelText('Max Ingredients'),
     maxStepsInput: page.getByLabelText('Max Steps'),
