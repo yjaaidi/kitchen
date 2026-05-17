@@ -2,13 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/vitest",
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "types": [
       "vitest/importMeta",
       "vite/client",
       "node",
       "vitest",
       "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts"
+      "@nx/react/typings/image.d.ts",
+      "@react-router/node"
     ],
     "jsx": "react-jsx"
   },
