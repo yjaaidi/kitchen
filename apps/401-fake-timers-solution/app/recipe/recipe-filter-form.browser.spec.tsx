@@ -40,6 +40,8 @@ describe(RecipeFilterForm, () => {
     const timeMachine = setUpTimeMachine();
     const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
+    timeMachine.pause();
+
     await keywordsInput.fill('soup');
 
     await timeMachine.seek(190);

@@ -10,7 +10,7 @@ export function RecipeFilterForm(props: {
   const { liveValue: filter, setValue } = useModel({
     initialValue: props.filter,
     onChange: props.onFilterChange,
-    debounceDelay: 100,
+    debounceDelay: 200,
   });
 
   return (
