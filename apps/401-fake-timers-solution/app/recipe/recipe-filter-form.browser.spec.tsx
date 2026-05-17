@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
+import { setUpTimeMachine } from '../testing/time-machine';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form';
 
@@ -37,11 +38,9 @@ describe(RecipeFilterForm, () => {
 
   it('does not call onFilterChange before debounce delay', async () => {
     const timeMachine = setUpTimeMachine();
-    const { onFilterChange } = mountRecipeFilterForm();
+    const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
-    await userEvent.type(screen.getByLabelText('Keywords'), 'soup', {
-      delay: null,
-    });
+    await keywordsInput.fill('soup');
 
     await timeMachine.seek(190);
 
@@ -50,11 +49,9 @@ describe(RecipeFilterForm, () => {
 
   it('calls onFilterChange after debounce delay', async () => {
     const timeMachine = setUpTimeMachine();
-    const { onFilterChange } = mountRecipeFilterForm();
+    const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
-    await userEvent.type(screen.getByLabelText('Keywords'), 'soup', {
-      delay: null,
-    });
+    await keywordsInput.fill('soup');
 
     await timeMachine.seek(210);
 
