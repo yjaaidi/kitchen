@@ -43,7 +43,7 @@ describe(RecipeFilterForm, () => {
       delay: null,
     });
 
-    await timeMachine.seek(90);
+    await timeMachine.seek(190);
 
     expect(onFilterChange).not.toHaveBeenCalled();
   });
@@ -57,7 +57,7 @@ describe(RecipeFilterForm, () => {
       delay: null,
     });
 
-    await timeMachine.seek(110);
+    await timeMachine.seek(210);
 
     expect(onFilterChange).toHaveBeenCalledExactlyOnceWith({
       keywords: 'soup',
