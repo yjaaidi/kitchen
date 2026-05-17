@@ -49,6 +49,9 @@
       "path": "./apps/401-fake-timers-solution"
     },
     {
+      "path": "./apps/401-fake-timers-starter"
+    },
+    {
       "path": "./tools"
     }
   ]

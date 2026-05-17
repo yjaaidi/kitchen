@@ -31,6 +31,10 @@ const exercises: Exercise[] = [
     id: '303-page-api',
     name: '303 - Page API',
   },
+  {
+    id: '401-fake-timers',
+    name: '401 - Fake Timers',
+  },
 ];
 
 export const config: Config = {
