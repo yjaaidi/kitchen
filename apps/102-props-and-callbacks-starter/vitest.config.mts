@@ -21,7 +21,7 @@ export default defineConfig({
     watch: false,
     /* We should not need this in browser mode as we are using vitest/browser,
      * but we are keeping it to allow React Testing Library tests to run in browser mode. */
-    setupFiles: ['./test-setup-tlr-cleanup.ts'],
+    setupFiles: ['./test-setup-testing-library.ts'],
     testTimeout: 1_000,
     projects: [
       {
