@@ -15,7 +15,7 @@ const emulatedSharedConfig: ProjectConfig = {
   setupFiles: ['@testing-library/jest-dom/vitest'],
 };
 
-const TIMEOUT = 100;
+const TIMEOUT = process.env.CI ? 200 : 100;
 
 export default defineConfig({
   ...viteConfig,
