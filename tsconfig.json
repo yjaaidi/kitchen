@@ -52,13 +52,13 @@
       "path": "./apps/401-fake-timers-starter"
     },
     {
-      "path": "./tools"
-    },
-    {
       "path": "./apps/402-fast-forward-solution"
     },
     {
       "path": "./apps/402-fast-forward-starter"
+    },
+    {
+      "path": "./tools"
     }
   ]
 }

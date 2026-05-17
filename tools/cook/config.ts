@@ -35,6 +35,10 @@ const exercises: Exercise[] = [
     id: '401-fake-timers',
     name: '401 - Fake Timers',
   },
+  {
+    id: '402-fast-forward',
+    name: '402 - Fast Forward',
+  },
 ];
 
 export const config: Config = {
