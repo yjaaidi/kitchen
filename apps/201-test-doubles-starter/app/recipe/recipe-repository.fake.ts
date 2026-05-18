@@ -4,16 +4,35 @@ import type { RecipeFilter } from './recipe-filter';
 import type { RecipeRepository } from './recipe-repository';
 
 export class RecipeRepositoryFake implements Public<RecipeRepository> {
+  private _recipes: Recipe[] = [];
+
   configure({ recipes }: { recipes: Recipe[] }): void {
-    // TODO: configure the fake repository with some recipes
-    throw new Error('🚧 Work in progress!');
+    this._recipes = [...recipes];
   }
 
-  async searchRecipes({
-    keywords,
-    maxIngredientCount,
-  }: RecipeFilter = {}): Promise<Recipe[]> {
-    // TODO: filter recipes by keywords and maxIngredientCount
-    throw new Error('🚧 Work in progress!');
+  async searchRecipes(
+    { keywords, maxIngredientCount }: RecipeFilter = {},
+    { signal }: { signal?: AbortSignal } = {},
+  ): Promise<Recipe[]> {
+    if (signal?.aborted) {
+      throw new DOMException('Aborted', 'AbortError');
+    }
+
+    let results = [...this._recipes];
+
+    if (keywords) {
+      const lowerKeywords = keywords.toLowerCase();
+      results = results.filter((r) =>
+        r.name.toLowerCase().includes(lowerKeywords),
+      );
+    }
+
+    if (maxIngredientCount != null) {
+      results = results.filter(
+        (r) => r.ingredients.length <= maxIngredientCount,
+      );
+    }
+
+    return results;
   }
 }
