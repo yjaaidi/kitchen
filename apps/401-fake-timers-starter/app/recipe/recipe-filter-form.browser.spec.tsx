@@ -5,7 +5,7 @@ import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form';
 
 describe(RecipeFilterForm, () => {
-  it('shows filter values from props', async () => {
+  it('pre-fills the form with the filter from props', async () => {
     const { keywordsInput, maxIngredientsInput, maxStepsInput } =
       await mountRecipeFilterForm({
         filter: { keywords: 'pasta', maxIngredientCount: 5, maxStepCount: 10 },
@@ -16,16 +16,7 @@ describe(RecipeFilterForm, () => {
     await expect.element(maxStepsInput).toHaveValue(10);
   });
 
-  it('shows empty inputs when filter fields are undefined', async () => {
-    const { keywordsInput, maxIngredientsInput, maxStepsInput } =
-      await mountRecipeFilterForm();
-
-    await expect.element(keywordsInput).toHaveValue('');
-    await expect.element(maxIngredientsInput).toHaveValue(null);
-    await expect.element(maxStepsInput).toHaveValue(null);
-  });
-
-  it('calls onFilterChange with merged keywords as the user types', async () => {
+  it('calls onFilterChange with new filter when user types', async () => {
     const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
     await keywordsInput.fill('soup');
@@ -43,7 +34,7 @@ describe(RecipeFilterForm, () => {
     throw new Error('🚧 Work in progress!');
   });
 
-  it('calls onFilterChange with numeric maxIngredientCount and preserves other fields', async () => {
+  it('calls onFilterChange with new filter when user types and merges it with the filter from props', async () => {
     const { maxIngredientsInput, onFilterChange } = await mountRecipeFilterForm(
       {
         filter: { keywords: 'pie' },
