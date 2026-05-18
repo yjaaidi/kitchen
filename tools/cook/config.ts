@@ -1,11 +1,14 @@
 import { type Config, type Exercise } from './core.ts';
 
-const files = {};
+const files = {
+  recipeSearch: 'app/recipe/recipe-search.tsx',
+};
 
 const exercises: Exercise[] = [
   {
     id: '101-component-testing',
     name: '101 - Component Testing',
+    implementationFiles: [files.recipeSearch],
   },
   {
     id: '102-props-and-callbacks',
