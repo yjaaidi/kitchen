@@ -10,7 +10,7 @@
     "cook": "node --experimental-strip-types tools/cook/main.ts",
     "e2e": "nx e2e",
     "reset": "rm -rf node_modules/.vite; nx reset",
-    "verify": "nx run-many -t test"
+    "verify": "CI=1 nx run-many -t test"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +53,7 @@
     "@vitest/browser-playwright": "4.1.6",
     "@vitest/coverage-v8": "4.1.6",
     "@vitest/ui": "4.1.6",
+    "cross-env": "10.1.0",
     "enquirer": "^2.4.1",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
