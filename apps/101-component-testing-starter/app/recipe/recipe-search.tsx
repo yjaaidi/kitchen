@@ -10,20 +10,5 @@ export function RecipeSearch() {
   const [filter, setFilter] = useState<RecipeFilter>({});
   const { data: recipes, isLoading } = useSearchRecipes(filter);
 
-  return (
-    <>
-      <RecipeFilterForm filter={filter} onFilterChange={setFilter} />
-      <Catalog>
-        {isLoading ? (
-          <div role="status">Loading...</div>
-        ) : (
-          recipes?.map((recipe) => (
-            <RecipePreview key={recipe.id} recipe={recipe}>
-              <RecipeAddButton recipe={recipe} />
-            </RecipePreview>
-          ))
-        )}
-      </Catalog>
-    </>
-  );
+  return <p>RecipeSearch: 🚧 Work in progress!</p>;
 }

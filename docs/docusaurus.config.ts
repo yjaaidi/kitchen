@@ -44,7 +44,6 @@ const config: Config = {
           path: 'instructions',
           routeBasePath: '',
           sidebarPath: './sidebars.ts',
-          exclude: ['**/legacy/**'],
         },
         theme: {
           customCss: './src/css/custom.css',
