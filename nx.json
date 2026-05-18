@@ -61,14 +61,6 @@
       }
     },
     {
-      "plugin": "@nx/vitest",
-      "options": {
-        "testTargetName": "test",
-        "ciTargetName": "test-ci",
-        "testMode": "watch"
-      }
-    },
-    {
       "plugin": "@nx/playwright/plugin",
       "options": {
         "targetName": "e2e"
