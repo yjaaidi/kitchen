@@ -1,11 +1,18 @@
 packages:
   - 'apps/*'
+  - 'docs'
 
 allowBuilds:
   '@swc/core': true
+  core-js: true
+  core-js-pure: true
   esbuild: true
   nx: true
 
 autoInstallPeers: true
 
 injectWorkspacePackages: true
+
+# webpackbar@6 replaces ProgressPlugin#options and breaks webpack 5.106+ schema validation; v7 fixes it.
+overrides:
+  webpackbar: 7.0.0
