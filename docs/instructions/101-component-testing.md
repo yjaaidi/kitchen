@@ -51,7 +51,9 @@ Note that the remote HTTP API returns a Burger and a Salad but might return othe
 
 :::
 
-#### 4. [optional] Checkout the implementation if you've opted for TDD option:
+#### 4. Turn on the test by replacing `it.todo` with `it`.
+
+#### 5. [optional] Checkout the implementation if you've opted for TDD option:
 
 ```sh
 pnpm cook checkout-impl
@@ -61,7 +63,7 @@ pnpm cook checkout-impl
 
 Typing in the keywords field should trigger a new search and update the list.
 
-**Implement** a test that simulates typing keywords and asserts that only the matching recipe(s) remain visible.
+**Implement** a test that types in the keywords field and asserts that only the matching recipe(s) remain visible.
 
 ### 📝 Steps
 
@@ -77,7 +79,9 @@ pnpm test
 
 #### 4. Assert that only the matching recipe(s) remain visible.
 
-#### 5. [optional] Checkout the implementation if you've opted for TDD option:
+#### 5. Turn on the test by replacing `it.todo` with `it`.
+
+#### 6. [optional] Checkout the implementation if you've opted for TDD option:
 
 ```sh
 pnpm cook checkout-impl
@@ -105,7 +109,9 @@ Note that each recipe has an **ADD** button _(aria role: `button`)_.
 
 You might need to use `within` to scope the query to the recipe card. (See [Tip: scoping with `within`](#-tip-scoping-with-within))
 
-#### 4. [optional] Checkout the implementation if you've opted for TDD option:
+#### 4. Turn on the test by replacing `it.todo` with `it`.
+
+#### 5. [optional] Checkout the implementation if you've opted for TDD option:
 
 ```sh
 pnpm cook checkout-impl
