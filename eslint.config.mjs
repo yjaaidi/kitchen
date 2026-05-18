@@ -44,6 +44,8 @@ export default [
         'error',
         {
           ignoredDependencies: [
+            '@docusaurus/core',
+            '@docusaurus/types',
             '@react-router/dev',
             '@react-router/node',
             '@react-router/serve',
