@@ -16,9 +16,9 @@ export function applyRecipeRepositoryContract(
 
   test('filters recipes', async () => {
     const { repository } = await setUp();
-    const recipes = await lastValueFrom(repository.search({ keywords: 'bur' }));
+    const recipes = await lastValueFrom(repository.search({ keywords: 'sal' }));
     expect.soft(recipes).toHaveLength(1);
-    expect.soft(recipes[0].name).toBe('Burger');
+    expect.soft(recipes[0].name).toBe('Salad');
   });
 
   test('return empty array if no recipes are found', async () => {
