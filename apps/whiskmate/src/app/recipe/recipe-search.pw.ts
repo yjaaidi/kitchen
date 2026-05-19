@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { test as base, expect } from '@testronaut/angular';
+import { expect } from '@testronaut/angular';
+import { test as base } from '@testronaut/core';
+import { mount } from '@testronaut/angular/browser';
 import { MealPlanner } from '../meal-planner/meal-planner';
 import { Recipe } from './recipe';
 import {
@@ -17,9 +19,9 @@ interface MountRecipeSearch {
 const test = base.extend<{
   mountRecipeSearch: () => Promise<MountRecipeSearch>;
 }>({
-  mountRecipeSearch: async ({ mount, runInBrowser }, use) => {
+  mountRecipeSearch: async ({ inPage }, use) => {
     const _mountRecipeSearch = async () => {
-      await runInBrowser('configure', () => {
+      await inPage(() => {
         TestBed.configureTestingModule({
           providers: [provideRecipeRepositoryFake()],
         });
@@ -32,22 +34,16 @@ const test = base.extend<{
         });
       });
 
-      await mount(RecipeSearch);
+      await inPage(() => mount(RecipeSearch));
 
       return {
         getMealPlannerRecipes: () =>
-          runInBrowser('get MealPlanner recipes', () =>
-            TestBed.inject(MealPlanner).recipes(),
-          ),
+          inPage(() => TestBed.inject(MealPlanner).recipes()),
         addRecipeToMealPlanner: (recipe: Recipe) =>
-          runInBrowser(
-            'add Recipe to MealPlanner',
-            { recipe },
-            ({ recipe }) => {
-              const mealPlanner = TestBed.inject(MealPlanner);
-              return mealPlanner.addRecipe(recipe);
-            },
-          ),
+          inPage({ recipe }, ({ recipe }) => {
+            const mealPlanner = TestBed.inject(MealPlanner);
+            return mealPlanner.addRecipe(recipe);
+          }),
       };
     };
 

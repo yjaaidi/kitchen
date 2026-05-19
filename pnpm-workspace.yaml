@@ -1,3 +1,12 @@
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  '@swc/core': set this to true or false
+  esbuild: set this to true or false
+  lmdb: set this to true or false
+  msgpackr-extract: set this to true or false
+  nx: set this to true or false
+  unrs-resolver: set this to true or false
+
 autoInstallPeers: true
 
 onlyBuiltDependencies:
