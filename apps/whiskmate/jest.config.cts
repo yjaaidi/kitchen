@@ -2,7 +2,7 @@ const { swcAngularJestTransformer } = require('@jscutlery/swc-angular');
 
 module.exports = {
   displayName: 'whiskmate',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.cjs',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup-jest.ts'],
   testMatch: ['**/+(*.)+(jest).+(ts|js)?(x)'],
   coverageDirectory: '../../coverage/apps/whiskmate',
