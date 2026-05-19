@@ -1,0 +1,2 @@
+description = "Get the next hint for the current exercise"
+prompt = "Give me a hint by following instructions from @{AGENTS.md}"
