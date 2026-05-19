@@ -1,6 +1,7 @@
 import { type Config, type Exercise } from './core.ts';
 
 const files = {
+  recipeFilterForm: 'app/recipe/recipe-filter-form.tsx',
   recipeSearch: 'app/recipe/recipe-search.tsx',
 };
 
@@ -37,6 +38,7 @@ const exercises: Exercise[] = [
   {
     id: '401-fake-timers',
     name: '401 - Fake Timers',
+    implementationFiles: [files.recipeFilterForm],
   },
   {
     id: '402-fast-forward',
