@@ -11,7 +11,10 @@ export function RecipePreview({
   children?: ReactNode;
 }) {
   return (
-    <Card pictureUri={recipe.pictureUri} role="article">
+    <Card
+      picture={{ alt: `${recipe.name} picture`, uri: recipe.pictureUri }}
+      role="article"
+    >
       <h2 className={styles.name}>{recipe.name}</h2>
       {children}
     </Card>

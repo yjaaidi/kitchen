@@ -2,17 +2,22 @@ import { ReactNode } from 'react';
 import styles from './card.module.css';
 
 export function Card({
-  pictureUri,
+  picture,
   role,
   children,
 }: {
-  pictureUri?: string;
+  picture?: {
+    alt: string;
+    uri: string;
+  };
   role?: string;
   children: ReactNode;
 }) {
   return (
     <div className={styles.card} role={role}>
-      {pictureUri && <img className={styles.picture} src={pictureUri} alt="" />}
+      {picture && (
+        <img alt={picture.alt} className={styles.picture} src={picture.uri} />
+      )}
       <div className={styles.content}>{children}</div>
     </div>
   );
