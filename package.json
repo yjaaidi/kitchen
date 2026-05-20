@@ -52,6 +52,7 @@
     "@vitejs/plugin-react": "^6.0.0",
     "@vitest/browser-playwright": "4.1.6",
     "@vitest/coverage-v8": "4.1.6",
+    "@vitest/eslint-plugin": "1.6.17",
     "@vitest/ui": "4.1.6",
     "cross-env": "10.1.0",
     "enquirer": "^2.4.1",
