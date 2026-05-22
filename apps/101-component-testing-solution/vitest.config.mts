@@ -17,7 +17,11 @@ const emulatedSharedConfig: ProjectConfig = {
 
 export default defineConfig({
   ...viteConfig,
+  define: {
+    'process.env.RTL_SKIP_AUTO_CLEANUP': '1',
+  },
   test: {
+    globals: true,
     watch: false,
     /* We should not need this in browser mode as we are using vitest/browser,
      * but we are keeping it to allow React Testing Library tests to run in browser mode. */
