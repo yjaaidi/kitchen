@@ -1,43 +1,49 @@
-import { create, StateCreator } from 'zustand';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Recipe } from '../recipe/recipe';
+import { reset } from '../shared/shared.actions';
 
-const initialState: State = {
-  recipes: [] as Recipe[],
+const initialState: MealPlannerState = {
+  recipes: [],
 };
 
-export const _stateCreator: StateCreator<MealPlannerStore> = (set, get) => {
-  const canAddRecipe = (recipe: Recipe) => {
-    const { recipes } = get();
-    return !recipes.some((r) => r.id === recipe.id);
-  };
-
-  return {
-    ...initialState,
-    addRecipe(recipe) {
-      const { recipes } = get();
-      if (!canAddRecipe(recipe)) {
-        throw new Error('Recipe already added');
-      }
-      set({ recipes: [...recipes, recipe] });
-    },
-    canAddRecipe,
-    removeRecipe(recipe) {
-      const { recipes } = get();
-      set({ recipes: recipes.filter((r) => r.id !== recipe.id) });
-    },
-  };
-};
-
-export const useMealPlannerStore = create(_stateCreator);
-
-interface State {
+export interface MealPlannerState {
   recipes: Recipe[];
 }
 
-interface Actions {
-  addRecipe: (recipe: Recipe) => void;
-  canAddRecipe: (recipe: Recipe) => boolean;
-  removeRecipe: (recipe: Recipe) => void;
-}
+export const mealPlannerSlice = createSlice({
+  name: 'mealPlanner',
+  initialState,
+  reducers: {
+    addRecipe(state, action: PayloadAction<Recipe>) {
+      const recipe = action.payload;
+      if (state.recipes.some((r) => r.id === recipe.id)) {
+        throw new Error('Recipe already added');
+      }
+      return {
+        ...state,
+        recipes: [...state.recipes, recipe],
+      };
+    },
+    removeRecipe(state, action: PayloadAction<Recipe>) {
+      return {
+        ...state,
+        recipes: state.recipes.filter((r) => r.id !== action.payload.id),
+      };
+    },
+  },
+  selectors: {
+    selectRecipes: (state) => state.recipes,
+    selectCanAddRecipe: (state, recipe: Recipe) =>
+      !state.recipes.some((r) => r.id === recipe.id),
+  },
+  extraReducers: (builder) => {
+    builder.addCase(reset, () => mealPlannerSlice.getInitialState());
+  },
+});
 
-type MealPlannerStore = State & Actions;
+export const { addRecipe, removeRecipe } = mealPlannerSlice.actions;
+export const { selectRecipes, selectCanAddRecipe } = mealPlannerSlice.selectors;
+
+export const mealPlannerRootReducer = {
+  [mealPlannerSlice.reducerPath]: mealPlannerSlice.reducer,
+};

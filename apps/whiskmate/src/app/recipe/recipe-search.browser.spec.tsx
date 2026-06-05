@@ -1,15 +1,16 @@
+import { Provider } from 'react-redux';
 import { describe, expect, it, onTestFinished } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import { useMealPlannerStore } from '../meal-planner/meal-planner';
-import { singletonTestingUtils } from '../util/singleton';
+import { reset } from '../shared/shared.actions';
+import { store } from '../store';
 import { createTestQueryClientWrapper } from '../testing/test-query-client';
-import { resetStore } from '../testing/reset-store';
+import { setUpTimeMachine } from '../testing/time-machine';
+import { singletonTestingUtils } from '../util/singleton';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
-import { setUpTimeMachine } from '../testing/time-machine';
 
 describe(RecipeSearch, () => {
   it('shows all recipes', async () => {
@@ -53,11 +54,17 @@ async function setUp() {
 
   onTestFinished(() => {
     singletonTestingUtils.reset();
-    resetStore(useMealPlannerStore);
+    store.dispatch(reset());
   });
 
+  const QueryClientWrapper = createTestQueryClientWrapper();
+
   await render(<RecipeSearch />, {
-    wrapper: createTestQueryClientWrapper(),
+    wrapper: ({ children }) => (
+      <Provider store={store}>
+        <QueryClientWrapper>{children}</QueryClientWrapper>
+      </Provider>
+    ),
   });
 
   const recipePreviews = page.getByRole('article');
@@ -73,7 +80,7 @@ async function setUp() {
     },
     recipePreviews,
     recipeTitles: recipePreviews.getByRole('heading'),
-    getMealPlannerRecipes: () => useMealPlannerStore.getState().recipes,
+    getMealPlannerRecipes: () => store.getState().mealPlanner.recipes,
     typeKeywords: async (keywords: string) =>
       page.getByLabelText('Keywords').fill(keywords),
   };

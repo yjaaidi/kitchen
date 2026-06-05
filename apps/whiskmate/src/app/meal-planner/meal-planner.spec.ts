@@ -1,67 +1,71 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { describe, expect, it } from 'vitest';
-import { createStore } from 'zustand';
 import { recipeMother } from '../recipe/recipe.mother';
-import { _stateCreator } from './meal-planner';
+import {
+  addRecipe,
+  mealPlannerRootReducer,
+  removeRecipe,
+  selectCanAddRecipe,
+} from './meal-planner';
 
 describe('MealPlannerStore', () => {
   it('adds a recipe', () => {
-    const { burger, salad, getState } = setUpMealPlannerStore();
-    const { addRecipe } = getState();
+    const { burger, salad, dispatch, getState } = setUpMealPlannerStore();
 
-    addRecipe(burger);
-    addRecipe(salad);
+    dispatch(addRecipe(burger));
+    dispatch(addRecipe(salad));
 
-    expect(getState().recipes).toMatchObject([
+    expect(getState().mealPlanner.recipes).toMatchObject([
       { name: 'Burger' },
       { name: 'Salad' },
     ]);
   });
 
   it('cannot add a recipe that already exists', () => {
-    const { burger, burgerClone, getState } = setUpMealPlannerStore();
-    const { addRecipe } = getState();
+    const { burger, burgerClone, dispatch } = setUpMealPlannerStore();
 
-    addRecipe(burger);
+    dispatch(addRecipe(burger));
 
-    expect(() => addRecipe(burgerClone)).toThrow();
+    expect(() => dispatch(addRecipe(burgerClone))).toThrow();
   });
 
   it('tells if a recipe can be added', () => {
-    const { burger, salad, getState } = setUpMealPlannerStore();
-    const { addRecipe, canAddRecipe } = getState();
+    const { burger, salad, dispatch, getState } = setUpMealPlannerStore();
 
-    addRecipe(burger);
+    dispatch(addRecipe(burger));
 
-    expect(canAddRecipe(salad)).toBe(true);
+    expect(selectCanAddRecipe(getState(), salad)).toBe(true);
   });
 
   it("tells if a recipe can't be added", () => {
-    const { burger, getState } = setUpMealPlannerStore();
-    const { addRecipe, canAddRecipe } = getState();
+    const { burger, dispatch, getState } = setUpMealPlannerStore();
 
-    addRecipe(burger);
+    dispatch(addRecipe(burger));
 
-    expect(canAddRecipe(burger)).toBe(false);
+    expect(selectCanAddRecipe(getState(), burger)).toBe(false);
   });
 
   it('removes a recipe', () => {
-    const { burger, salad, getState } = setUpMealPlannerStore();
-    const { addRecipe, removeRecipe } = getState();
+    const { burger, salad, dispatch, getState } = setUpMealPlannerStore();
 
-    addRecipe(burger);
-    addRecipe(salad);
-    removeRecipe(burger);
+    dispatch(addRecipe(burger));
+    dispatch(addRecipe(salad));
+    dispatch(removeRecipe(burger));
 
-    expect(getState().recipes).toMatchObject([{ name: 'Salad' }]);
+    expect(getState().mealPlanner.recipes).toMatchObject([{ name: 'Salad' }]);
   });
 });
 
 function setUpMealPlannerStore() {
-  const store = createStore(_stateCreator);
+  const store = configureStore({
+    reducer: mealPlannerRootReducer,
+  });
+
   return {
     burger: recipeMother.withBasicInfo('Burger').build(),
     burgerClone: recipeMother.withBasicInfo('Burger').build(),
     salad: recipeMother.withBasicInfo('Salad').build(),
+    dispatch: store.dispatch,
     getState: () => store.getState(),
   };
 }
