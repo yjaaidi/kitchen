@@ -1,11 +1,9 @@
+import { act, render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { describe, expect, it, onTestFinished } from 'vitest';
-import { render } from 'vitest-browser-react';
-import { page } from 'vitest/browser';
 import { reset } from '../shared/shared.actions';
 import { store } from '../store';
 import { createTestQueryClientWrapper } from '../testing/test-query-client';
-import { setUpTimeMachine } from '../testing/time-machine';
 import { singletonTestingUtils } from '../util/singleton';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
@@ -13,20 +11,30 @@ import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
 
 describe(RecipeSearch, () => {
-  it('shows all recipes', async () => {
-    const { recipeTitles } = await setUp();
+  afterEach(() => {
+    singletonTestingUtils.reset();
+    act(() => store.dispatch(reset()));
+  });
 
-    await expect.element(recipeTitles).toHaveLength(2);
-    await expect.element(recipeTitles.nth(0)).toHaveTextContent('Burger');
-    await expect.element(recipeTitles.nth(1)).toHaveTextContent('Salad');
+  it('shows all recipes', async () => {
+    const { findRecipeTitles } = await setUp();
+
+    const recipeTitles = await findRecipeTitles();
+    expect(recipeTitles).toHaveLength(2);
+    expect(recipeTitles[0]).toHaveTextContent('Burger');
+    expect(recipeTitles[1]).toHaveTextContent('Salad');
   });
 
   it('filter recipes', async () => {
-    const { recipeTitles, typeKeywords } = await setUp();
+    const { typeKeywords, findRecipeTitles } = await setUp();
 
     await typeKeywords('sal');
 
-    await expect.element(recipeTitles).toHaveTextContent('Salad');
+    await waitFor(async () => {
+      const recipeTitles = await findRecipeTitles();
+      expect(recipeTitles).toHaveLength(1);
+      expect(recipeTitles[0]).toHaveTextContent('Salad');
+    });
   });
 
   it('adds "burger" to meal planner when clicking on "ADD" button', async () => {
@@ -39,8 +47,6 @@ describe(RecipeSearch, () => {
 });
 
 async function setUp() {
-  setUpTimeMachine().fastForward();
-
   singletonTestingUtils.override(recipeRepositorySingleton, () => {
     const fake = new RecipeRepositoryFake();
     fake.configure({
@@ -52,14 +58,9 @@ async function setUp() {
     return fake;
   });
 
-  onTestFinished(() => {
-    singletonTestingUtils.reset();
-    store.dispatch(reset());
-  });
-
   const QueryClientWrapper = createTestQueryClientWrapper();
 
-  await render(<RecipeSearch />, {
+  render(<RecipeSearch />, {
     wrapper: ({ children }) => (
       <Provider store={store}>
         <QueryClientWrapper>{children}</QueryClientWrapper>
@@ -67,21 +68,26 @@ async function setUp() {
     ),
   });
 
-  const recipePreviews = page.getByRole('article');
-
   return {
     clickAddOnRecipeWithName: async (name: string) => {
-      await recipePreviews
-        .filter({
-          has: page.getByRole('heading', { name }),
-        })
-        .getByRole('button', { name: 'ADD' })
-        .click();
+      const recipePreviews = await screen.findAllByRole('article');
+      const recipePreview = recipePreviews.find(
+        (preview) => within(preview).queryByRole('heading', { name }) != null,
+      );
+      if (!recipePreview) {
+        throw new Error(`Recipe "${name}" not found`);
+      }
+      await act(async () =>
+        userEvent.click(
+          within(recipePreview).getByRole('button', { name: 'ADD' }),
+        ),
+      );
     },
-    recipePreviews,
-    recipeTitles: recipePreviews.getByRole('heading'),
+    findRecipeTitles: () => screen.findAllByRole('heading'),
     getMealPlannerRecipes: () => store.getState().mealPlanner.recipes,
-    typeKeywords: async (keywords: string) =>
-      page.getByLabelText('Keywords').fill(keywords),
+    typeKeywords: async (keywords: string) => {
+      const input = await screen.findByLabelText('Keywords');
+      await userEvent.type(input, keywords);
+    },
   };
 }

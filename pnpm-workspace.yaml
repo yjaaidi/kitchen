@@ -5,6 +5,7 @@ autoInstallPeers: true
 allowBuilds:
   '@swc/core': true
   nx: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@nx/devkit@23.0.0-beta.23'
   - '@nx/eslint@23.0.0-beta.23'

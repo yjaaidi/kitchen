@@ -4,6 +4,7 @@
     "outDir": "./out-tsc/vitest",
     "lib": ["DOM"],
     "types": [
+      "jest",
       "vitest/globals",
       "vitest/importMeta",
       "vite/client",
@@ -15,18 +16,16 @@
     "jsx": "react-jsx"
   },
   "include": [
+    "jest-setup.ts",
     "vite.config.ts",
     "vite.config.mts",
     "vitest.config.ts",
     "vitest.config.mts",
-    "src/**/*.test.ts",
+    "src/**/*.contract.ts",
+    "src/**/*.jest.ts",
+    "src/**/*.jest.tsx",
     "src/**/*.spec.ts",
-    "src/**/*.test.tsx",
     "src/**/*.spec.tsx",
-    "src/**/*.test.js",
-    "src/**/*.spec.js",
-    "src/**/*.test.jsx",
-    "src/**/*.spec.jsx",
     "src/**/*.d.ts"
   ],
   "references": [
