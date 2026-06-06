@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it } from 'vitest';
 import { RecipeRepository } from './recipe-repository';
 
 export function verifyRecipeRepositoryContract(

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import { recipeMother } from '../recipe/recipe.mother';
 import {
