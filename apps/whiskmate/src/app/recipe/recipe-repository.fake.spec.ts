@@ -1,3 +1,4 @@
+import { describe } from "vitest";
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { verifyRecipeRepositoryContract } from './recipe-repository.contract';
 import { recipeMother } from './recipe.mother';

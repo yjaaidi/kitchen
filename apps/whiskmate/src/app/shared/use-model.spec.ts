@@ -1,8 +1,9 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook } from '@testing-library/react';
 import { useModel } from './use-model';
 
 afterEach(() => {
-  jest.useRealTimers();
+  vi.useRealTimers();
 });
 
 describe(useModel, () => {
@@ -24,7 +25,7 @@ describe(useModel, () => {
   });
 
   it('updates the debounced value after delay', async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const { result } = await renderUseModel({
       initialValue: 'initial',
       debounceDelay: 100,
@@ -32,21 +33,21 @@ describe(useModel, () => {
 
     act(() => result.current.setValue('changed'));
 
-    await act(() => jest.advanceTimersByTimeAsync(100));
+    await act(() => vi.advanceTimersByTimeAsync(100));
 
     expect(result.current.liveValue).toBe('changed');
     expect(result.current.debouncedValue).toBe('changed');
   });
 
   it('resets values when the initial value changes', async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const { rerender, result } = await renderUseModel({
       initialValue: 'initial',
       debounceDelay: 100,
     });
 
     act(() => result.current.setValue('changed'));
-    await act(() => jest.advanceTimersByTimeAsync(50));
+    await act(() => vi.advanceTimersByTimeAsync(50));
 
     rerender({ initialValue: 'reset' });
 
@@ -56,35 +57,35 @@ describe(useModel, () => {
 
   describe('onChange', () => {
     it('triggers onChange callback once after debounce delay', async () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
 
       const { onChangeSpy, result } = await renderUseModel({
         initialValue: 'initial',
         debounceDelay: 100,
       });
       act(() => result.current.setValue('changed'));
-      await act(() => jest.advanceTimersByTimeAsync(50));
+      await act(() => vi.advanceTimersByTimeAsync(50));
       act(() => result.current.setValue('changed again'));
 
-      await act(() => jest.advanceTimersByTimeAsync(200));
+      await act(() => vi.advanceTimersByTimeAsync(200));
 
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith('changed again');
     });
 
     it('interrupts `onChange` callback if the initial value changes', async () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
 
       const { rerender, onChangeSpy, result } = await renderUseModel({
         initialValue: 'initial',
         debounceDelay: 100,
       });
       act(() => result.current.setValue('changed'));
-      await act(() => jest.advanceTimersByTimeAsync(50));
+      await act(() => vi.advanceTimersByTimeAsync(50));
 
       rerender({ initialValue: 'reset' });
 
-      await act(() => jest.advanceTimersByTimeAsync(200));
+      await act(() => vi.advanceTimersByTimeAsync(200));
 
       expect(onChangeSpy).not.toHaveBeenCalled();
     });
@@ -98,7 +99,7 @@ async function renderUseModel({
   initialValue: string;
   debounceDelay?: number;
 }) {
-  const onChangeSpy = jest.fn();
+  const onChangeSpy = vi.fn();
 
   const utils = renderHook(
     (
