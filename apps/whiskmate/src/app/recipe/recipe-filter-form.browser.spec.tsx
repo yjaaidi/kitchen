@@ -1,124 +1,116 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { act, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { page } from 'vitest/browser';
+import { setUpTimeMachine } from '../testing/time-machine';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form';
 
-afterEach(() => {
-  vi.useRealTimers();
-});
-
 describe(RecipeFilterForm, () => {
   it('pre-fills the form with the filter from props', async () => {
-    await mountRecipeFilterForm({
-      filter: { keywords: 'pasta', maxIngredientCount: 5, maxStepCount: 10 },
-    });
+    const { keywordsInput, maxIngredientsInput, maxStepsInput } =
+      await mountRecipeFilterForm({
+        filter: { keywords: 'pasta', maxIngredientCount: 5, maxStepCount: 10 },
+      });
 
-    expect(await screen.findByLabelText('Keywords')).toHaveValue('pasta');
-    expect(await screen.findByLabelText('Max Ingredients')).toHaveValue(5);
-    expect(await screen.findByLabelText('Max Steps')).toHaveValue(10);
+    await expect.element(keywordsInput).toHaveValue('pasta');
+    await expect.element(maxIngredientsInput).toHaveValue(5);
+    await expect.element(maxStepsInput).toHaveValue(10);
   });
 
   it('calls onFilterChange with new filter when user types', async () => {
-    vi.useFakeTimers();
-    const { fillInput, onFilterChange } = await mountRecipeFilterForm();
+    const { onFilterChange, keywordsInput } = await mountRecipeFilterForm();
 
-    await fillInput('Keywords', 'soup');
-    await act(() => vi.advanceTimersByTimeAsync(210));
+    await keywordsInput.fill('soup');
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith({ keywords: 'soup' });
+    await expect
+      .poll(() => onFilterChange)
+      .toHaveBeenLastCalledWith({ keywords: 'soup' });
   });
 
   it('does not call onFilterChange before debounce delay', async () => {
-    vi.useFakeTimers();
-    const { fillInput, onFilterChange } = await mountRecipeFilterForm();
+    const { onFilterChange, keywordsInput, timeMachine } =
+      await mountRecipeFilterForm();
 
-    await fillInput('Keywords', 'soup');
-    await act(() => vi.advanceTimersByTimeAsync(190));
+    timeMachine.pause();
+
+    await keywordsInput.fill('soup');
+
+    await timeMachine.seek(190);
 
     expect(onFilterChange).not.toHaveBeenCalled();
   });
 
   it('calls onFilterChange after debounce delay', async () => {
-    vi.useFakeTimers();
-    const { fillInput, onFilterChange } = await mountRecipeFilterForm();
+    const { onFilterChange, keywordsInput, timeMachine } =
+      await mountRecipeFilterForm();
 
-    await fillInput('Keywords', 'soup');
-    await act(() => vi.advanceTimersByTimeAsync(210));
+    timeMachine.pause();
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith({ keywords: 'soup' });
+    await keywordsInput.fill('soup');
+
+    await timeMachine.seek(210);
+
+    expect(onFilterChange).toHaveBeenCalledExactlyOnceWith({
+      keywords: 'soup',
+    });
   });
 
   it('calls onFilterChange with new filter when user types and merges it with the filter from props', async () => {
-    vi.useFakeTimers();
-    const { fillInput, onFilterChange } = await mountRecipeFilterForm({
-      filter: { keywords: 'pie' },
-    });
+    const { maxIngredientsInput, onFilterChange } = await mountRecipeFilterForm(
+      {
+        filter: { keywords: 'pie' },
+      },
+    );
 
-    await fillInput('Max Ingredients', '7');
-    await act(() => vi.advanceTimersByTimeAsync(210));
+    await maxIngredientsInput.fill('7');
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith({
-      keywords: 'pie',
-      maxIngredientCount: 7,
-    });
+    await expect
+      .poll(() => onFilterChange)
+      .toHaveBeenLastCalledWith({ keywords: 'pie', maxIngredientCount: 7 });
   });
 
   it('sets maxIngredientCount to undefined when the field is cleared', async () => {
-    vi.useFakeTimers();
-    const { clearInput, onFilterChange } = await mountRecipeFilterForm({
-      filter: { maxIngredientCount: 4 },
-    });
+    const { maxIngredientsInput, onFilterChange } = await mountRecipeFilterForm(
+      { filter: { maxIngredientCount: 4 } },
+    );
 
-    await clearInput('Max Ingredients');
-    await act(() => vi.advanceTimersByTimeAsync(210));
+    await maxIngredientsInput.clear();
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith({
-      maxIngredientCount: undefined,
-    });
+    await expect
+      .poll(() => onFilterChange)
+      .toHaveBeenLastCalledWith({ maxIngredientCount: undefined });
   });
 
   it('sets keywords to undefined when the field is cleared', async () => {
-    vi.useFakeTimers();
-    const { clearInput, onFilterChange } = await mountRecipeFilterForm({
+    const { keywordsInput, onFilterChange } = await mountRecipeFilterForm({
       filter: { keywords: 'toast' },
     });
 
-    await clearInput('Keywords');
-    await act(() => vi.advanceTimersByTimeAsync(210));
+    await keywordsInput.clear();
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith({ keywords: undefined });
+    await expect
+      .poll(() => onFilterChange)
+      .toHaveBeenLastCalledWith({ keywords: undefined });
   });
 });
 
 async function mountRecipeFilterForm({
   filter = {},
 }: { filter?: RecipeFilter } = {}) {
-  const user = userEvent.setup({
-    advanceTimers: vi.advanceTimersByTimeAsync.bind(jest),
-  });
+  const timeMachine = setUpTimeMachine();
+  timeMachine.fastForward();
 
-  const onFilterChange = vi.fn();
+  const onFilterChange = vi.fn<(recipeFilter: RecipeFilter) => void>();
 
-  render(<RecipeFilterForm filter={filter} onFilterChange={onFilterChange} />);
+  await render(
+    <RecipeFilterForm filter={filter} onFilterChange={onFilterChange} />,
+  );
 
   return {
     onFilterChange,
-    clearInput: async (label: 'Keywords' | 'Max Ingredients' | 'Max Steps') => {
-      const input = await screen.findByLabelText(label);
-      await user.clear(input);
-    },
-    fillInput: async (
-      label: 'Keywords' | 'Max Ingredients' | 'Max Steps',
-      value: string,
-    ) => {
-      const input = await screen.findByLabelText(label);
-      await user.type(input, value);
-    },
+    timeMachine,
+    keywordsInput: page.getByLabelText('Keywords'),
+    maxIngredientsInput: page.getByLabelText('Max Ingredients'),
+    maxStepsInput: page.getByLabelText('Max Steps'),
   };
 }

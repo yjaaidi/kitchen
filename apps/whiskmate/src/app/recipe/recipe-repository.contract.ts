@@ -23,8 +23,8 @@ export function verifyRecipeRepositoryContract(
     const otherRecipes = recipes.filter(
       (recipe) => !recipe.name.includes('Burger'),
     );
-    expect(burgerRecipes.length).toBeGreaterThanOrEqual(1);
-    expect(otherRecipes).toHaveLength(0);
+    expect.soft(burgerRecipes.length).toBeGreaterThanOrEqual(1);
+    expect.soft(otherRecipes).toHaveLength(0);
   });
 
   it('returns an empty array when no recipes are found', async () => {
