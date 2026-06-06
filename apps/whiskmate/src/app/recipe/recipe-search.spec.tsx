@@ -77,10 +77,8 @@ async function setUp() {
       if (!recipePreview) {
         throw new Error(`Recipe "${name}" not found`);
       }
-      await act(async () =>
-        userEvent.click(
-          within(recipePreview).getByRole('button', { name: 'ADD' }),
-        ),
+      await userEvent.click(
+        within(recipePreview).getByRole('button', { name: 'ADD' }),
       );
     },
     findRecipeTitles: () => screen.findAllByRole('heading'),
