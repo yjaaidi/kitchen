@@ -1,3 +1,4 @@
+import { cleanup } from '@testing-library/react';
 import { vi } from 'vitest';
 
 const g = globalThis as unknown as {
@@ -10,3 +11,5 @@ const g = globalThis as unknown as {
 g.jest = {
   advanceTimersByTime: vi.advanceTimersByTime.bind(vi),
 };
+
+beforeEach(() => cleanup());

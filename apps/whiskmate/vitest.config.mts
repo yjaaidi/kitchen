@@ -19,6 +19,9 @@ const TIMEOUT = 500;
 
 export default defineConfig({
   ...viteConfig,
+  define: {
+    'process.env.RTL_SKIP_AUTO_CLEANUP': true,
+  },
   test: {
     globals: true,
     watch: false,
