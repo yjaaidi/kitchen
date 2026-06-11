@@ -1,21 +1,16 @@
-import { afterEach, describe, expect, it } from 'vitest';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, expect, it } from 'vitest';
 import { reset } from '../shared/shared.actions';
 import { store } from '../store';
+import { createCommonTestWrapper } from '../testing/test-wrapper';
 import { singletonTestingUtils } from '../util/singleton';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
-import { createCommonTestWrapper } from '../testing/test-wrapper';
 
 describe(RecipeSearch, () => {
-  afterEach(() => {
-    singletonTestingUtils.reset();
-    act(() => store.dispatch(reset()));
-  });
-
   it('shows all recipes', async () => {
     const { findRecipeTitles } = await setUp();
 
@@ -56,6 +51,11 @@ async function setUp() {
       ],
     });
     return fake;
+  });
+
+  onTestFinished(() => {
+    singletonTestingUtils.reset();
+    act(() => store.dispatch(reset()));
   });
 
   render(<RecipeSearch />, {
