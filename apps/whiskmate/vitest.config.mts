@@ -15,8 +15,6 @@ const emulatedSharedConfig: ProjectConfig = {
   setupFiles: ['@testing-library/jest-dom/vitest'],
 };
 
-const TIMEOUT = 500;
-
 export default defineConfig({
   ...viteConfig,
   define: {
@@ -28,7 +26,7 @@ export default defineConfig({
     /* We should not need this in browser mode as we are using vitest/browser,
      * but we are keeping it to allow React Testing Library tests to run in browser mode. */
     setupFiles: ['./test-setup-testing-library.ts'],
-    testTimeout: TIMEOUT,
+    testTimeout: 300,
     expect: { poll: { interval: 0 } },
     projects: [
       {
@@ -39,7 +37,7 @@ export default defineConfig({
           browser: {
             enabled: true,
             headless: true,
-            provider: playwright({ actionTimeout: TIMEOUT }),
+            provider: playwright(),
             instances: [{ browser: 'chromium' }],
           },
         },
