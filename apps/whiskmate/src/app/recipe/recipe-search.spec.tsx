@@ -1,14 +1,13 @@
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
 import { reset } from '../shared/shared.actions';
 import { store } from '../store';
-import { createTestQueryClientWrapper } from '../testing/test-query-client';
 import { singletonTestingUtils } from '../util/singleton';
 import { recipeRepositorySingleton } from './recipe-repository';
 import { RecipeRepositoryFake } from './recipe-repository.fake';
 import { RecipeSearch } from './recipe-search';
 import { recipeMother } from './recipe.mother';
+import { createCommonTestWrapper } from '../testing/test-wrapper';
 
 describe(RecipeSearch, () => {
   afterEach(() => {
@@ -58,14 +57,8 @@ async function setUp() {
     return fake;
   });
 
-  const QueryClientWrapper = createTestQueryClientWrapper();
-
   render(<RecipeSearch />, {
-    wrapper: ({ children }) => (
-      <Provider store={store}>
-        <QueryClientWrapper>{children}</QueryClientWrapper>
-      </Provider>
-    ),
+    wrapper: createCommonTestWrapper(),
   });
 
   return {
