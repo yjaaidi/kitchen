@@ -1,10 +1,9 @@
-import { Provider } from 'react-redux';
 import { describe, expect, it, onTestFinished } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { reset } from '../shared/shared.actions';
 import { store } from '../store';
-import { createTestQueryClientWrapper } from '../testing/test-query-client';
+import { createCommonTestWrapper } from '../testing/test-wrapper';
 import { setUpTimeMachine } from '../testing/time-machine';
 import { singletonTestingUtils } from '../util/singleton';
 import { recipeRepositorySingleton } from './recipe-repository';
@@ -57,14 +56,8 @@ async function setUp() {
     store.dispatch(reset());
   });
 
-  const QueryClientWrapper = createTestQueryClientWrapper();
-
   await render(<RecipeSearch />, {
-    wrapper: ({ children }) => (
-      <Provider store={store}>
-        <QueryClientWrapper>{children}</QueryClientWrapper>
-      </Provider>
-    ),
+    wrapper: createCommonTestWrapper(),
   });
 
   const recipePreviews = page.getByRole('article');
