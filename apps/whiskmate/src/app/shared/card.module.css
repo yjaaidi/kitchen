@@ -4,10 +4,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: clip;
   text-align: left;
+  height: 300px;
   width: 300px;
 }
 
 .picture {
+  display: block;
   object-fit: cover;
   height: 300px;
   width: 100%;
