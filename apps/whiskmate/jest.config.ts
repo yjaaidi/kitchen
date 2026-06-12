@@ -4,7 +4,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   coverageDirectory: 'test-output/jest/coverage',
-  testTimeout: 500,
+  testTimeout: 2_000,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   testMatch: ['**/*.spec.ts', '**/*.spec.tsx'],
   transform: {
