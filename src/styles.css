@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    sans-serif;
+  color: #1a1a1a;
+  background: #fafafa;
+}
+
+a {
+  color: #1565c0;
+}
+
+a:hover {
+  text-decoration: underline;
+}

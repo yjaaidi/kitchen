@@ -1,0 +1,50 @@
+<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fridge-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    <linearGradient id="fridge-door" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+  </defs>
+
+  <rect x="35" y="15" width="130" height="210" rx="12" fill="url(#fridge-body)" />
+  <rect
+    x="35"
+    y="15"
+    width="130"
+    height="210"
+    rx="12"
+    fill="none"
+    stroke="#94a3b8"
+    stroke-width="3"
+  />
+
+  <rect x="45" y="25" width="110" height="55" rx="6" fill="url(#fridge-door)" />
+  <rect x="45" y="90" width="110" height="125" rx="6" fill="url(#fridge-door)" />
+
+  <line x1="45" y1="85" x2="155" y2="85" stroke="#cbd5e1" stroke-width="2" />
+
+  <rect x="138" y="42" width="8" height="22" rx="4" fill="#64748b" />
+  <rect x="138" y="115" width="8" height="35" rx="4" fill="#64748b" />
+
+  <line x1="55" y1="48" x2="125" y2="48" stroke="#e2e8f0" stroke-width="2" />
+  <line x1="55" y1="62" x2="125" y2="62" stroke="#e2e8f0" stroke-width="2" />
+
+  <line x1="55" y1="108" x2="145" y2="108" stroke="#e2e8f0" stroke-width="2" />
+  <line x1="55" y1="138" x2="145" y2="138" stroke="#e2e8f0" stroke-width="2" />
+  <line x1="55" y1="168" x2="145" y2="168" stroke="#e2e8f0" stroke-width="2" />
+  <line x1="55" y1="198" x2="145" y2="198" stroke="#e2e8f0" stroke-width="2" />
+
+  <circle cx="100" cy="125" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+  <path
+    d="M92 125h16M100 117v16"
+    stroke="#cbd5e1"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <ellipse cx="100" cy="232" rx="45" ry="6" fill="#e2e8f0" />
+</svg>
