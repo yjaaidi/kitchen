@@ -2,7 +2,7 @@ import { HttpResourceRef } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { Recipe } from '../../recipe/recipe';
 import { Card } from '../../shared/card.ng';
-import { RecipeId, RecipeStore } from './recipe-store';
+import { RecipeId, RecipeRepositoryFacade } from './recipe-store';
 
 @Component({
   selector: 'app-network-congestion-demo',
@@ -13,21 +13,19 @@ import { RecipeId, RecipeStore } from './recipe-store';
 
       <button type="button" class="next-button" (click)="goToNextRecipe()">Next recipe</button>
 
-      @if (recipeResource(); as resource) {
-        @if (resource.isLoading()) {
-          <div role="status">Loading...</div>
-        } @else if (resource.error(); as error) {
-          <div role="alert">Failed to load recipe: {{ error.message }}</div>
-        } @else if (resource.value(); as recipe) {
-          <app-card [pictureUri]="recipe.pictureUri" [alt]="recipe.name + ' picture'">
-            <h3>{{ recipe.name }}</h3>
-            <ul class="ingredients">
-              @for (ingredient of recipe.ingredients; track ingredient.name) {
-                <li>{{ ingredient.name }}</li>
-              }
-            </ul>
-          </app-card>
-        }
+      @if (recipeResource.isLoading()) {
+        <div role="status">Loading...</div>
+      } @else if (recipeResource.error(); as error) {
+        <div role="alert">Failed to load recipe: {{ error.message }}</div>
+      } @else if (recipeResource.value(); as recipe) {
+        <app-card [pictureUri]="recipe.pictureUri" [alt]="recipe.name + ' picture'">
+          <h3>{{ recipe.name }}</h3>
+          <ul class="ingredients">
+            @for (ingredient of recipe.ingredients; track ingredient.name) {
+              <li>{{ ingredient.name }}</li>
+            }
+          </ul>
+        </app-card>
       }
     </section>
   `,
@@ -79,20 +77,17 @@ import { RecipeId, RecipeStore } from './recipe-store';
   `,
 })
 export default class RecipeDetail {
-  private readonly _store = inject(RecipeStore);
+  private readonly _store = inject(RecipeRepositoryFacade);
 
   protected readonly recipeIds = this._store.getRecipeIds();
-  protected readonly recipeResource = signal<HttpResourceRef<Recipe | undefined>>(
-    this.getRecipeResource(0),
-  );
+
+  private readonly _recipeId = signal<RecipeId>(this.recipeIds[0]!);
+
+  protected readonly recipeResource = this._store.createRecipeResource(this._recipeId);
 
   goToNextRecipe() {
-    const currentIndex = this.recipeIds.indexOf(this.recipeResource()?.value()?.id as RecipeId);
-    const nextIndex = (currentIndex + 1) % this.recipeIds.length;
-    this.recipeResource.set(this.getRecipeResource(nextIndex));
-  }
-
-  getRecipeResource(index: number) {
-    return this._store.getRecipe(this.recipeIds[index]!);
+    this._recipeId.set(
+      this.recipeIds[(this.recipeIds.indexOf(this._recipeId()) + 1) % this.recipeIds.length]!,
+    );
   }
 }

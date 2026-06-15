@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector, Service } from '@angular/core';
+import { inject, Injectable, Injector, Service, Signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Recipe } from '../../recipe/recipe';
 
@@ -9,17 +9,14 @@ export const RECIPE_IDS = ['rec-burger', 'rec-salad'] as const;
 export type RecipeId = (typeof RECIPE_IDS)[number];
 
 @Service()
-export class RecipeStore {
-  private readonly _injector = inject(Injector);
-
+export class RecipeRepositoryFacade {
   getRecipeIds(): RecipeId[] {
     return Array.from(RECIPE_IDS);
   }
 
-  getRecipe(recipeId: RecipeId) {
-    return httpResource(() => `${RECIPES_API}/${recipeId}`, {
+  createRecipeResource(recipeId: Signal<RecipeId>) {
+    return httpResource(() => `${RECIPES_API}/${recipeId()}`, {
       parse: (data) => mapApiRecipe(data as ApiRecipe),
-      injector: this._injector,
     });
   }
 }
