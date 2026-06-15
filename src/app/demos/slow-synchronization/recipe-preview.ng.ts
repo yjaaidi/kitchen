@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, resource } from '@angular/core';
 import { Recipe } from '../../recipe/recipe';
 import { Card } from '../../shared/card.ng';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-recipe-preview',
   imports: [Card],
   template: `
     <app-card [pictureUri]="recipe().pictureUri" [alt]="recipe().name + ' picture'">
       <h2>{{ recipe().name }}</h2>
-      <p class="difficulty">Difficulty: {{ computeDifficulty(recipe()) }}</p>
+      <p class="difficulty">Difficulty: {{ difficulty.hasValue() ? difficulty.value() : '-' }}</p>
       <ng-content />
     </app-card>
   `,
@@ -33,9 +32,24 @@ import { Card } from '../../shared/card.ng';
 export class RecipePreview {
   recipe = input.required<Recipe>();
 
+  difficulty = resource({
+    params: () => this.recipe(),
+    loader: ({ params, abortSignal }) =>
+      new Promise((resolve) => {
+        const handle = requestIdleCallback(() => {
+          resolve(this.computeDifficulty(params));
+        });
+
+        abortSignal.addEventListener('abort', () => {
+          console.log('abort');
+          cancelIdleCallback(handle);
+        });
+      }),
+  });
+
   computeDifficulty(recipe: Recipe): number {
     const start = performance.now();
-    while (performance.now() - start < 30) {}
+    while (performance.now() - start < 300) {}
     const ingredientsCount = Math.min(recipe.ingredients.length, 10);
     const stepsCount = Math.min(recipe.steps.length, 10);
     return Math.round((ingredientsCount + stepsCount / 20) * 5);
