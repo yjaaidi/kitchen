@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Recipe } from '../../recipe/recipe';
 import { Card } from '../../shared/card.ng';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-recipe-preview',
   imports: [Card],
   template: `
