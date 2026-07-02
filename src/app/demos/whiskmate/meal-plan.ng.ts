@@ -1,12 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, resourceFromSnapshots } from '@angular/core';
 import { MealPlanner } from '../../meal-planner/meal-planner';
-import { Catalog } from '../../shared/catalog.ng';
-import { RecipePreview } from './recipe-preview.ng';
 import { Fridge } from './fridge.ng';
+import { RecipeList } from './recipe-list.ng';
 
 @Component({
   selector: 'app-meal-plan',
-  imports: [Catalog, Fridge, RecipePreview],
+  imports: [Fridge, RecipeList],
   template: `
     <section class="panel" aria-labelledby="planner-heading">
       <h2 id="planner-heading">Meal Planner</h2>
@@ -17,19 +16,17 @@ import { Fridge } from './fridge.ng';
           <p class="empty-hint">Add recipes from the search panel to fill your fridge.</p>
         </div>
       } @else {
-        <app-catalog>
-          @for (recipe of mealPlanner.recipes(); track recipe.id) {
-            <app-recipe-preview [recipe]="recipe">
-              <button
-                type="button"
-                class="remove-button"
-                (click)="mealPlanner.removeRecipe(recipe)"
-              >
-                Remove
-              </button>
-            </app-recipe-preview>
-          }
-        </app-catalog>
+        <app-recipe-list [recipesResource]="recipesResource">
+          <ng-template let-recipe>
+            <button
+              type="button"
+              class="remove-button"
+              (click)="mealPlanner.removeRecipe(recipe)"
+            >
+              Remove
+            </button>
+          </ng-template>
+        </app-recipe-list>
       }
     </section>
   `,
@@ -76,4 +73,9 @@ import { Fridge } from './fridge.ng';
 })
 export class MealPlan {
   protected readonly mealPlanner = inject(MealPlanner);
+
+  protected readonly recipesResource = resourceFromSnapshots(() => ({
+    status: 'resolved' as const,
+    value: this.mealPlanner.recipes(),
+  }));
 }
