@@ -64,5 +64,9 @@ export class HomeComponent {
       path: '/demos/network-congestion',
       title: 'Network Congestion',
     },
+    {
+      path: '/demos/slow-load',
+      title: 'Slow Load',
+    },
   ];
 }

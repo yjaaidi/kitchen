@@ -16,6 +16,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
         >
         <a routerLink="/demos/slow-filtering" routerLinkActive="active">Slow Filtering</a>
         <a routerLink="/demos/network-congestion" routerLinkActive="active">Network Congestion</a>
+        <a routerLink="/demos/slow-load" routerLinkActive="active">Slow Load</a>
       </nav>
     </header>
 

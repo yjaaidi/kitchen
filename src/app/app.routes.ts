@@ -22,4 +22,9 @@ export const routes: Routes = [
     title: 'Network Congestion',
     loadComponent: () => import('./demos/network-congestion/recipe-detail.ng'),
   },
+  {
+    path: 'demos/slow-load',
+    title: 'Slow Load',
+    loadComponent: () => import('./demos/slow-load/recipe-search.ng'),
+  },
 ];
