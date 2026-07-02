@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./home/home.ng').then((m) => m.HomeComponent),
+      import('./home.ng').then((m) => m.HomeComponent),
   },
   {
     path: 'demos/slow-synchronization',
