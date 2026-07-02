@@ -68,5 +68,9 @@ export class HomeComponent {
       path: '/demos/slow-load',
       title: 'Slow Load',
     },
+    {
+      path: '/demos/staggering',
+      title: 'Staggering',
+    },
   ];
 }

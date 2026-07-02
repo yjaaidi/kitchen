@@ -27,4 +27,9 @@ export const routes: Routes = [
     title: 'Slow Load',
     loadComponent: () => import('./demos/slow-load/recipe-search.ng'),
   },
+  {
+    path: 'demos/staggering',
+    title: 'Staggering',
+    loadComponent: () => import('./demos/staggering/recipe-search.ng'),
+  },
 ];
