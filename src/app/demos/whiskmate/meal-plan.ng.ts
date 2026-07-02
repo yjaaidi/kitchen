@@ -1,11 +1,11 @@
 import { Component, inject, resourceFromSnapshots } from '@angular/core';
 import { MealPlanner } from '../../meal-planner/meal-planner';
 import { Fridge } from './fridge.ng';
-import { RecipeList } from './recipe-list.ng';
+import { RecipeList, RecipeActions } from './recipe-list.ng';
 
 @Component({
   selector: 'app-meal-plan',
-  imports: [Fridge, RecipeList],
+  imports: [Fridge, RecipeList, RecipeActions],
   template: `
     <section class="panel" aria-labelledby="planner-heading">
       <h2 id="planner-heading">Meal Planner</h2>
@@ -17,7 +17,7 @@ import { RecipeList } from './recipe-list.ng';
         </div>
       } @else {
         <app-recipe-list [recipesResource]="recipesResource">
-          <ng-template #actions let-recipe>
+          <ng-template recipeActions let-recipe>
             <button type="button" class="remove-button" (click)="mealPlanner.removeRecipe(recipe)">
               Remove
             </button>

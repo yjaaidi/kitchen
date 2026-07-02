@@ -3,17 +3,17 @@ import { firstValueFrom } from 'rxjs';
 import { MealPlanner } from '../../meal-planner/meal-planner';
 import { RecipeRepository } from '../../recipe/recipe-repository';
 import { RecipeFilterForm } from '../../shared/recipe-filter-form.ng';
-import { RecipeList } from './recipe-list.ng';
+import { RecipeList, RecipeActions } from './recipe-list.ng';
 
 @Component({
   selector: 'app-recipe-search',
-  imports: [RecipeFilterForm, RecipeList],
+  imports: [RecipeFilterForm, RecipeList, RecipeActions],
   template: `
     <section class="panel" aria-labelledby="search-heading">
       <h2 id="search-heading">Recipe Search</h2>
       <app-recipe-filter-form />
       <app-recipe-list [recipesResource]="recipesResource">
-        <ng-template #actions let-recipe>
+        <ng-template recipeActions let-recipe>
           <button
             type="button"
             class="add-button"

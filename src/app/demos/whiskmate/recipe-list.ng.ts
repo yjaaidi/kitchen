@@ -3,10 +3,12 @@ import {
   Component,
   contentChild,
   Directive,
+  inject,
   input,
   linkedSignal,
   Resource,
   ResourceSnapshot,
+  signal,
   TemplateRef,
 } from '@angular/core';
 import { Recipe } from '../../recipe/recipe';
@@ -23,9 +25,9 @@ import { RecipePreview } from './recipe-preview.ng';
       }
       @for (recipe of recipes(); track recipe.id) {
         <app-recipe-preview [recipe]="recipe">
-          @if (actionsTemplate(); as template) {
+          @if (actions().templateRef; as templateRef) {
             <ng-container
-              [ngTemplateOutlet]="template"
+              [ngTemplateOutlet]="templateRef"
               [ngTemplateOutletContext]="{ $implicit: recipe }"
             />
           }
@@ -43,7 +45,18 @@ export class RecipeList {
       snapshot.status === 'resolved' ? snapshot.value : (prev?.value ?? []),
   });
 
-  protected readonly actionsTemplate = contentChild.required('actions', {
-    read: TemplateRef<{ $implicit: Recipe }>,
-  });
+  protected readonly actions = contentChild.required(RecipeActions);
+}
+
+type RecipeActionsContext = { $implicit: Recipe };
+
+@Directive({
+  selector: 'ng-template[recipeActions]',
+})
+export class RecipeActions {
+  readonly templateRef = inject(TemplateRef<RecipeActionsContext>);
+
+  static ngTemplateContextGuard(dir: RecipeActions, ctx: any): ctx is RecipeActionsContext {
+    return true;
+  }
 }
