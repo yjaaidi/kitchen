@@ -17,12 +17,8 @@ import { RecipeList } from './recipe-list.ng';
         </div>
       } @else {
         <app-recipe-list [recipesResource]="recipesResource">
-          <ng-template let-recipe>
-            <button
-              type="button"
-              class="remove-button"
-              (click)="mealPlanner.removeRecipe(recipe)"
-            >
+          <ng-template #actions let-recipe>
+            <button type="button" class="remove-button" (click)="mealPlanner.removeRecipe(recipe)">
               Remove
             </button>
           </ng-template>

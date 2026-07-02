@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   contentChild,
+  Directive,
   input,
   linkedSignal,
   Resource,
@@ -42,6 +43,7 @@ export class RecipeList {
       snapshot.status === 'resolved' ? snapshot.value : (prev?.value ?? []),
   });
 
-  protected readonly actionsTemplate =
-    contentChild.required<TemplateRef<{ $implicit: Recipe }>>(TemplateRef);
+  protected readonly actionsTemplate = contentChild.required('actions', {
+    read: TemplateRef<{ $implicit: Recipe }>,
+  });
 }

@@ -13,7 +13,7 @@ import { RecipeList } from './recipe-list.ng';
       <h2 id="search-heading">Recipe Search</h2>
       <app-recipe-filter-form />
       <app-recipe-list [recipesResource]="recipesResource">
-        <ng-template let-recipe>
+        <ng-template #actions let-recipe>
           <button
             type="button"
             class="add-button"
