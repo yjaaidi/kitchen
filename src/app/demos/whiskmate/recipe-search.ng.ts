@@ -27,12 +27,16 @@ import { RecipePreview } from './recipe-preview.ng';
           <div role="status">Loading recipes...</div>
         }
         @for (recipe of recipes(); track recipe.id) {
-          <app-recipe-preview
-            [recipe]="recipe"
-            [showAdd]="true"
-            [canAdd]="mealPlanner.canAddRecipe(recipe)"
-            (recipeAdd)="mealPlanner.addRecipe($event)"
-          />
+          <app-recipe-preview [recipe]="recipe">
+            <button
+              type="button"
+              class="add-button"
+              [disabled]="!mealPlanner.canAddRecipe(recipe)"
+              (click)="mealPlanner.addRecipe(recipe)"
+            >
+              Add
+            </button>
+          </app-recipe-preview>
         }
       </app-catalog>
     </section>
@@ -46,6 +50,16 @@ import { RecipePreview } from './recipe-preview.ng';
       text-align: center;
       margin: 0 0 1rem;
       font-size: 1.25rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   `,
 })

@@ -19,11 +19,15 @@ import { Fridge } from './fridge.ng';
       } @else {
         <app-catalog>
           @for (recipe of mealPlanner.recipes(); track recipe.id) {
-            <app-recipe-preview
-              [recipe]="recipe"
-              [showRemove]="true"
-              (recipeRemove)="mealPlanner.removeRecipe($event)"
-            />
+            <app-recipe-preview [recipe]="recipe">
+              <button
+                type="button"
+                class="remove-button"
+                (click)="mealPlanner.removeRecipe(recipe)"
+              >
+                Remove
+              </button>
+            </app-recipe-preview>
           }
         </app-catalog>
       }
@@ -62,6 +66,11 @@ import { Fridge } from './fridge.ng';
       margin: 0;
       font-size: 0.9rem;
       max-width: 280px;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
     }
   `,
 })
