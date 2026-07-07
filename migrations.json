@@ -1,0 +1,18 @@
+{
+  "migrations": [
+    {
+      "version": "22.0.0-0",
+      "description": "Updates Angular Material to v22",
+      "factory": "./ng-update/index_bundled#updateToV22",
+      "package": "@angular/material",
+      "name": "migration-v22"
+    },
+    {
+      "version": "22.0.0-0",
+      "description": "Updates the Angular CDK to v22",
+      "factory": "./ng-update/index#updateToV22",
+      "package": "@angular/cdk",
+      "name": "migration-v22"
+    }
+  ]
+}
