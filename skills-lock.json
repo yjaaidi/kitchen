@@ -42,6 +42,12 @@
       "sourceType": "github",
       "skillPath": "skills/charted-scaffold/SKILL.md",
       "computedHash": "d4aeebda9b1af84ff10d0fcf9ab308918775ff5b12de1e963081d7c1805a8fb0"
+    },
+    "wallaby-cli": {
+      "source": "wallabyjs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/wallaby-cli/SKILL.md",
+      "computedHash": "c6e9819a685f62e9c5ab5f6bdfc98c0e9994c391f9befafa98f021da94da6037"
     }
   }
 }

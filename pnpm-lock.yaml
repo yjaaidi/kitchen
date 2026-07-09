@@ -129,6 +129,9 @@ importers:
       '@vitest/ui':
         specifier: 4.1.10
         version: 4.1.10(vitest@4.1.10)
+      '@wallabyjs/cli':
+        specifier: 1.0.24
+        version: 1.0.24
       angular-eslint:
         specifier: 21.2.0
         version: 21.2.0(@angular/cli@22.0.5(@types/node@18.16.9)(chokidar@5.0.0))(chokidar@5.0.0)(eslint@9.28.0(jiti@2.4.2))(typescript-eslint@8.33.1(eslint@9.28.0(jiti@2.4.2))(typescript@6.0.3))(typescript@6.0.3)
@@ -3791,6 +3794,11 @@ packages:
 
   '@vitest/utils@4.1.10':
     resolution: {integrity: sha512-fy9am/HWxbaGt/Sawrp90vt6Y6jQwf1RX77cz3uwoJwJVMli/e1IEwRPnMNJ7vKfPTwo0diXifkpPvwH9v7nGA==}
+
+  '@wallabyjs/cli@1.0.24':
+    resolution: {integrity: sha512-JPhwE1Pfcbw6pyxTBRSs81CkYNkWC05ELTtGY94ajtyohTTLoaJtg2EynEhMv0lEe5qqyhfHlTHd3+zofAroHA==}
+    engines: {node: '>=22'}
+    hasBin: true
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -11695,6 +11703,8 @@ snapshots:
       '@vitest/pretty-format': 4.1.10
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
+
+  '@wallabyjs/cli@1.0.24': {}
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:
