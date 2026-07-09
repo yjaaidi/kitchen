@@ -6,6 +6,8 @@ allowBuilds:
   msgpackr-extract: true
   nx: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - vite@8.1.4
 onlyBuiltDependencies:
   - esbuild
   - nx
