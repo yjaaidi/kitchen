@@ -11,6 +11,14 @@ Interview the user section by section to produce a design document. Use AskUserQ
 IMPORTANT: Write the current state to `design-docs/` after each section.
 Adapt the interview to feature complexity.
 
+## Writing Style
+
+Apply these rules to the **design doc output only** (not to this skill file):
+
+- Prefer short bullet sentences over paragraphs.
+- One idea per bullet; keep lines roughly screen-width (~150 chars).
+- Use this style when proposing draft content during the interview and in the final assembled doc.
+
 ## Output File
 
 - **Path**: `design-docs/`
@@ -43,7 +51,12 @@ Ask: _What is explicitly out of scope? What might people assume is included but 
 
 Ask: _Describe the user-visible behavior. What does the user see, click, or experience? Walk through the scenarios step by step._
 
-Format as a bullet list of concrete, observable behaviors.
+Format each behavior as a checkbox:
+
+```markdown
+- [ ] User sees a search input and a list of rules below it.
+- [ ] Typing in the search input filters the visible rules by name.
+```
 
 ### 4. Design
 
@@ -55,11 +68,11 @@ Produce a Mermaid `flowchart` of key components and interactions.
 
 **Legend**:
 
-- Square corners = Angular components
-- Round corners = Angular services
+- Square corners = Angular/React/Vue components or backend HTTP Controllers
+- Round corners = Services
 - Arrows: `methodName({param1: Type1}): ReturnType`
-- `[input1: Type1]` = Angular inputs
-- `(output1: Type1)` = Angular outputs
+- `[input1: Type1]` = Angular/React/Vue inputs/props or backend request/event parameters
+- `(output1: Type1)` = Angular/React/Vue outputs/callbacks or backend response/events
 - Use `<br>` in labels to avoid truncation
 
 Show diagram to user and ask for corrections.
@@ -68,18 +81,25 @@ Show diagram to user and ask for corrections.
 
 Ask: _Any algorithms, edge cases, or conventions?_ Leave empty if nothing to add.
 
+Format each item as a checkbox. Do **not** add PR numbers yet — that happens after the PR Plan (see PR Linking below).
+
+```markdown
+- [ ] Add CartRepository interface with getItems().
+- [ ] Cart component reads items via inject(CartRepository).
+```
+
 ### 5. Testing Strategy
 
 Ask: _For each component or unit from the design, what behaviors are important to test?_
 
-Format: grouped by component/unit, each scenario with a descriptive name and arrange/act/assert steps.
+Format: grouped by component (`##`), each test scenario as a `###` heading with plain bullet steps underneath. Do **not** add checkboxes or PR numbers to headings yet — that happens after the PR Plan (see PR Linking below).
 
 **Example**:
 
 ```markdown
 ## Cart component
 
-### Displays cart items:
+### Displays cart items
 
 - Arrange fake cart repository to return 3 items: keyboard, mouse, monitor.
 - Mount `Cart` component.
@@ -88,7 +108,7 @@ Format: grouped by component/unit, each scenario with a descriptive name and arr
 
 ### 6. PR Plan
 
-Propose ordered, incremental PRs that:
+Propose ordered, small, focused, incremental PRs that:
 
 - Never break existing behavior
 - Are independently reviewable and mergeable
@@ -97,22 +117,41 @@ Propose ordered, incremental PRs that:
 **Rules**:
 
 - **Scaffolding PR**: If many new files, put WIP scaffolding in its own PR
-- **Pre-tidy-up PR**: If interfaces must change, do backward-compatible changes first (optional params, deprecations)
+- **Tidy-first PR**: If interfaces must change, do backward-compatible changes first (optional params, deprecations)
 - **Feature PRs**: Each adds one slice of user-visible or testable functionality
 
-Include a Mermaid `flowchart` of PR dependencies. List each PR with a short description. Ask for feedback.
+Include a Mermaid `flowchart` of PR dependencies. List each PR as a checkbox:
 
-### 7. Alternatives Considered
+```markdown
+- [ ] PR#1 — Scaffold Cart component, repository interface, and test files.
+- [ ] PR#2 — Display cart items from repository.
+```
+
+Ask for feedback.
+
+### 7. PR Linking
+
+After the user confirms the PR Plan:
+
+1. For each PR in the confirmed checkbox list, add a `<details>` block under PR Plan with a `<summary>` title.
+2. Inside each block, add **Tasks** and **Testing Strategy** sections.
+3. Assign each Implementation Details task to the PR it belongs to.
+4. Assign each test scenario from the top-level Testing Strategy to the PR it belongs to.
+5. Verify nothing from Implementation Details or the top-level Testing Strategy was left unassigned.
+6. Remove the now-empty Implementation Details and top-level Testing Strategy sections.
+7. Remove the checkbox list from PR Plan; keep the dependency diagram.
+
+### 8. Alternatives Considered
 
 Ask: _Did we consider other approaches? Why were they rejected?_
 
-### 8. Kitchen Sink
+### 9. Kitchen Sink
 
 Ask: _Anything else — open questions, risks, future ideas?_ Leave empty if nothing.
 
 ## Final Step
 
-Assemble the full doc from the template below, write to the output file, show the user the path.
+Assemble the full doc from the template below (each PR in a `<details>` block under PR Plan), write to the output file, show the user the path.
 
 ## Template
 
@@ -155,6 +194,23 @@ Assemble the full doc from the template below, write to the output file, show th
 
 {pr_details}
 
+<details>
+<summary>🚧 PR#N — {pr_title}</summary>
+
+## Tasks
+
+- [ ] {task_description}
+- [ ] {task_description}
+
+## Testing Strategy
+
+### 🚧 {test_title}
+
+- {step_1}
+- {step_2}
+
+</details>
+
 # Alternatives Considered
 
 {alternatives}
@@ -163,3 +219,7 @@ Assemble the full doc from the template below, write to the output file, show th
 
 {kitchen_sink}
 ````
+
+## Additional Resources
+
+- For a complete example, see [resources/example-design-doc.md](resources/example-design-doc.md)

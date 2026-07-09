@@ -7,17 +7,23 @@
       "skillPath": "angular-developer/SKILL.md",
       "computedHash": "28eb592b92e5a24c4e3a1c0229a854069f0b8c49bed7b8d2bf6b852812dbe214"
     },
+    "charted-continue": {
+      "source": "marmicode/skills",
+      "sourceType": "github",
+      "skillPath": "skills/charted-continue/SKILL.md",
+      "computedHash": "49562c15b0b5e50fb949d618a3b3edfd1e737dfefcce854113b692e295abd44c"
+    },
     "charted-design": {
       "source": "marmicode/skills",
       "sourceType": "github",
       "skillPath": "skills/charted-design/SKILL.md",
-      "computedHash": "a69b37b78b96baea8c96d398b4a370ca1b45d1f20d10758dcd8d765020a77232"
+      "computedHash": "9533c8dbea7d99ea18df96e92163d77b04f51d71f98bfcbf7d126f648434385c"
     },
     "charted-green": {
       "source": "marmicode/skills",
       "sourceType": "github",
       "skillPath": "skills/charted-green/SKILL.md",
-      "computedHash": "4f4c975b36d9489e39b6f2905c7053a1fc96e3a74951c6f212bfad7ecdee7974"
+      "computedHash": "467f4e710d2d628e078020d4c9b7a6a315311454a746c8904440ad2ef3abed36"
     },
     "charted-red": {
       "source": "marmicode/skills",
