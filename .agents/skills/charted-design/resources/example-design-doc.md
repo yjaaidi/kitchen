@@ -1,8 +1,8 @@
 # Goals
 
-- Users need to find recipes quickly when building a weekly meal plan.
-- Search should filter recipes as the user types.
-- Adding a recipe to the meal plan should be one click from search results.
+- Users building a weekly meal plan struggle to find relevant recipes in a large catalog.
+- Picking recipes for the plan takes too many steps and breaks the planning flow.
+- Users need confidence they found the right recipe before committing it to the plan.
 
 # Non-Goals
 

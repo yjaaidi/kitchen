@@ -9,6 +9,7 @@ description: Interviews the user section by section to collaboratively produce d
 
 Interview the user section by section to produce a design document. Use AskUserQuestion tool if available.
 IMPORTANT: Write the current state to `design-docs/` after each section.
+The design doc file on disk is the primary deliverable.
 Adapt the interview to feature complexity.
 
 ## Writing Style
@@ -32,8 +33,8 @@ For **each section**:
 
 1. Explain the section and what information is needed
 2. Ask targeted questions to gather it
-3. Summarize and propose draft content
-4. Ask user to confirm or correct before moving on
+3. **Write the draft section to the design doc file immediately** — update the file on disk, not just chat
+4. Tell the user the file path and which section was updated; ask them to review/edit the file and confirm or correct before moving on
 
 If the user answers something that belongs to a later section, acknowledge it and say you'll add it when you reach that section.
 
@@ -41,7 +42,16 @@ If the user answers something that belongs to a later section, acknowledge it an
 
 ### 1. Goals
 
-Ask: _What problem are we solving? Why does this feature matter?_
+State **why** this work matters — user pain, business outcome, or opportunity. Focus on purpose, not the fix.
+
+Ask: _Who has this problem? What pain or need do they have? Why does solving it matter now?_
+
+**Write goals as outcomes and needs, not features or implementation:**
+
+- Good: "Users lose time hunting through a large recipe catalog when planning meals."
+- Bad: "Add a search input that filters recipes as the user types."
+
+If the user describes a solution, reframe it into the underlying need before writing the section. Save features, UX, and technical approach for Desired Behavior and Design.
 
 ### 2. Non-Goals
 
@@ -75,7 +85,7 @@ Produce a Mermaid `flowchart` of key components and interactions.
 - `(output1: Type1)` = Angular/React/Vue outputs/callbacks or backend response/events
 - Use `<br>` in labels to avoid truncation
 
-Show diagram to user and ask for corrections.
+Write the diagram to the design doc file and ask the user to review it there.
 
 #### 4b. Implementation Details
 
@@ -127,7 +137,7 @@ Include a Mermaid `flowchart` of PR dependencies. List each PR as a checkbox:
 - [ ] PR#2 — Display cart items from repository.
 ```
 
-Ask for feedback.
+Write the PR Plan to the design doc file and ask the user to review it there.
 
 ### 7. PR Linking
 
@@ -151,7 +161,7 @@ Ask: _Anything else — open questions, risks, future ideas?_ Leave empty if not
 
 ## Final Step
 
-Assemble the full doc from the template below (each PR in a `<details>` block under PR Plan), write to the output file, show the user the path.
+Ensure all sections are present in the file, apply PR Linking if not done yet, and show the user the final path. The doc should already exist on disk — this step is verification and cleanup, not first-time assembly.
 
 ## Template
 
