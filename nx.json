@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "analytics": false,
+  "defaultProject": "whiskmate",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
@@ -38,6 +39,9 @@
           "fields": ["extends", "files", "include"]
         }
       ]
+    },
+    "serve": {
+      "dependsOn": ["^serve"]
     }
   },
   "generators": {

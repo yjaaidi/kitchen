@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import { CopilotChat } from '@copilotkit/angular';
 
 @Component({
-  imports: [NxWelcome, RouterModule],
+  imports: [CopilotChat],
   selector: 'wm-root',
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  template: `<copilot-chat />`,
 })
-export class App {
-  protected title = 'whiskmate';
-}
+export class App {}

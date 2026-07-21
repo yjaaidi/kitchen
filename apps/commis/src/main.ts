@@ -1,11 +1,11 @@
-import { createServer } from 'node:http';
 import { BuiltInAgent, CopilotRuntime } from '@copilotkit/runtime/v2';
 import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
+import { createServer } from 'node:http';
 
 const runtime = new CopilotRuntime({
   agents: {
     default: new BuiltInAgent({
-      model: 'google/gemini-3.1-pro-preview',
+      model: 'google/gemini-3.1-flash-lite',
       prompt: 'You are a helpful cooking assistant.',
     }),
   },
