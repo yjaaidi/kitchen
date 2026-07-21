@@ -1,6 +1,7 @@
 autoInstallPeers: true
 allowBuilds:
   '@parcel/watcher': true
+  '@scarf/scarf': true
   esbuild: true
   less: true
   lmdb: true

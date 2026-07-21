@@ -11,6 +11,8 @@
     "@angular/forms": "~22.0.4",
     "@angular/platform-browser": "~22.0.4",
     "@angular/router": "~22.0.4",
+    "@copilotkit/angular": "0.1.2",
+    "@copilotkit/runtime": "1.63.1",
     "rxjs": "~7.8.0"
   },
   "devDependencies": {
