@@ -1,30 +1,43 @@
 import {
   BuiltInAgent,
   CopilotRuntime,
+  convertMessagesToVercelAISDKMessages,
+  convertToolDefinitionsToVercelAITools,
+  convertToolsToVercelAITools,
   defineTool,
+  resolveModel,
 } from '@copilotkit/runtime/v2';
 import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
+import { stepCountIs, streamText } from 'ai';
 import { createServer } from 'node:http';
 import { z } from 'zod';
 
 const runtime = new CopilotRuntime({
   agents: {
     default: new BuiltInAgent({
-      model: 'google/gemini-3.5-flash',
-      prompt: 'You are a helpful cooking assistant.',
-      maxSteps: 5,
-      tools: [
-        defineTool({
-          name: 'get-favorite-recipes',
-          description: "Get user's favorite recipes",
-          parameters: z.object({}),
-          execute: async () => {
-            return {
-              recipes: ['Burger', 'Pizza', 'Tacos'],
-            };
+      type: 'aisdk',
+      factory: ({ input, abortSignal }) => {
+        return streamText({
+          model: resolveModel('google/gemini-3.1-pro-preview'),
+          system: 'You are a helpful cooking assistant.',
+          messages: convertMessagesToVercelAISDKMessages(input.messages),
+          tools: {
+            ...convertToolsToVercelAITools(input.tools),
+            ...convertToolDefinitionsToVercelAITools([
+              defineTool({
+                name: 'get-favorite-recipes',
+                description: "Get user's favorite recipes",
+                parameters: z.object({}),
+                execute: async () => ({
+                  recipes: input.state?.recipes ?? [],
+                }),
+              }),
+            ]),
           },
-        }),
-      ],
+          abortSignal,
+          stopWhen: stepCountIs(5),
+        } as never);
+      },
     }),
   },
 });
