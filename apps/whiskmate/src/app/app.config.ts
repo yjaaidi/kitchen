@@ -15,9 +15,15 @@ export const appConfig: ApplicationConfig = {
           name: 'add-recipe',
           description: 'Add recipe to favorites',
           parameters: z.object({}),
-          handler: async () => {
+          handler: async (_, { agent }) => {
+            const addedRecipe = prompt('Recipe name');
+            const recipes = [...(agent.state.recipes ?? []), addedRecipe];
+            agent.setState({
+              ...agent.state,
+              recipes,
+            });
             return {
-              recipes: [prompt('Recipe name')],
+              addedRecipe,
             };
           },
         },
