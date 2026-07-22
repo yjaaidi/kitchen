@@ -2,13 +2,11 @@ import {
   BuiltInAgent,
   CopilotRuntime,
   convertMessagesToVercelAISDKMessages,
-  convertToolDefinitionsToVercelAITools,
   convertToolsToVercelAITools,
-  defineTool,
   resolveModel,
 } from '@copilotkit/runtime/v2';
 import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
-import { stepCountIs, streamText } from 'ai';
+import { stepCountIs, streamText, tool } from 'ai';
 import { createServer } from 'node:http';
 import { z } from 'zod';
 
@@ -23,20 +21,17 @@ const runtime = new CopilotRuntime({
           messages: convertMessagesToVercelAISDKMessages(input.messages),
           tools: {
             ...convertToolsToVercelAITools(input.tools),
-            ...convertToolDefinitionsToVercelAITools([
-              defineTool({
-                name: 'get-favorite-recipes',
-                description: "Get user's favorite recipes",
-                parameters: z.object({}),
-                execute: async () => ({
-                  recipes: input.state?.recipes ?? [],
-                }),
+            'get-favorite-recipes': tool({
+              description: "Get user's favorite recipes",
+              inputSchema: z.object({}),
+              execute: async () => ({
+                recipes: input.state?.recipes ?? [],
               }),
-            ]),
+            }),
           },
           abortSignal,
           stopWhen: stepCountIs(5),
-        } as never);
+        });
       },
     }),
   },
