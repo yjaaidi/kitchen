@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { CopilotChat, CopilotKit } from '@copilotkit/angular';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { CopilotChat, CopilotKit, injectAgentStore } from '@copilotkit/angular';
 
 @Component({
   imports: [CopilotChat],
   selector: 'wm-root',
-  template: `<copilot-chat />`,
+  template: `<copilot-chat #chat />`,
   styles: `
     :host {
       display: block;
@@ -13,10 +13,16 @@ import { CopilotChat, CopilotKit } from '@copilotkit/angular';
   `,
 })
 export class App {
-  private readonly copilotKit = inject(CopilotKit);
+  private readonly _copilotKit = inject(CopilotKit);
+  private readonly _chat = viewChild.required<CopilotChat>('chat');
+  private readonly _store = injectAgentStore('default');
 
   constructor() {
-    this.copilotKit.core.subscribe({
+    effect(() => this._chat()?.inputValue.set('What are my favorite recipes?'));
+
+    effect(() => console.log(this._store().state()));
+
+    this._copilotKit.core.subscribe({
       onError: () => {
         alert('Oups! Something went wrong.');
       },

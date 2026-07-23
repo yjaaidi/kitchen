@@ -1,37 +1,68 @@
+import { EventType, type BaseEvent, type StateDeltaEvent } from '@ag-ui/core';
 import {
   BuiltInAgent,
   CopilotRuntime,
+  convertAISDKStream,
   convertMessagesToVercelAISDKMessages,
   convertToolsToVercelAITools,
   resolveModel,
 } from '@copilotkit/runtime/v2';
 import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
 import { stepCountIs, streamText, tool } from 'ai';
+import { compare } from 'fast-json-patch';
 import { createServer } from 'node:http';
 import { z } from 'zod';
+
+const GET_FAVORITE_RECIPES_TOOL = 'get-favorite-recipes';
+const model = resolveModel('google/gemini-3.1-pro-preview');
 
 const runtime = new CopilotRuntime({
   agents: {
     default: new BuiltInAgent({
-      type: 'aisdk',
-      factory: ({ input, abortSignal }) => {
-        return streamText({
-          model: resolveModel('google/gemini-3.1-pro-preview'),
+      type: 'custom',
+      factory: async function* ({
+        input,
+        abortSignal,
+      }): AsyncGenerator<BaseEvent> {
+        const pendingStateChanges: StateDeltaEvent[] = [];
+
+        const result = streamText({
+          model,
           system: 'You are a helpful cooking assistant.',
           messages: convertMessagesToVercelAISDKMessages(input.messages),
           tools: {
             ...convertToolsToVercelAITools(input.tools),
-            'get-favorite-recipes': tool({
+            [GET_FAVORITE_RECIPES_TOOL]: tool({
               description: "Get user's favorite recipes",
               inputSchema: z.object({}),
-              execute: async () => ({
-                recipes: input.state?.recipes ?? [],
-              }),
+              execute: async () => {
+                const recipes = input.state.recipes ?? [
+                  'Burger',
+                  'Pizza',
+                  'Sushi',
+                ];
+                pendingStateChanges.push({
+                  type: EventType.STATE_DELTA,
+                  delta: compare(input.state, { ...input.state, recipes }),
+                });
+                return { recipes };
+              },
             }),
           },
           abortSignal,
           stopWhen: stepCountIs(5),
         });
+
+        for await (const event of convertAISDKStream(
+          result.fullStream,
+          abortSignal,
+        )) {
+          yield event;
+        }
+
+        for (const change of pendingStateChanges) {
+          yield change;
+        }
       },
     }),
   },
