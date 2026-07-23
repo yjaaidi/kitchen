@@ -5,6 +5,12 @@ import { CopilotChat, CopilotKit } from '@copilotkit/angular';
   imports: [CopilotChat],
   selector: 'wm-root',
   template: `<copilot-chat />`,
+  styles: `
+    :host {
+      display: block;
+      height: 100vh;
+    }
+  `,
 })
 export class App {
   private readonly copilotKit = inject(CopilotKit);
