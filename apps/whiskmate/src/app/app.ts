@@ -18,16 +18,6 @@ import z from 'zod';
 
 const THREAD_ID_STORAGE_KEY = 'whiskmate.threadId';
 
-function readOrCreateThreadId(): string {
-  const existing = sessionStorage.getItem(THREAD_ID_STORAGE_KEY);
-  if (existing) {
-    return existing;
-  }
-  const threadId = crypto.randomUUID();
-  sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);
-  return threadId;
-}
-
 @Component({
   selector: 'wm-root',
   imports: [CopilotChat],
@@ -37,7 +27,7 @@ function readOrCreateThreadId(): string {
         Reset conversation
       </button>
     </header>
-    <copilot-chat [threadId]="threadId()" />
+    <copilot-chat [threadId]="threadId() ?? ''" />
   `,
   styles: `
     :host {
@@ -92,7 +82,9 @@ export class App {
   private readonly _copilotKit = inject(CopilotKit);
   private readonly _store = injectAgentStore('default');
 
-  readonly threadId = signal(readOrCreateThreadId());
+  readonly threadId = signal<string | null>(
+    sessionStorage.getItem(THREAD_ID_STORAGE_KEY),
+  );
 
   constructor() {
     registerHumanInTheLoop({
@@ -104,12 +96,25 @@ export class App {
 
     effect(() => {
       const state = this._store().state();
+
       if (state) {
-        console.log(state);
+        console.log('state', state);
+      }
+    });
+
+    effect(() => {
+      const threadId = this.threadId();
+      if (threadId) {
+        sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);
+      } else {
+        sessionStorage.removeItem(THREAD_ID_STORAGE_KEY);
       }
     });
 
     this._copilotKit.core.subscribe({
+      onAgentRunStarted: ({ agent }) => {
+        sessionStorage.setItem(THREAD_ID_STORAGE_KEY, agent.threadId);
+      },
       onError: () => {
         alert('Oups! Something went wrong.');
       },
@@ -117,9 +122,7 @@ export class App {
   }
 
   protected resetThread() {
-    const threadId = crypto.randomUUID();
-    sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);
-    this.threadId.set(threadId);
+    this.threadId.set(crypto.randomUUID());
   }
 }
 
