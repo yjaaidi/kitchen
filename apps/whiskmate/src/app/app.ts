@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import {
   CopilotChat,
   CopilotKit,
@@ -9,20 +16,83 @@ import {
 } from '@copilotkit/angular';
 import z from 'zod';
 
+const THREAD_ID_STORAGE_KEY = 'whiskmate.threadId';
+
+function readOrCreateThreadId(): string {
+  const existing = sessionStorage.getItem(THREAD_ID_STORAGE_KEY);
+  if (existing) {
+    return existing;
+  }
+  const threadId = crypto.randomUUID();
+  sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);
+  return threadId;
+}
+
 @Component({
   selector: 'wm-root',
   imports: [CopilotChat],
-  template: `<copilot-chat />`,
+  template: `
+    <header class="toolbar">
+      <button type="button" class="reset" (click)="resetThread()">
+        Reset conversation
+      </button>
+    </header>
+    <copilot-chat [threadId]="threadId()" />
+  `,
   styles: `
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
       height: 100vh;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgb(0 0 0 / 8%);
+      background: #faf8f6;
+    }
+
+    .reset {
+      appearance: none;
+      border: none;
+      border-radius: 0.625rem;
+      padding: 0.55rem 1.1rem;
+      font:
+        600 0.8125rem/1.2 system-ui,
+        sans-serif;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      background: #f4f1ef;
+      color: #8a3b3b;
+      box-shadow: inset 0 0 0 1px rgb(138 59 59 / 18%);
+      transition:
+        background-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 120ms ease;
+    }
+
+    .reset:hover {
+      background: #f8e9e8;
+      color: #7a2f2f;
+      box-shadow: inset 0 0 0 1px rgb(122 47 47 / 28%);
+    }
+
+    .reset:active {
+      transform: translateY(1px);
+    }
+
+    copilot-chat {
+      min-height: 0;
     }
   `,
 })
 export class App {
   private readonly _copilotKit = inject(CopilotKit);
   private readonly _store = injectAgentStore('default');
+
+  readonly threadId = signal(readOrCreateThreadId());
 
   constructor() {
     registerHumanInTheLoop({
@@ -31,17 +101,25 @@ export class App {
       parameters: z.object({ recipe: recipeSchema }),
       component: AddRecipe,
     });
+
     effect(() => {
       const state = this._store().state();
       if (state) {
         console.log(state);
       }
     });
+
     this._copilotKit.core.subscribe({
       onError: () => {
         alert('Oups! Something went wrong.');
       },
     });
+  }
+
+  protected resetThread() {
+    const threadId = crypto.randomUUID();
+    sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);
+    this.threadId.set(threadId);
   }
 }
 

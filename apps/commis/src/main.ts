@@ -3,6 +3,7 @@ import {
   CopilotRuntime,
   convertMessagesToVercelAISDKMessages,
   convertToolsToVercelAITools,
+  InMemoryAgentRunner,
   resolveModel,
 } from '@copilotkit/runtime/v2';
 import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
@@ -20,9 +21,11 @@ const RECIPE_SCHEMA = z.object({
 const MODEL = resolveModel('google/gemini-3.1-pro-preview');
 
 const runtime = new CopilotRuntime({
+  runner: new InMemoryAgentRunner(),
   agents: {
     default: new BuiltInAgent({
       type: 'custom',
+      maxSteps: 5,
       factory: createAgentFactory(({ input, abortSignal, emitState }) =>
         streamText({
           model: MODEL,
