@@ -10,6 +10,10 @@ import { createCopilotNodeListener } from '@copilotkit/runtime/v2/node';
 import { generateText, Output, stepCountIs, streamText, tool } from 'ai';
 import { createServer } from 'node:http';
 import { z } from 'zod';
+import {
+  RECIPE_A2UI_CATALOG_ID,
+  recipeA2uiCatalog,
+} from './a2ui/recipe-catalog';
 import { createAgentFactory } from './create-agent-factory';
 
 const RECIPE_SCHEMA = z.object({
@@ -51,6 +55,14 @@ const requestUserIdMap = new WeakMap<Request, string>();
 
 const runtime = new CopilotRuntime({
   runner: new InMemoryAgentRunner(),
+  // Server-owned A2UI: the catalog lives here, not on the Angular client.
+  // injectA2UITool adds the `render_a2ui` tool to the agent's tool list and
+  // the middleware turns its streamed args into a2ui operations.
+  a2ui: {
+    schema: recipeA2uiCatalog,
+    defaultCatalogId: RECIPE_A2UI_CATALOG_ID,
+    injectA2UITool: true,
+  },
   agents: async ({ request }) => {
     return {
       default: new BuiltInAgent({
@@ -68,10 +80,19 @@ const runtime = new CopilotRuntime({
             );
           }
 
+          // The A2UI middleware injects the component schema and the
+          // render_a2ui usage guide as context entries; without them the model
+          // does not know the A2UI component wire format.
+          const contextPrompt = (input.context ?? [])
+            .map((entry) => `## ${entry.description}\n\n${entry.value}`)
+            .join('\n\n');
+
           return streamText({
             model: MODEL,
             system: `You are a helpful cooking assistant.
-When the user wants to add or create a recipe, call create-recipe, then call add-recipe with its result for confirmation.`,
+When the user wants to add or create a recipe, call create-recipe, then call add-recipe with its result for confirmation.
+
+${contextPrompt}`,
             messages: convertMessagesToVercelAISDKMessages(input.messages),
             tools: {
               ...convertToolsToVercelAITools(input.tools),
