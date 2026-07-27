@@ -65,6 +65,5 @@ export const appConfig: ApplicationConfig = {
       provide: A2UI_RENDERER_CONFIG,
       useValue: { catalogs: [createWhiskmateCatalog()] },
     },
-    A2uiRendererService,
   ],
 };

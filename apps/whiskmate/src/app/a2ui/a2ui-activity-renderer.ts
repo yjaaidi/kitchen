@@ -1,12 +1,9 @@
+import { A2uiRendererService, SurfaceComponent } from '@a2ui/angular/v0_9';
 import type { A2uiMessage } from '@a2ui/web_core/v0_9';
 import { A2UI_OPERATIONS_KEY } from '@ag-ui/a2ui-toolkit';
-import { A2uiRendererService, SurfaceComponent } from '@a2ui/angular/v0_9';
 import type { AbstractAgent, ActivityMessage } from '@ag-ui/client';
-import {
-  ActivityRenderer,
-  RenderActivityMessageConfig,
-} from '@copilotkit/angular';
 import { Component, computed, effect, inject, input } from '@angular/core';
+import { ActivityRenderer } from '@copilotkit/angular';
 import { z } from 'zod';
 
 /** Matches ACTIVITY_SNAPSHOT content emitted by the A2UI middleware. */
@@ -37,6 +34,7 @@ export type A2uiSurfaceContent = z.infer<typeof a2uiSurfaceContentSchema>;
       margin: 0.75rem 0;
     }
   `,
+  providers: [A2uiRendererService],
 })
 export class A2uiActivityRenderer
   implements ActivityRenderer<A2uiSurfaceContent>
@@ -55,20 +53,8 @@ export class A2uiActivityRenderer
         return;
       }
 
-      // ACTIVITY_SNAPSHOT updates replay the full operation list; re-creating
-      // an existing surface throws, so drop those createSurface ops.
-      const existing = this.renderer.surfaceGroup.surfacesMap;
-      const applicable = operations.filter(
-        (operation) =>
-          !(
-            'createSurface' in operation &&
-            operation.createSurface?.surfaceId &&
-            existing.has(operation.createSurface.surfaceId)
-          ),
-      );
-
       try {
-        this.renderer.processMessages(applicable);
+        this.renderer.processMessages(operations);
       } catch (error) {
         console.error('A2UI render error:', error);
       }
