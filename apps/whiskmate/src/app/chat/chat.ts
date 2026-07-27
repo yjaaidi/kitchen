@@ -110,7 +110,8 @@ export class Chat {
   constructor() {
     registerHumanInTheLoop({
       name: 'add-recipe',
-      description: 'Add a recipe to favorites',
+      description:
+        'Human-in-the-loop confirmation: present the recipe to the user and wait for them to confirm before adding it to favorites. Do not add the recipe yourself — the UI collects approval.',
       parameters: z.object({ recipe: recipeSchema }),
       component: AddRecipe,
     });
@@ -243,9 +244,7 @@ export class AddRecipe implements HumanInTheLoopToolRenderer<AddRecipeArgs> {
   });
 
   confirm() {
-    this._store().agent.setState({
-      recipes: [...(this.recipes() ?? []), this.recipe()],
-    });
+    // Favorites are appended on the server when this run resumes — approval only.
     this.toolCall().respond({
       status: 'approved',
     });

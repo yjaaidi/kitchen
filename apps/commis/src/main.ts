@@ -1,3 +1,4 @@
+import type { Message } from '@ag-ui/client';
 import {
   BuiltInAgent,
   CopilotRuntime,
@@ -24,6 +25,14 @@ const RECIPE_SCHEMA = z.object({
 });
 
 type Recipe = z.infer<typeof RECIPE_SCHEMA>;
+
+const ADD_RECIPE_TOOL_NAME = 'add-recipe';
+
+const addRecipeArgsSchema = z.object({ recipe: RECIPE_SCHEMA });
+
+const addRecipeStatusSchema = z.object({
+  status: z.enum(['approved', 'rejected']),
+});
 
 const DEFAULT_FAVORITES: Recipe[] = [
   {
@@ -71,14 +80,19 @@ const runtime = new CopilotRuntime({
         maxSteps: 5,
         factory: createAgentFactory(({ input, abortSignal, emitState }) => {
           const userId = requestUserIdMap.get(request);
+          if (!userId) {
+            throw unauthorizedResponse();
+          }
 
-          // Keep the in-memory store in sync when the client updates agent state
-          // (e.g. after confirming add-recipe in the human-in-the-loop UI).
-          if (Array.isArray(input.state?.recipes)) {
-            favoriteRecipesByUserId.set(
-              userId,
-              input.state.recipes as Recipe[],
-            );
+          // HITL `add-recipe` is frontend-only: on resume, persist approved
+          // recipes here (not via client setState / LLM follow-up tools).
+          const approvedRecipe = findApprovedAddRecipeAfterLastUserMessage(
+            input.messages,
+          );
+          if (approvedRecipe) {
+            emitState({
+              recipes: appendFavoriteRecipe(userId, approvedRecipe),
+            });
           }
 
           // `input.context` is intentionally ignored: the A2UI schema and
@@ -88,6 +102,7 @@ const runtime = new CopilotRuntime({
             model: MODEL,
             system: `You are a helpful cooking assistant.
 When the user wants to add or create a recipe, call create-recipe, then call add-recipe with its result for confirmation.
+Favorites are persisted by the server when the user approves add-recipe — do not invent or rewrite the favorites list yourself.
 
 ${RECIPE_A2UI_PROMPT}`,
             messages: convertMessagesToVercelAISDKMessages(input.messages),
@@ -119,14 +134,7 @@ instructions. Do not ask clarifying questions.`,
               'get-favorite-recipes': tool({
                 description: "Get user's favorite recipes",
                 inputSchema: z.object({}),
-                execute: async () => {
-                  const recipes = getFavoriteRecipes(
-                    userId,
-                    input.state?.recipes,
-                  );
-                  emitState({ recipes });
-                  return { recipes };
-                },
+                execute: async () => ({ recipes: getFavoriteRecipes(userId) }),
               }),
             },
             abortSignal,
@@ -222,11 +230,7 @@ function assertThreadOwnership(threadId: string | undefined, userId: string) {
   threadOwnerByThreadIdMap.set(threadId, userId);
 }
 
-function getFavoriteRecipes(userId: string, stateRecipes?: unknown): Recipe[] {
-  if (Array.isArray(stateRecipes) && stateRecipes.length > 0) {
-    favoriteRecipesByUserId.set(userId, stateRecipes as Recipe[]);
-  }
-
+function getFavoriteRecipes(userId: string): Recipe[] {
   const existing = favoriteRecipesByUserId.get(userId);
   if (existing) {
     return existing;
@@ -235,4 +239,93 @@ function getFavoriteRecipes(userId: string, stateRecipes?: unknown): Recipe[] {
   const seeded = [...DEFAULT_FAVORITES];
   favoriteRecipesByUserId.set(userId, seeded);
   return seeded;
+}
+
+function appendFavoriteRecipe(userId: string, recipe: Recipe): Recipe[] {
+  const current = getFavoriteRecipes(userId);
+  if (current.some((existing) => existing.name === recipe.name)) {
+    return current;
+  }
+
+  const next = [...current, recipe];
+  favoriteRecipesByUserId.set(userId, next);
+  return next;
+}
+
+/**
+ * After HITL `respond()`, the resumed run's messages end with tool results
+ * (no new user message). Only those trailing approvals are applied — older
+ * approvals before the last user turn are ignored so we do not re-append.
+ */
+function findApprovedAddRecipeAfterLastUserMessage(
+  messages: Message[],
+): Recipe | null {
+  let lastUserIdx = -1;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]?.role === 'user') {
+      lastUserIdx = i;
+      break;
+    }
+  }
+
+  const recipesByToolCallId = new Map<string, Recipe>();
+  for (const message of messages) {
+    if (message.role !== 'assistant' || !message.toolCalls) {
+      continue;
+    }
+    for (const toolCall of message.toolCalls) {
+      if (toolCall.function.name !== ADD_RECIPE_TOOL_NAME) {
+        continue;
+      }
+      const parsed = addRecipeArgsSchema.safeParse(
+        parseJson(toolCall.function.arguments),
+      );
+      if (parsed.success) {
+        recipesByToolCallId.set(toolCall.id, parsed.data.recipe);
+      }
+    }
+  }
+
+  let approved: Recipe | null = null;
+  for (let i = lastUserIdx + 1; i < messages.length; i++) {
+    const message = messages[i];
+    if (message?.role !== 'tool') {
+      continue;
+    }
+
+    const recipe = recipesByToolCallId.get(message.toolCallId);
+    if (!recipe) {
+      continue;
+    }
+
+    if (parseAddRecipeStatus(message.content) === 'approved') {
+      approved = recipe;
+    }
+  }
+
+  return approved;
+}
+
+/**
+ * CopilotKit serializes frontend HITL `respond(value)` as
+ * `{ toolCallId, toolName, result: value }` in the tool message content.
+ */
+function parseAddRecipeStatus(content: string): 'approved' | 'rejected' | null {
+  const parsed = parseJson(content);
+  if (!parsed || typeof parsed !== 'object') {
+    return null;
+  }
+
+  const wrapped = parsed as { result?: unknown };
+  const candidate = wrapped.result !== undefined ? wrapped.result : parsed;
+  const result = addRecipeStatusSchema.safeParse(candidate);
+  return result.success ? result.data.status : null;
+}
+
+function parseJson(value: string): unknown {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return undefined;
+  }
 }

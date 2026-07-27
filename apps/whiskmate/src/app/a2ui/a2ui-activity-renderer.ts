@@ -49,12 +49,6 @@ export class A2uiActivityRenderer
   private readonly renderer = inject(A2uiRendererService);
 
   constructor() {
-    console.log('renderer');
-    effect(() => {
-      console.log('content', this.content());
-      console.log('message', this.message());
-    });
-
     effect(() => {
       const operations = this.content()[A2UI_OPERATIONS_KEY] ?? [];
       if (operations.length === 0) {
