@@ -117,13 +117,6 @@ export class Chat {
     });
 
     effect(() => {
-      const state = this._store().state();
-      if (state) {
-        console.log('state', state);
-      }
-    });
-
-    effect(() => {
       const threadId = this.threadId();
       if (threadId) {
         sessionStorage.setItem(THREAD_ID_STORAGE_KEY, threadId);

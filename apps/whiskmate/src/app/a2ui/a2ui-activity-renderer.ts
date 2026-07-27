@@ -44,17 +44,24 @@ export class A2uiActivityRenderer
   readonly message = input.required<ActivityMessage>();
   readonly agent = input<AbstractAgent | undefined>();
 
-  private readonly renderer = inject(A2uiRendererService);
+  private _processedOperationsIndex = 0;
+  private readonly _renderer = inject(A2uiRendererService);
 
   constructor() {
     effect(() => {
-      const operations = this.content()[A2UI_OPERATIONS_KEY] ?? [];
+      let operations = this.content()[A2UI_OPERATIONS_KEY] ?? [];
       if (operations.length === 0) {
         return;
       }
 
+      // For some reason, the `content` signal is updated with the same a2ui operations.
+      // This can cause the renderer to process the same operations multiple times
+      // and throw an existing surface error.
+      operations = operations.slice(this._processedOperationsIndex);
+
       try {
-        this.renderer.processMessages(operations);
+        this._renderer.processMessages(operations);
+        this._processedOperationsIndex += operations.length;
       } catch (error) {
         console.error('A2UI render error:', error);
       }
