@@ -221,22 +221,13 @@ type Recipe = z.infer<typeof recipeSchema>;
   `,
 })
 export class AddRecipe implements HumanInTheLoopToolRenderer<AddRecipeArgs> {
-  private readonly _store = injectAgentStore('default');
   toolCall = input.required<HumanInTheLoopToolCall<AddRecipeArgs>>();
 
-  recipes = computed(
-    () => (this._store().state() as { recipes: Recipe[] })?.recipes ?? [],
-  );
   recipe = computed(() => this.toolCall().args.recipe);
-  canConfirm = computed(() => {
-    return (
-      this.recipes()?.every(
-        (recipe: Recipe) => recipe.name !== this.recipe()?.name,
-      ) ?? true
-    );
-  });
+  canConfirm = signal(true);
 
   confirm() {
+    this.canConfirm.set(false);
     // Favorites are appended on the server when this run resumes — approval only.
     this.toolCall().respond({
       status: 'approved',

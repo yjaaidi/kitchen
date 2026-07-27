@@ -61,6 +61,9 @@ const favoriteRecipesByUserId = new Map<string, Recipe[]>();
 /** In-memory thread ownership keyed by thread id. */
 const threadOwnerByThreadIdMap = new Map<string, string>();
 
+/** Tool call ids whose `add-recipe` HITL results have already been applied. */
+const processedAddRecipeToolResultIds = new Set<string>();
+
 const requestUserIdMap = new WeakMap<Request, string>();
 
 const runtime = new CopilotRuntime({
@@ -86,13 +89,9 @@ const runtime = new CopilotRuntime({
 
           // HITL `add-recipe` is frontend-only: on resume, persist approved
           // recipes here (not via client setState / LLM follow-up tools).
-          const approvedRecipe = findApprovedAddRecipeAfterLastUserMessage(
-            input.messages,
-          );
-          if (approvedRecipe) {
-            emitState({
-              recipes: appendFavoriteRecipe(userId, approvedRecipe),
-            });
+          const recipes = processAddRecipeResults(input.messages, userId);
+          if (recipes) {
+            emitState({ recipes });
           }
 
           // `input.context` is intentionally ignored: the A2UI schema and
@@ -253,21 +252,13 @@ function appendFavoriteRecipe(userId: string, recipe: Recipe): Recipe[] {
 }
 
 /**
- * After HITL `respond()`, the resumed run's messages end with tool results
- * (no new user message). Only those trailing approvals are applied — older
- * approvals before the last user turn are ignored so we do not re-append.
+ * After HITL `respond()`, apply new `add-recipe` results once. Each toolCallId
+ * is recorded in `processedAddRecipeToolResultIds` so later runs ignore it.
  */
-function findApprovedAddRecipeAfterLastUserMessage(
+function processAddRecipeResults(
   messages: Message[],
-): Recipe | null {
-  let lastUserIdx = -1;
-  for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i]?.role === 'user') {
-      lastUserIdx = i;
-      break;
-    }
-  }
-
+  userId: string,
+): Recipe[] | null {
   const recipesByToolCallId = new Map<string, Recipe>();
   for (const message of messages) {
     if (message.role !== 'assistant' || !message.toolCalls) {
@@ -286,10 +277,13 @@ function findApprovedAddRecipeAfterLastUserMessage(
     }
   }
 
-  let approved: Recipe | null = null;
-  for (let i = lastUserIdx + 1; i < messages.length; i++) {
-    const message = messages[i];
-    if (message?.role !== 'tool') {
+  let recipes: Recipe[] | null = null;
+  for (const message of messages) {
+    if (message.role !== 'tool') {
+      continue;
+    }
+
+    if (processedAddRecipeToolResultIds.has(message.toolCallId)) {
       continue;
     }
 
@@ -298,12 +292,14 @@ function findApprovedAddRecipeAfterLastUserMessage(
       continue;
     }
 
+    processedAddRecipeToolResultIds.add(message.toolCallId);
+
     if (parseAddRecipeStatus(message.content) === 'approved') {
-      approved = recipe;
+      recipes = appendFavoriteRecipe(userId, recipe);
     }
   }
 
-  return approved;
+  return recipes;
 }
 
 /**
