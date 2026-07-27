@@ -1,3 +1,5 @@
+import { buildContextPrompt, buildSubagentPrompt } from '@ag-ui/a2ui-toolkit';
+
 /**
  * Whiskmate's own catalog id — NOT the v0.9 basic catalog. The frontend
  * registers its custom `AngularCatalog` under the same id (see
@@ -9,9 +11,9 @@ export const RECIPE_A2UI_CATALOG_ID =
 
 /**
  * Server-owned A2UI inline catalog: Whiskmate's own simple subset of the
- * basic catalog component vocabulary. Injected as context by the runtime's
- * A2UI middleware so the model only composes with components the Whiskmate
- * frontend actually implements.
+ * basic catalog component vocabulary. Hardcoded into the agent system prompt
+ * (via {@link RECIPE_A2UI_PROMPT}) so the model only composes with components
+ * the Whiskmate frontend actually implements.
  */
 export const recipeA2uiCatalog = {
   catalogId: RECIPE_A2UI_CATALOG_ID,
@@ -109,3 +111,19 @@ export const recipeA2uiCatalog = {
     },
   },
 } as const;
+
+/**
+ * Server-owned A2UI prompt fragment: toolkit default generation + design
+ * guidelines, then the Whiskmate catalog as `## Available Components`.
+ *
+ * Built with `@ag-ui/a2ui-toolkit` helpers so we stay aligned with the
+ * middleware/subagent prompt contract without reading client-forwarded
+ * `input.context`.
+ */
+export const RECIPE_A2UI_PROMPT = buildSubagentPrompt({
+  contextPrompt: buildContextPrompt({
+    'ag-ui': {
+      a2ui_schema: JSON.stringify(recipeA2uiCatalog),
+    },
+  }),
+});

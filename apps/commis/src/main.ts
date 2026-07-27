@@ -12,6 +12,7 @@ import { createServer } from 'node:http';
 import { z } from 'zod';
 import {
   RECIPE_A2UI_CATALOG_ID,
+  RECIPE_A2UI_PROMPT,
   recipeA2uiCatalog,
 } from './a2ui/recipe-catalog';
 import { createAgentFactory } from './create-agent-factory';
@@ -80,19 +81,15 @@ const runtime = new CopilotRuntime({
             );
           }
 
-          // The A2UI middleware injects the component schema and the
-          // render_a2ui usage guide as context entries; without them the model
-          // does not know the A2UI component wire format.
-          const contextPrompt = (input.context ?? [])
-            .map((entry) => `## ${entry.description}\n\n${entry.value}`)
-            .join('\n\n');
-
+          // `input.context` is intentionally ignored: the A2UI schema and
+          // generation guidelines are hardcoded server-side (RECIPE_A2UI_PROMPT),
+          // so client-forwarded context can never pollute the system prompt.
           return streamText({
             model: MODEL,
             system: `You are a helpful cooking assistant.
 When the user wants to add or create a recipe, call create-recipe, then call add-recipe with its result for confirmation.
 
-${contextPrompt}`,
+${RECIPE_A2UI_PROMPT}`,
             messages: convertMessagesToVercelAISDKMessages(input.messages),
             tools: {
               ...convertToolsToVercelAITools(input.tools),
