@@ -2,7 +2,7 @@ import { effect, inject, Service, signal } from '@angular/core';
 import { CopilotKit } from '@copilotkit/angular';
 
 const USER_ID_STORAGE_KEY = 'whiskmate.userId';
-const COPILOTKIT_RUNTIME_URL = 'http://localhost:8200/api/copilotkit';
+const COPILOTKIT_RUNTIME_URL = 'http://localhost:4100/api/copilotkit';
 
 @Service()
 export class Auth {

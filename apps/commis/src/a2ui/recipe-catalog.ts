@@ -1,22 +1,22 @@
-import { buildContextPrompt, buildSubagentPrompt } from '@ag-ui/a2ui-toolkit';
+import { A2UIValidationCatalog } from '@ag-ui/a2ui-toolkit';
 
-/**
- * Whiskmate's own catalog id — NOT the v0.9 basic catalog. The frontend
- * registers its custom `AngularCatalog` under the same id (see
- * `apps/whiskmate/src/app/a2ui/whiskmate-catalog.ts`); the two strings must
- * stay identical for surfaces created here to resolve there.
- */
-export const RECIPE_A2UI_CATALOG_ID =
-  'https://whiskmate.dev/a2ui/recipe-catalog-v1.json';
+type A2UICatalog = A2UIValidationCatalog & { catalogId: string };
 
 /**
  * Server-owned A2UI inline catalog: Whiskmate's own simple subset of the
  * basic catalog component vocabulary. Hardcoded into the agent system prompt
- * (via {@link RECIPE_A2UI_PROMPT}) so the model only composes with components
+ * (via MastraAgent `a2ui` + CopilotRuntime `a2ui.schema`) so the model only
+ * composes with components
  * the Whiskmate frontend actually implements.
  */
-export const recipeA2uiCatalog = {
-  catalogId: RECIPE_A2UI_CATALOG_ID,
+export const recipeA2uiCatalog: A2UICatalog = {
+  /**
+   * Whiskmate's own catalog id — NOT the v0.9 basic catalog. The frontend
+   * registers its custom `AngularCatalog` under the same id (see
+   * `apps/whiskmate/src/app/a2ui/whiskmate-catalog.ts`); the two strings must
+   * stay identical for surfaces created here to resolve there.
+   */
+  catalogId: 'https://whiskmate.dev/a2ui/recipe-catalog-v1.json',
   components: {
     Column: {
       description:
@@ -110,20 +110,4 @@ export const recipeA2uiCatalog = {
       },
     },
   },
-} as const;
-
-/**
- * Server-owned A2UI prompt fragment: toolkit default generation + design
- * guidelines, then the Whiskmate catalog as `## Available Components`.
- *
- * Built with `@ag-ui/a2ui-toolkit` helpers so we stay aligned with the
- * middleware/subagent prompt contract without reading client-forwarded
- * `input.context`.
- */
-export const RECIPE_A2UI_PROMPT = buildSubagentPrompt({
-  contextPrompt: buildContextPrompt({
-    'ag-ui': {
-      a2ui_schema: JSON.stringify(recipeA2uiCatalog),
-    },
-  }),
-});
+};

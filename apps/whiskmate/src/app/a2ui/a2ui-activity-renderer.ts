@@ -23,9 +23,8 @@ export type A2uiSurfaceContent = z.infer<typeof a2uiSurfaceContentSchema>;
   selector: 'wm-a2ui-activity-renderer',
   imports: [SurfaceComponent],
   template: `
-    @let surface = surfaceId();
-    @if (surface) {
-      <a2ui-v09-surface [surfaceId]="surface" />
+    @for (surfaceId of surfaceIds(); track surfaceId) {
+      <a2ui-v09-surface [surfaceId]="surfaceId" />
     }
   `,
   styles: `
@@ -44,55 +43,104 @@ export class A2uiActivityRenderer
   readonly message = input.required<ActivityMessage>();
   readonly agent = input<AbstractAgent | undefined>();
 
-  private _processedOperationsIndex = 0;
+  protected readonly surfaceIds = computed(() =>
+    this._operations()
+      .map((op) => _getOperationInfo(op))
+      .filter(_isCreateSurfaceOperation)
+      .map((operation) => operation.surfaceId),
+  );
+
   private readonly _renderer = inject(A2uiRendererService);
+
+  private readonly _createdSurfaceIds = new Set<string>();
+  private readonly _operations = computed(
+    () => this.content()[A2UI_OPERATIONS_KEY] ?? [],
+  );
 
   constructor() {
     effect(() => {
-      let operations = this.content()[A2UI_OPERATIONS_KEY] ?? [];
+      /**
+       * `content` is replaced wholesale on each progressive ACTIVITY_SNAPSHOT
+       * (replace: true). Re-apply the latest ops; only skip createSurface after
+       * the surface already exists in this renderer instance.
+       * On one hand, we do not want to apply the same createSurface operation
+       * multiple times. On the other hand, an update operation might be replaced in
+       * the operations array, therefore we can't just keep an index of the slice
+       * of the operations already processed.
+       */
+      // 1. Filter out createSurface ops for surfaces already created here.
+      const operations = this._operations().filter((op) => {
+        const operationInfo = _getOperationInfo(op);
+        return !(
+          _isCreateSurfaceOperation(operationInfo) &&
+          this._createdSurfaceIds.has(operationInfo.surfaceId)
+        );
+      });
+
       if (operations.length === 0) {
         return;
       }
 
-      // For some reason, the `content` signal is updated with the same a2ui operations.
-      // This can cause the renderer to process the same operations multiple times
-      // and throw an existing surface error.
-      operations = operations.slice(this._processedOperationsIndex);
+      // 2. Apply the remaining operations.
+      this._renderer.processMessages(operations);
 
-      try {
-        this._renderer.processMessages(operations);
-        this._processedOperationsIndex += operations.length;
-      } catch (error) {
-        console.error('A2UI render error:', error);
+      // 3. Record newly created surfaces.
+      for (const operation of operations) {
+        const operationInfo = _getOperationInfo(operation);
+        if (_isCreateSurfaceOperation(operationInfo)) {
+          this._createdSurfaceIds.add(operationInfo.surfaceId);
+        }
       }
     });
   }
-
-  protected readonly surfaceId = computed(() =>
-    _getRenderedSurfaceId(this.content()[A2UI_OPERATIONS_KEY] ?? []),
-  );
 }
 
-function _getRenderedSurfaceId(operations: A2uiMessage[]): string | null {
-  for (const operation of operations) {
-    if ('createSurface' in operation && operation.createSurface?.surfaceId) {
-      return operation.createSurface.surfaceId;
-    }
+type A2uiOperationType =
+  | 'createSurface'
+  | 'updateComponents'
+  | 'updateDataModel'
+  | 'deleteSurface';
 
-    if (
-      'updateComponents' in operation &&
-      operation.updateComponents?.surfaceId
-    ) {
-      return operation.updateComponents.surfaceId;
-    }
+type A2uiOperationInfo = {
+  surfaceId: string | undefined;
+  operationType: A2uiOperationType | undefined;
+};
 
-    if (
-      'updateDataModel' in operation &&
-      operation.updateDataModel?.surfaceId
-    ) {
-      return operation.updateDataModel.surfaceId;
-    }
+type CreateSurfaceOperationInfo = {
+  surfaceId: string;
+  operationType: 'createSurface';
+};
+
+function _isCreateSurfaceOperation(
+  operation: A2uiOperationInfo,
+): operation is CreateSurfaceOperationInfo {
+  return operation.operationType === 'createSurface' && !!operation.surfaceId;
+}
+
+function _getOperationInfo(operation: A2uiMessage): A2uiOperationInfo {
+  if ('createSurface' in operation) {
+    return {
+      surfaceId: operation.createSurface?.surfaceId,
+      operationType: 'createSurface',
+    };
   }
-
-  return null;
+  if ('updateComponents' in operation) {
+    return {
+      surfaceId: operation.updateComponents?.surfaceId,
+      operationType: 'updateComponents',
+    };
+  }
+  if ('updateDataModel' in operation) {
+    return {
+      surfaceId: operation.updateDataModel?.surfaceId,
+      operationType: 'updateDataModel',
+    };
+  }
+  if ('deleteSurface' in operation) {
+    return {
+      surfaceId: operation.deleteSurface?.surfaceId,
+      operationType: 'deleteSurface',
+    };
+  }
+  return { surfaceId: undefined, operationType: undefined };
 }

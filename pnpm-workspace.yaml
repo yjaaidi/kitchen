@@ -8,3 +8,9 @@ allowBuilds:
   msgpackr-extract: true
   nx: true
   unrs-resolver: set this to true or false
+minimumReleaseAgeExclude:
+  - '@mastra/express@1.4.11'
+  - '@mastra/libsql@1.18.0'
+  - '@mastra/memory@1.24.0'
+  - '@mastra/observability@1.16.3'
+  - '@mastra/server@1.54.0'

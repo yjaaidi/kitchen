@@ -1,4 +1,4 @@
-import { A2UI_RENDERER_CONFIG, A2uiRendererService } from '@a2ui/angular/v0_9';
+import { A2UI_RENDERER_CONFIG } from '@a2ui/angular/v0_9';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -29,6 +29,7 @@ export const appConfig: ApplicationConfig = {
       // No `a2ui` here — the catalog is owned by the backend runtime. Surfaces
       // are painted with @a2ui/angular through the activity renderer; the noop
       // tool renderer keeps the built-in Lit render_a2ui UI from doubling up.
+      a2ui: { includeSchema: false },
       renderActivityMessages: [
         {
           activityType: 'a2ui-surface',
