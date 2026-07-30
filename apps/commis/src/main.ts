@@ -6,7 +6,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'node:http';
 import { mastra } from './mastra';
-import { recipeA2uiCatalog } from './a2ui/recipe-catalog';
+import { RECIPE_A2UI_CATALOG } from './a2ui/recipe-catalog';
 
 /** In-memory thread ownership keyed by thread id. */
 const threadOwnerByThreadIdMap = new Map<string, string>();
@@ -19,13 +19,14 @@ const runtime = new CopilotRuntime({
     deny: ['authorization'],
     denyPrefixes: ['x-'],
   },
-  // Server-owned A2UI catalog. Cooking agent registers generate_a2ui with a
-  // Gemini-safe component schema (see generate-a2ui-tool.ts). Keep middleware
-  // inject off so render_a2ui is not also advertised to the planner.
+  // Server-owned A2UI catalog. Cooking agent owns generate_a2ui (structured
+  // composition → a2ui_operations tool result). Keep middleware inject off so
+  // render_a2ui is not advertised to the planner; middleware still paints from
+  // TOOL_CALL_RESULT.
   a2ui: {
     agents: ['default'],
-    schema: recipeA2uiCatalog,
-    defaultCatalogId: recipeA2uiCatalog.catalogId,
+    schema: RECIPE_A2UI_CATALOG,
+    defaultCatalogId: RECIPE_A2UI_CATALOG.catalogId,
     injectA2UITool: false,
   },
   agents: async ({ request }) => {
@@ -115,6 +116,10 @@ async function startMastraServer() {
       `Mastra API listening at http://localhost:${mastraPort}/api (agents: /api/agents)`,
     );
     console.log(`Open Studio UI with: npx mastra studio -s ${mastraPort}`);
+    mastra.getLogger().info('Mastra API listening', {
+      port: mastraPort,
+      agentsPath: '/api/agents',
+    });
   });
 }
 

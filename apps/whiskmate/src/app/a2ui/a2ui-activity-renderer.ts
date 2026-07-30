@@ -45,8 +45,8 @@ export class A2uiActivityRenderer
 
   protected readonly surfaceIds = computed(() =>
     this._operations()
-      .map((op) => _getOperationInfo(op))
-      .filter(_isCreateSurfaceOperation)
+      .map((op) => this._getOperationInfo(op))
+      .filter((op) => this._isCreateSurfaceOperation(op))
       .map((operation) => operation.surfaceId),
   );
 
@@ -68,30 +68,109 @@ export class A2uiActivityRenderer
        * the operations array, therefore we can't just keep an index of the slice
        * of the operations already processed.
        */
-      // 1. Filter out createSurface ops for surfaces already created here.
-      const operations = this._operations().filter((op) => {
-        const operationInfo = _getOperationInfo(op);
-        return !(
-          _isCreateSurfaceOperation(operationInfo) &&
+      for (const rawOperation of this._operations()) {
+        const operation = this._normalizeOperation(rawOperation);
+        if (!operation) {
+          continue;
+        }
+
+        const operationInfo = this._getOperationInfo(operation);
+        const isCreateSurfaceOperation =
+          this._isCreateSurfaceOperation(operationInfo);
+
+        if (
+          isCreateSurfaceOperation &&
           this._createdSurfaceIds.has(operationInfo.surfaceId)
-        );
-      });
+        ) {
+          continue;
+        }
 
-      if (operations.length === 0) {
-        return;
-      }
+        /* Apply operations one by one, otherwise we can't tell which operations have been applied or failed. */
+        this._renderer.processMessages([operation]);
 
-      // 2. Apply the remaining operations.
-      this._renderer.processMessages(operations);
-
-      // 3. Record newly created surfaces.
-      for (const operation of operations) {
-        const operationInfo = _getOperationInfo(operation);
-        if (_isCreateSurfaceOperation(operationInfo)) {
+        if (isCreateSurfaceOperation) {
           this._createdSurfaceIds.add(operationInfo.surfaceId);
         }
       }
     });
+  }
+
+  /**
+   * Drop incomplete streamed components from `updateComponents` (missing `id`
+   * or component type). Returns `null` when nothing remains to apply.
+   */
+  private _normalizeOperation(operation: A2uiMessage): A2uiMessage | null {
+    if (!('updateComponents' in operation) || !operation.updateComponents) {
+      return operation;
+    }
+
+    const components = operation.updateComponents.components ?? [];
+    const normalizedComponents = components.filter(
+      (component): component is Record<string, unknown> & { id: string } => {
+        if (!component || typeof component !== 'object') {
+          return false;
+        }
+        const record = component as Record<string, unknown>;
+        const id = record['id'];
+        const type = record['component'] ?? record['type'];
+        return (
+          typeof id === 'string' &&
+          id.length > 0 &&
+          typeof type === 'string' &&
+          type.length > 0
+        );
+      },
+    );
+
+    if (normalizedComponents.length === 0) {
+      return null;
+    }
+
+    if (normalizedComponents.length === components.length) {
+      return operation;
+    }
+
+    return {
+      ...operation,
+      updateComponents: {
+        ...operation.updateComponents,
+        components: normalizedComponents,
+      },
+    };
+  }
+
+  private _isCreateSurfaceOperation(
+    operation: A2uiOperationInfo,
+  ): operation is CreateSurfaceOperationInfo {
+    return operation.operationType === 'createSurface' && !!operation.surfaceId;
+  }
+
+  private _getOperationInfo(operation: A2uiMessage): A2uiOperationInfo {
+    if ('createSurface' in operation) {
+      return {
+        surfaceId: operation.createSurface?.surfaceId,
+        operationType: 'createSurface',
+      };
+    }
+    if ('updateComponents' in operation) {
+      return {
+        surfaceId: operation.updateComponents?.surfaceId,
+        operationType: 'updateComponents',
+      };
+    }
+    if ('updateDataModel' in operation) {
+      return {
+        surfaceId: operation.updateDataModel?.surfaceId,
+        operationType: 'updateDataModel',
+      };
+    }
+    if ('deleteSurface' in operation) {
+      return {
+        surfaceId: operation.deleteSurface?.surfaceId,
+        operationType: 'deleteSurface',
+      };
+    }
+    return { surfaceId: undefined, operationType: undefined };
   }
 }
 
@@ -110,37 +189,3 @@ type CreateSurfaceOperationInfo = {
   surfaceId: string;
   operationType: 'createSurface';
 };
-
-function _isCreateSurfaceOperation(
-  operation: A2uiOperationInfo,
-): operation is CreateSurfaceOperationInfo {
-  return operation.operationType === 'createSurface' && !!operation.surfaceId;
-}
-
-function _getOperationInfo(operation: A2uiMessage): A2uiOperationInfo {
-  if ('createSurface' in operation) {
-    return {
-      surfaceId: operation.createSurface?.surfaceId,
-      operationType: 'createSurface',
-    };
-  }
-  if ('updateComponents' in operation) {
-    return {
-      surfaceId: operation.updateComponents?.surfaceId,
-      operationType: 'updateComponents',
-    };
-  }
-  if ('updateDataModel' in operation) {
-    return {
-      surfaceId: operation.updateDataModel?.surfaceId,
-      operationType: 'updateDataModel',
-    };
-  }
-  if ('deleteSurface' in operation) {
-    return {
-      surfaceId: operation.deleteSurface?.surfaceId,
-      operationType: 'deleteSurface',
-    };
-  }
-  return { surfaceId: undefined, operationType: undefined };
-}

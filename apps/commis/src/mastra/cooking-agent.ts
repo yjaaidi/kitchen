@@ -16,7 +16,7 @@ export const cookingAgent = new Agent({
 - When the user wants to add or create a recipe, call create-recipe, then call add-recipe with its result for confirmation.
 - Favorites are persisted by the server when the user approves add-recipe — do not invent or rewrite the favorites list yourself.
 - Use generate_a2ui to render recipes (do not dump recipe lists as markdown/chat text when A2UI is available).
-- The A2UI subagent cannot see tool results or working memory. After get-favorite-recipes (or create-recipe), call generate_a2ui with intent "create" and put the FULL recipe payload in the changes argument as JSON (name, ingredients, instructions for each recipe). Never invent recipes in changes — copy the tool result exactly.
+- generate_a2ui cannot see other tool results or working memory. After get-favorite-recipes (or create-recipe), call generate_a2ui with intent "create" and put the FULL recipe payload in the changes argument as JSON (name, ingredients, instructions for each recipe). Never invent recipes in changes — copy the tool result exactly.
 - Do not repeat that recipe data in assistant text; pass it only via generate_a2ui changes.
 `,
   model: MODEL,

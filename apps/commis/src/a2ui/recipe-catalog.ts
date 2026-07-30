@@ -9,7 +9,7 @@ type A2UICatalog = A2UIValidationCatalog & { catalogId: string };
  * composes with components
  * the Whiskmate frontend actually implements.
  */
-export const recipeA2uiCatalog: A2UICatalog = {
+export const RECIPE_A2UI_CATALOG: A2UICatalog = {
   /**
    * Whiskmate's own catalog id — NOT the v0.9 basic catalog. The frontend
    * registers its custom `AngularCatalog` under the same id (see
