@@ -176,6 +176,13 @@ export const generateA2uiTool = createTool({
             toolChoice: { type: 'tool', toolName: RENDER_TOOL_NAME },
             maxSteps: 1,
             tracingContext: context.tracingContext,
+            // Gemini 3 defaults to high thinking; A2UI tool-calling doesn't need it
+            // and burns ~20s+ on reasoning tokens (see Studio traces).
+            providerOptions: {
+              google: {
+                thinkingConfig: { thinkingLevel: 'minimal' },
+              },
+            },
           },
         );
 
