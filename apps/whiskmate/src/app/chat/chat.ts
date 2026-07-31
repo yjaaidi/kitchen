@@ -1,7 +1,6 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   input,
   output,
@@ -220,8 +219,6 @@ export class AddRecipe {
   providers: [
     provideCopilotChatConfiguration({
       agentId: 'default',
-      threadId: sessionStorage.getItem(THREAD_ID_STORAGE_KEY) ?? undefined,
-      hasExplicitThreadId: false,
     }),
   ],
 })
@@ -264,6 +261,11 @@ export class Chat {
   });
 
   constructor() {
+    const stored = sessionStorage.getItem(THREAD_ID_STORAGE_KEY);
+    if (stored) {
+      this._chatConfig.setActiveThreadId(stored, { explicit: true });
+    }
+
     this._copilotKit.core.subscribe({
       onAgentRunStarted: ({ agent }) => {
         this.error.set(null);
