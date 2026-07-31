@@ -6,7 +6,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'node:http';
 import { mastra } from './mastra';
-import { recipeA2uiCatalog } from './a2ui/recipe-catalog';
+import { RECIPE_A2UI_CATALOG } from './a2ui/recipe-catalog';
 
 /** In-memory thread ownership keyed by thread id. */
 const threadOwnerByThreadIdMap = new Map<string, string>();
@@ -20,12 +20,12 @@ const runtime = new CopilotRuntime({
     denyPrefixes: ['x-'],
   },
   // Server-owned A2UI catalog. Cooking agent registers generate_a2ui with a
-  // Gemini-safe component schema (see generate-a2ui-tool.ts). Keep middleware
-  // inject off so render_a2ui is not also advertised to the planner.
+  // closed (Gemini/Anthropic-safe) component schema — see generate-a2ui-tool.ts.
+  // Keep middleware inject off so render_a2ui is not also advertised to the planner.
   a2ui: {
     agents: ['default'],
-    schema: recipeA2uiCatalog,
-    defaultCatalogId: recipeA2uiCatalog.catalogId,
+    schema: RECIPE_A2UI_CATALOG,
+    defaultCatalogId: RECIPE_A2UI_CATALOG.catalogId,
     injectA2UITool: false,
   },
   agents: async ({ request }) => {

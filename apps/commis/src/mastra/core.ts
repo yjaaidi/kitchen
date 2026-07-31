@@ -28,4 +28,4 @@ export const DEFAULT_FAVORITES: Recipe[] = [
   },
 ];
 
-export const MODEL: ModelRouterModelId = 'anthropic/claude-sonnet-5';
+export const MODEL: ModelRouterModelId = 'google/gemini-3.6-flash';

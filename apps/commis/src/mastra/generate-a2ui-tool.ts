@@ -10,20 +10,91 @@ import {
 import { Agent } from '@mastra/core/agent';
 import { createTool, type ToolExecutionContext } from '@mastra/core/tools';
 import { z } from 'zod';
-import { recipeA2uiCatalog } from '../a2ui/recipe-catalog';
+import { RECIPE_A2UI_CATALOG } from '../a2ui/recipe-catalog';
 import { MODEL } from './core';
 
 const RENDER_TOOL_NAME = RENDER_A2UI_TOOL_DEF.function.name;
 
+/** Literal string or `{ path }` data binding. */
+const A2UI_PATH_OR_STRING = z.union([
+  z.string(),
+  z.object({ path: z.string() }),
+]);
+
+/**
+ * Static child ids, or `{ path, componentId }` template for List repetition.
+ * Native Zod unions (→ anyOf) — Gemini rejects nested catalog `oneOf` /
+ * open `z.record` tool schemas that `fromJSONSchema` would emit.
+ */
+const A2UI_CHILD_LIST = z.union([
+  z.array(z.string()),
+  z.object({
+    path: z.string(),
+    componentId: z.string(),
+  }),
+]);
+
+/**
+ * Closed per-type component schemas (no open objects). Anthropic and Gemini
+ * both reject empty `{}` / open `z.record` parameter schemas; semantic
+ * validation still runs via `runA2UIGenerationWithRecovery` + catalog.
+ */
 const RENDER_A2UI_INPUT_SCHEMA = z.object({
   surfaceId: z.string().describe('Unique surface identifier.'),
   components: z
-    .array(z.record(z.string(), z.unknown()))
+    .array(
+      z.discriminatedUnion('component', [
+        z.object({
+          id: z.string(),
+          component: z.literal('Column'),
+          children: A2UI_CHILD_LIST,
+        }),
+        z.object({
+          id: z.string(),
+          component: z.literal('Row'),
+          children: A2UI_CHILD_LIST,
+        }),
+        z.object({
+          id: z.string(),
+          component: z.literal('Card'),
+          child: z.string(),
+        }),
+        z.object({
+          id: z.string(),
+          component: z.literal('Text'),
+          text: A2UI_PATH_OR_STRING,
+          variant: z
+            .enum(['h1', 'h2', 'h3', 'h4', 'h5', 'caption', 'body'])
+            .optional(),
+        }),
+        z.object({
+          id: z.string(),
+          component: z.literal('List'),
+          children: A2UI_CHILD_LIST,
+          direction: z.enum(['vertical', 'horizontal']).optional(),
+        }),
+        z.object({
+          id: z.string(),
+          component: z.literal('Divider'),
+          axis: z.enum(['horizontal', 'vertical']).optional(),
+        }),
+      ]),
+    )
     .describe("A2UI v0.9 component array; root id 'root'."),
   data: z
-    .record(z.string(), z.unknown())
+    .object({
+      items: z.array(
+        z.object({
+          name: z.string(),
+          ingredients: z.array(z.string()).optional(),
+          instructions: z.string().optional(),
+        }),
+      ),
+    })
     .optional()
-    .describe('Optional initial data model for the surface.'),
+    .describe(
+      'Initial data model at path "/". Use { items: [recipes] } for List path "/items".',
+    ),
 });
 
 /**
@@ -62,7 +133,7 @@ export const generateA2uiTool = createTool({
       changes: input.changes,
       messages: [],
       state: {
-        'ag-ui': { a2ui_schema: JSON.stringify(recipeA2uiCatalog) },
+        'ag-ui': { a2ui_schema: JSON.stringify(RECIPE_A2UI_CATALOG) },
       },
     });
     if (error) {
@@ -71,7 +142,7 @@ export const generateA2uiTool = createTool({
 
     const { envelope } = await runA2UIGenerationWithRecovery({
       basePrompt: prompt,
-      catalog: recipeA2uiCatalog,
+      catalog: RECIPE_A2UI_CATALOG,
       invokeSubagent: async (subagentPrompt) => {
         let result: z.infer<typeof RENDER_A2UI_INPUT_SCHEMA> | null = null;
 
@@ -116,7 +187,7 @@ export const generateA2uiTool = createTool({
           isUpdate,
           targetSurfaceId: input.target_surface_id,
           prior,
-          defaultCatalogId: recipeA2uiCatalog.catalogId,
+          defaultCatalogId: RECIPE_A2UI_CATALOG.catalogId,
         }),
     });
 
