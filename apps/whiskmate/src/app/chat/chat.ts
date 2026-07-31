@@ -14,29 +14,30 @@ import {
   injectInterrupt,
   provideCopilotChatConfiguration,
 } from '@copilotkit/angular';
+import { z } from 'zod';
 import { Auth } from '../auth/auth';
 
 const THREAD_ID_STORAGE_KEY = 'whiskmate.threadId';
 
-type Recipe = {
-  name: string;
-  ingredients: string[];
-  instructions: string;
-};
+const RECIPE_SCHEMA = z.object({
+  name: z.string(),
+  ingredients: z.array(z.string()),
+  instructions: z.string(),
+});
+
+type Recipe = z.infer<typeof RECIPE_SCHEMA>;
+
+const SUSPEND_ADD_RECIPE_SCHEMA = z.object({
+  mastra: z.object({
+    toolName: z.string(),
+    suspendPayload: z.object({
+      recipe: RECIPE_SCHEMA,
+    }),
+  }),
+});
 
 type AgentState = {
   favoriteRecipes?: Recipe[];
-};
-
-type MastraSuspendValue = {
-  type?: string;
-  toolName?: string;
-  suspendPayload?: {
-    recipe?: Recipe;
-  };
-  args?: {
-    recipe?: Recipe;
-  };
 };
 
 @Component({
@@ -227,19 +228,7 @@ export class Chat {
   private readonly _copilotKit = inject(CopilotKit);
   private readonly _chatConfig = injectChatConfiguration();
   private readonly _store = injectAgentStore('default');
-  private readonly _interrupt = injectInterrupt({
-    agentId: 'default',
-    // Only `add-recipe` suspends today; accept legacy mastra_suspend payloads
-    // and standard interrupts that carry a recipe.
-    enabled: (event) => {
-      const parsed = parseMastraSuspend(event.value);
-      return (
-        parsed?.toolName === 'add-recipe' ||
-        event.name === 'on_interrupt' ||
-        !!parsed?.recipe
-      );
-    },
-  });
+  private readonly _interrupt = injectInterrupt({ agentId: 'default' });
 
   readonly userId = this._auth.userId;
 
@@ -251,14 +240,9 @@ export class Chat {
 
   protected readonly error = signal<Error | null>(null);
 
-  protected readonly pendingRecipe = computed(() => {
-    if (!this._interrupt.hasInterrupt()) {
-      return null;
-    }
-    return (
-      parseMastraSuspend(this._interrupt.interrupt()?.metadata)?.recipe ?? null
-    );
-  });
+  protected readonly pendingRecipe = computed(
+    () => this._maybeGetCurrentAddRecipeSuspend()?.recipe ?? null,
+  );
 
   constructor() {
     const stored = sessionStorage.getItem(THREAD_ID_STORAGE_KEY);
@@ -301,35 +285,25 @@ export class Chat {
   protected rejectRecipe() {
     void this._interrupt.resolve({ status: 'rejected' }).catch(() => undefined);
   }
-}
 
-function parseMastraSuspend(
-  value: unknown,
-): { toolName?: string; recipe?: Recipe } | null {
-  const parsed = coerceJson(value);
-  if (!parsed || typeof parsed !== 'object') {
-    return null;
-  }
-
-  const suspend = parsed as MastraSuspendValue;
-  const recipe =
-    suspend.suspendPayload?.recipe ??
-    suspend.args?.recipe ??
-    (parsed as { recipe?: Recipe }).recipe;
-
-  return {
-    toolName: suspend.toolName,
-    recipe,
-  };
-}
-
-function coerceJson(value: unknown): unknown {
-  if (typeof value === 'string') {
-    try {
-      return JSON.parse(value);
-    } catch {
-      return undefined;
+  private _maybeGetCurrentAddRecipeSuspend(): {
+    toolName: string;
+    recipe: Recipe;
+  } | null {
+    if (!this._interrupt.hasInterrupt()) {
+      return null;
     }
+
+    const { success, data } = SUSPEND_ADD_RECIPE_SCHEMA.safeParse(
+      this._interrupt.interrupt()?.metadata,
+    );
+    if (!success || data.mastra.toolName !== 'add-recipe') {
+      return null;
+    }
+
+    return {
+      toolName: data.mastra.toolName,
+      recipe: data.mastra.suspendPayload.recipe,
+    };
   }
-  return value;
 }
