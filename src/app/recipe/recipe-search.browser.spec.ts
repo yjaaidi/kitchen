@@ -73,7 +73,7 @@ describe(RecipeSearch.name, () => {
       .not.toBeInTheDocument();
   });
 
-  it.todo('disables Previous on the first page', async () => {
+  it('disables Previous on the first page', async () => {
     const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([

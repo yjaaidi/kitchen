@@ -176,7 +176,7 @@ flowchart LR
 - Assert one heading visible with text Curry.
 - Assert heading Burger is not visible.
 
-### 🚧 Disables Previous on the first page
+### ✅ Disables Previous on the first page
 
 - Arrange Burger, Salad, Pizza, Beer, Tacos, Curry.
 - Mount `RecipeSearch`.
