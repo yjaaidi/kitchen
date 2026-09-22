@@ -73,10 +73,23 @@ describe(RecipeSearch.name, () => {
       .not.toBeInTheDocument();
   });
 
-  it.todo('disables Previous on the first page', () => {
-    // Arrange Burger, Salad, Pizza, Beer, Tacos, Curry.
-    // Mount `RecipeSearch`.
-    // Assert Previous is disabled.
+  it.todo('disables Previous on the first page', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Tacos').build(),
+      recipeMother.withBasicInfo('Curry').build(),
+    ]);
+
+    await mount();
+
+    await expect
+      .element(page.getByRole('button', { name: 'Previous' }))
+      .toBeDisabled();
   });
 
   it.todo('disables Next on the last page', () => {
