@@ -187,7 +187,7 @@ flowchart LR
 - Arrange Burger, Salad, Pizza, Beer, Tacos, Curry; mount and click Next once.
 - Assert Next is disabled.
 
-### 🚧 Returns to the first page when the filter changes
+### ✅ Returns to the first page when the filter changes
 
 - Arrange eleven recipes in order: Burger, Salad, Pizza, Beer, Tacos, Curry, Ramen, Steak, Soup, Pasta, Cake.
 - Mount, click Next once (second page shows Curry through Pasta).

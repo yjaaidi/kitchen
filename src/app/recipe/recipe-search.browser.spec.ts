@@ -113,7 +113,7 @@ describe(RecipeSearch.name, () => {
       .toBeDisabled();
   });
 
-  it.todo('returns to the first page when the filter changes', async () => {
+  it('returns to the first page when the filter changes', async () => {
     const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([
