@@ -92,7 +92,7 @@ describe(RecipeSearch.name, () => {
       .toBeDisabled();
   });
 
-  it.todo('disables Next on the last page', async () => {
+  it('disables Next on the last page', async () => {
     const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([

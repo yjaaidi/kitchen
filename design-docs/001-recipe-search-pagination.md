@@ -182,7 +182,7 @@ flowchart LR
 - Mount `RecipeSearch`.
 - Assert Previous is disabled.
 
-### 🚧 Disables Next on the last page
+### ✅ Disables Next on the last page
 
 - Arrange Burger, Salad, Pizza, Beer, Tacos, Curry; mount and click Next once.
 - Assert Next is disabled.
