@@ -28,17 +28,49 @@ describe(RecipeSearch.name, () => {
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
-  it.todo('shows only the first five recipes when the result set is larger', () => {
-    // Arrange fake repository with six recipes: Burger, Salad, Pizza, Beer, Tacos, Curry.
-    // Mount `RecipeSearch`.
-    // Assert exactly five recipe headings are visible: Burger, Salad, Pizza, Beer, Tacos.
+  it('shows only the first five recipes when the result set is larger', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Tacos').build(),
+      recipeMother.withBasicInfo('Curry').build(),
+    ]);
+
+    const { recipeHeadings } = await mount();
+
+    await expect.element(recipeHeadings).toHaveLength(5);
+    await expect.element(recipeHeadings.nth(0)).toHaveTextContent('Burger');
+    await expect.element(recipeHeadings.nth(1)).toHaveTextContent('Salad');
+    await expect.element(recipeHeadings.nth(2)).toHaveTextContent('Pizza');
+    await expect.element(recipeHeadings.nth(3)).toHaveTextContent('Beer');
+    await expect.element(recipeHeadings.nth(4)).toHaveTextContent('Tacos');
   });
 
-  it.todo('shows next page when user clicks Next', () => {
-    // Same six-recipe arrange.
-    // Click the Next control.
-    // Assert one heading visible with text Curry.
-    // Assert heading Burger is not visible.
+  it.todo('shows next page when user clicks Next', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Tacos').build(),
+      recipeMother.withBasicInfo('Curry').build(),
+    ]);
+
+    const { recipeHeadings } = await mount();
+
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect.element(recipeHeadings).toHaveLength(1);
+    await expect.element(recipeHeadings).toHaveTextContent('Curry');
+    await expect
+      .element(page.getByRole('heading', { level: 2, name: 'Burger' }))
+      .not.toBeInTheDocument();
   });
 
   it.todo('disables Previous on the first page', () => {
