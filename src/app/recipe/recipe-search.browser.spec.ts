@@ -92,9 +92,25 @@ describe(RecipeSearch.name, () => {
       .toBeDisabled();
   });
 
-  it.todo('disables Next on the last page', () => {
-    // Arrange Burger, Salad, Pizza, Beer, Tacos, Curry; mount and click Next once.
-    // Assert Next is disabled.
+  it.todo('disables Next on the last page', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Tacos').build(),
+      recipeMother.withBasicInfo('Curry').build(),
+    ]);
+
+    await mount();
+
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect
+      .element(page.getByRole('button', { name: 'Next' }))
+      .toBeDisabled();
   });
 
   it.todo('returns to the first page when the filter changes', () => {
