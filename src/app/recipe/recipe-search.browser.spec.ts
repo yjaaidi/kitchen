@@ -113,11 +113,30 @@ describe(RecipeSearch.name, () => {
       .toBeDisabled();
   });
 
-  it.todo('returns to the first page when the filter changes', () => {
-    // Arrange eleven recipes in order: Burger, Salad, Pizza, Beer, Tacos, Curry, Ramen, Steak, Soup, Pasta, Cake.
-    // Mount, click Next once (second page shows Curry through Pasta).
-    // Fill keywords with `Burger` so only one recipe matches.
-    // Assert the sole visible heading is Burger (offset reset, not still on page two of the full list).
+  it.todo('returns to the first page when the filter changes', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+      recipeMother.withBasicInfo('Tacos').build(),
+      recipeMother.withBasicInfo('Curry').build(),
+      recipeMother.withBasicInfo('Ramen').build(),
+      recipeMother.withBasicInfo('Steak').build(),
+      recipeMother.withBasicInfo('Soup').build(),
+      recipeMother.withBasicInfo('Pasta').build(),
+      recipeMother.withBasicInfo('Cake').build(),
+    ]);
+
+    const { keywordsInput, recipeHeadings } = await mount();
+
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await keywordsInput.fill('Burger');
+
+    await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
   it.todo('omits pager when results fit in one page', () => {
