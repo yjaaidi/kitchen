@@ -139,10 +139,24 @@ describe(RecipeSearch.name, () => {
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
-  it.todo('omits pager when results fit in one page', () => {
-    // Arrange four recipes: Burger, Salad, Pizza, Beer.
-    // Mount `RecipeSearch`.
-    // Assert Next and Previous are not in the document (or pager host is absent).
+  it.todo('omits pager when results fit in one page', async () => {
+    const { mount, recipeRepoFake } = await setUpRecipeSearch();
+
+    recipeRepoFake.setRecipes([
+      recipeMother.withBasicInfo('Burger').build(),
+      recipeMother.withBasicInfo('Salad').build(),
+      recipeMother.withBasicInfo('Pizza').build(),
+      recipeMother.withBasicInfo('Beer').build(),
+    ]);
+
+    await mount();
+
+    await expect
+      .element(page.getByRole('button', { name: 'Next' }))
+      .not.toBeInTheDocument();
+    await expect
+      .element(page.getByRole('button', { name: 'Previous' }))
+      .not.toBeInTheDocument();
   });
 });
 
