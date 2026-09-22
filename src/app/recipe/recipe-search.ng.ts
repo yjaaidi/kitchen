@@ -1,12 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 import { Catalog } from '../shared/catalog.ng';
+import { sliceCatalogPage } from '../shared/catalog-pagination';
 import { CatalogPager } from '../shared/catalog-pager.ng';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form.ng';
@@ -27,12 +29,20 @@ import { RecipeRepository } from './recipe-repository';
   template: `
     <wm-recipe-filter-form (filterChange)="onFilterChange($event)" />
     <wm-catalog>
-      @for (recipe of recipes.value(); track recipe.id) {
+      @for (recipe of pagedRecipes(); track recipe.id) {
       <wm-recipe-preview [recipe]="recipe">
         <wm-recipe-add-button [recipe]="recipe" />
       </wm-recipe-preview>
       }
     </wm-catalog>
+    @if (totalRecipes() > limit) {
+    <wm-catalog-pager
+      [offset]="offset()"
+      [limit]="limit"
+      [total]="totalRecipes()"
+      (offsetChange)="offset.set($event)"
+    />
+    }
   `,
 })
 export class RecipeSearch {
@@ -43,6 +53,13 @@ export class RecipeSearch {
     params: this.filter,
     stream: ({ params }) => this._recipeRepository.search(params),
   });
+  protected totalRecipes = computed(() => this.recipes.value()?.length ?? 0);
+  protected pagedRecipes = computed(() =>
+    sliceCatalogPage(this.recipes.value() ?? [], {
+      offset: this.offset(),
+      limit: this.limit,
+    }),
+  );
 
   private _recipeRepository = inject(RecipeRepository);
 

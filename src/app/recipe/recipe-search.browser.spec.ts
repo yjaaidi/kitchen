@@ -50,7 +50,7 @@ describe(RecipeSearch.name, () => {
     await expect.element(recipeHeadings.nth(4)).toHaveTextContent('Tacos');
   });
 
-  it.todo('shows next page when user clicks Next', async () => {
+  it('shows next page when user clicks Next', async () => {
     const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([

@@ -153,23 +153,23 @@ flowchart LR
 
 ## Tasks
 
-- [ ] Add `sliceCatalogPage` to `catalog-pagination.ts`.
+- [x] Add `sliceCatalogPage` to `catalog-pagination.ts`.
 - [ ] Add `recipe-search-pagination.ts` with `RecipeSearchPaginationState`, `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`, and `createRecipeSearchPaginationState`.
-- [ ] Add `offset` signal on `RecipeSearch`; set `offset` to `0` in the `filterChange` handler alongside `filter.set`; bind `limit` from `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`.
-- [ ] Add `pagedRecipes` computed via `sliceCatalogPage(recipes.value() ?? [], { offset: offset(), limit })`.
+- [x] Add `offset` signal on `RecipeSearch`; set `offset` to `0` in the `filterChange` handler alongside `filter.set`; bind `limit` from `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`.
+- [x] Add `pagedRecipes` computed via `sliceCatalogPage(recipes.value() ?? [], { offset: offset(), limit })`.
 - [ ] Render `CatalogPager` only when `total > limit`; omit when `total === 0`.
-- [ ] Template: `@for (recipe of pagedRecipes(); track recipe.id)` inside `wm-catalog`.
-- [ ] Wire `(offsetChange)="offset.set($event)"` on `wm-catalog-pager`.
+- [x] Template: `@for (recipe of pagedRecipes(); track recipe.id)` inside `wm-catalog`.
+- [x] Wire `(offsetChange)="offset.set($event)"` on `wm-catalog-pager`.
 
 ## Testing Strategy
 
-### 🚧 Shows only the first five recipes when the result set is larger
+### ✅ Shows only the first five recipes when the result set is larger
 
 - Arrange fake repository with six recipes: Burger, Salad, Pizza, Beer, Tacos, Curry.
 - Mount `RecipeSearch`.
 - Assert exactly five recipe headings are visible: Burger, Salad, Pizza, Beer, Tacos.
 
-### 🚧 Shows next page when user clicks Next
+### ✅ Shows next page when user clicks Next
 
 - Same six-recipe arrange.
 - Click the Next control.

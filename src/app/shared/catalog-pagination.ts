@@ -7,12 +7,9 @@ export interface CatalogPaginationContext extends CatalogPaginationWindow {
   total: number;
 }
 
-/**
- * @deprecated 🚧 work in progress
- */
 export function sliceCatalogPage<T>(
   items: readonly T[],
   window: CatalogPaginationWindow,
 ): T[] {
-  throw new Error(`🚧 work in progress`);
+  return items.slice(window.offset, window.offset + window.limit);
 }
