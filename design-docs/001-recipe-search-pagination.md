@@ -118,12 +118,12 @@ flowchart LR
 ```
 
 <details>
-<summary>🚧 PR#1 — CatalogPager</summary>
+<summary>✅ PR#1 — CatalogPager</summary>
 
 ## Tasks
 
-- [ ] Add `catalog-pagination.ts` with `CatalogPaginationWindow` and `CatalogPaginationContext`.
-- [ ] Add `catalog-pager.ts` with `CatalogPagerDef`, `CatalogPagerInputs`, and `CatalogPagerOutputs`.
+- [x] Add `catalog-pagination.ts` with `CatalogPaginationWindow` and `CatalogPaginationContext`.
+- [x] Add `catalog-pager.ts` with `CatalogPagerDef`, `CatalogPagerInputs`, and `CatalogPagerOutputs`.
 - [x] Add `catalog-pager.ng.ts` (`wm-catalog-pager`) with required inputs `offset`, `limit`, and `total`; output `offsetChange`.
 - [x] Previous emits `offsetChange` with `offset - limit` (clamped at `0`); Next emits `offset + limit` (clamped so the last page is reachable).
 - [x] Disable Previous when `offset <= 0`; disable Next when `offset + limit >= total`.
@@ -149,12 +149,12 @@ flowchart LR
 </details>
 
 <details>
-<summary>🚧 PR#2 — Paged recipe search</summary>
+<summary>✅ PR#2 — Paged recipe search</summary>
 
 ## Tasks
 
 - [x] Add `sliceCatalogPage` to `catalog-pagination.ts`.
-- [ ] Add `recipe-search-pagination.ts` with `RecipeSearchPaginationState`, `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`, and `createRecipeSearchPaginationState`.
+- [x] Add `recipe-search-pagination.ts` with `RecipeSearchPaginationState`, `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`, and `createRecipeSearchPaginationState`.
 - [x] Add `offset` signal on `RecipeSearch`; set `offset` to `0` in the `filterChange` handler alongside `filter.set`; bind `limit` from `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`.
 - [x] Add `pagedRecipes` computed via `sliceCatalogPage(recipes.value() ?? [], { offset: offset(), limit })`.
 - [x] Render `CatalogPager` only when `total > limit`; omit when `total === 0`.
