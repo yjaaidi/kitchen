@@ -139,7 +139,7 @@ describe(RecipeSearch.name, () => {
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
 
-  it.todo('omits pager when results fit in one page', async () => {
+  it('omits pager when results fit in one page', async () => {
     const { mount, recipeRepoFake } = await setUpRecipeSearch();
 
     recipeRepoFake.setRecipes([

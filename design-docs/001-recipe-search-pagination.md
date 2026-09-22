@@ -157,7 +157,7 @@ flowchart LR
 - [ ] Add `recipe-search-pagination.ts` with `RecipeSearchPaginationState`, `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`, and `createRecipeSearchPaginationState`.
 - [x] Add `offset` signal on `RecipeSearch`; set `offset` to `0` in the `filterChange` handler alongside `filter.set`; bind `limit` from `DEFAULT_RECIPE_SEARCH_PAGE_LIMIT`.
 - [x] Add `pagedRecipes` computed via `sliceCatalogPage(recipes.value() ?? [], { offset: offset(), limit })`.
-- [ ] Render `CatalogPager` only when `total > limit`; omit when `total === 0`.
+- [x] Render `CatalogPager` only when `total > limit`; omit when `total === 0`.
 - [x] Template: `@for (recipe of pagedRecipes(); track recipe.id)` inside `wm-catalog`.
 - [x] Wire `(offsetChange)="offset.set($event)"` on `wm-catalog-pager`.
 
@@ -194,7 +194,7 @@ flowchart LR
 - Fill keywords with `Burger` so only one recipe matches.
 - Assert the sole visible heading is Burger (offset reset, not still on page two of the full list).
 
-### 🚧 Omits pager when results fit in one page
+### ✅ Omits pager when results fit in one page
 
 - Arrange four recipes: Burger, Salad, Pizza, Beer.
 - Mount `RecipeSearch`.
