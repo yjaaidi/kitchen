@@ -27,6 +27,43 @@ describe(RecipeSearch.name, () => {
     /* This also checks that there is **only one** recipe heading. */
     await expect.element(recipeHeadings).toHaveTextContent('Burger');
   });
+
+  it.todo('shows only the first five recipes when the result set is larger', () => {
+    // Arrange fake repository with six recipes: Burger, Salad, Pizza, Beer, Tacos, Curry.
+    // Mount `RecipeSearch`.
+    // Assert exactly five recipe headings are visible: Burger, Salad, Pizza, Beer, Tacos.
+  });
+
+  it.todo('shows next page when user clicks Next', () => {
+    // Same six-recipe arrange.
+    // Click the Next control.
+    // Assert one heading visible with text Curry.
+    // Assert heading Burger is not visible.
+  });
+
+  it.todo('disables Previous on the first page', () => {
+    // Arrange Burger, Salad, Pizza, Beer, Tacos, Curry.
+    // Mount `RecipeSearch`.
+    // Assert Previous is disabled.
+  });
+
+  it.todo('disables Next on the last page', () => {
+    // Arrange Burger, Salad, Pizza, Beer, Tacos, Curry; mount and click Next once.
+    // Assert Next is disabled.
+  });
+
+  it.todo('returns to the first page when the filter changes', () => {
+    // Arrange eleven recipes in order: Burger, Salad, Pizza, Beer, Tacos, Curry, Ramen, Steak, Soup, Pasta, Cake.
+    // Mount, click Next once (second page shows Curry through Pasta).
+    // Fill keywords with `Burger` so only one recipe matches.
+    // Assert the sole visible heading is Burger (offset reset, not still on page two of the full list).
+  });
+
+  it.todo('omits pager when results fit in one page', () => {
+    // Arrange four recipes: Burger, Salad, Pizza, Beer.
+    // Mount `RecipeSearch`.
+    // Assert Next and Previous are not in the document (or pager host is absent).
+  });
 });
 
 async function mountRecipeSearch() {
