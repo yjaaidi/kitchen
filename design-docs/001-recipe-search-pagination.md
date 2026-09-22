@@ -124,23 +124,23 @@ flowchart LR
 
 - [ ] Add `catalog-pagination.ts` with `CatalogPaginationWindow` and `CatalogPaginationContext`.
 - [ ] Add `catalog-pager.ts` with `CatalogPagerDef`, `CatalogPagerInputs`, and `CatalogPagerOutputs`.
-- [ ] Add `catalog-pager.ng.ts` (`wm-catalog-pager`) with required inputs `offset`, `limit`, and `total`; output `offsetChange`.
-- [ ] Previous emits `offsetChange` with `offset - limit` (clamped at `0`); Next emits `offset + limit` (clamped so the last page is reachable).
-- [ ] Disable Previous when `offset <= 0`; disable Next when `offset + limit >= total`.
+- [x] Add `catalog-pager.ng.ts` (`wm-catalog-pager`) with required inputs `offset`, `limit`, and `total`; output `offsetChange`.
+- [x] Previous emits `offsetChange` with `offset - limit` (clamped at `0`); Next emits `offset + limit` (clamped so the last page is reachable).
+- [x] Disable Previous when `offset <= 0`; disable Next when `offset + limit >= total`.
 
 ## Testing Strategy
 
-### 🚧 Disables Previous at offset zero
+### ✅ Disables Previous at offset zero
 
 - Mount with `offset: 0`, `limit: 5`, `total: 10`.
 - Assert Previous is disabled and Next is enabled.
 
-### 🚧 Disables Next on the last page
+### ✅ Disables Next on the last page
 
 - Mount with `offset: 5`, `limit: 5`, `total: 6`.
 - Assert Next is disabled and Previous is enabled.
 
-### 🚧 Emits offsetChange when Next is clicked
+### ✅ Emits offsetChange when Next is clicked
 
 - Mount with `offset: 0`, `limit: 5`, `total: 10`.
 - Click Next.

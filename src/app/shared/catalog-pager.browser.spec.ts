@@ -4,7 +4,7 @@ import { t } from '../testing/ng-test-utils';
 import { CatalogPager } from './catalog-pager.ng';
 
 describe(CatalogPager.name, () => {
-  it.todo('disables previous at offset zero', async () => {
+  it('disables previous at offset zero', async () => {
     const { previousButton, nextButton } = await mountCatalogPager({
       offset: 0,
       limit: 5,
@@ -15,7 +15,7 @@ describe(CatalogPager.name, () => {
     await expect.element(nextButton).toBeEnabled();
   });
 
-  it.todo('disables next on the last page', async () => {
+  it('disables next on the last page', async () => {
     const { previousButton, nextButton } = await mountCatalogPager({
       offset: 5,
       limit: 5,
@@ -26,7 +26,7 @@ describe(CatalogPager.name, () => {
     await expect.element(previousButton).toBeEnabled();
   });
 
-  it.todo('emits offsetChange when next is clicked', async () => {
+  it('emits offsetChange when next is clicked', async () => {
     const offsetChange = vi.fn<(offset: number) => void>();
 
     const { nextButton } = await mountCatalogPager(
