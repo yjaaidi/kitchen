@@ -13,8 +13,7 @@ This branch added one or more `// TIDYUP` markers compared to base branch `chart
 
 1. Find all `// TIDYUP` comments introduced on this branch (diff against the base branch).
 2. Apply each cleanup.
-3. Run `pnpm test` and fix any failures you introduced.
-4. If there are no file changes after cleanup, stop without opening a PR or pushing.
+3. If there are no file changes after cleanup, stop without opening a PR or pushing.
 
 ## Publish
 
