@@ -5,13 +5,23 @@ import {
   output,
 } from '@angular/core';
 
-/**
- * @deprecated 🚧 work in progress
- */
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-paginator',
-  template: `Paginator - 🚧 work in progress`,
+  template: `
+    <button
+      [disabled]="offset() === 0"
+      (click)="offsetChange.emit(offset() - limit())"
+    >
+      Previous
+    </button>
+    <button
+      [disabled]="offset() + limit() >= total()"
+      (click)="offsetChange.emit(offset() + limit())"
+    >
+      Next
+    </button>
+  `,
 })
 export class Paginator {
   offset = input.required<number>();
