@@ -104,24 +104,24 @@ flowchart LR
 </details>
 
 <details>
-<summary>🚧 PR#3 — RecipeSearch wiring</summary>
+<summary>✅ PR#3 — RecipeSearch wiring</summary>
 
 ## Tasks
 
-- [ ] Add `offset` signal to `RecipeSearch`; combine with filter in `rxResource` params.
-- [ ] Reset `offset` to 0 when filter changes.
-- [ ] Wire `Paginator` in `RecipeSearch` template, passing `offset`, `limit`, and `total` from `rxResource` result.
+- [x] Add `offset` signal to `RecipeSearch`; combine with filter in `rxResource` params.
+- [x] Reset `offset` to 0 when filter changes.
+- [x] Wire `Paginator` in `RecipeSearch` template, passing `offset`, `limit`, and `total` from `rxResource` result.
 
 ## Testing Strategy
 
-### 🚧 Displays first page on load
+### ✅ Displays first page on load
 
 - Arrange fake repository with 7 recipes.
 - Mount `RecipeSearch`.
 - Assert 5 recipe headings are visible.
 - Assert Previous is disabled and Next is enabled.
 
-### 🚧 Navigates to next page
+### ✅ Navigates to next page
 
 - Arrange fake repository with 7 recipes.
 - Mount `RecipeSearch`.
@@ -129,13 +129,13 @@ flowchart LR
 - Assert 2 recipe headings are visible.
 - Assert Previous is enabled and Next is disabled.
 
-### 🚧 Navigates back to previous page
+### ✅ Navigates back to previous page
 
 - Arrange fake repository with 7 recipes.
 - Mount `RecipeSearch`; click Next; click Previous.
 - Assert 5 recipe headings from the first page are visible again.
 
-### 🚧 Resets to page 1 when filter changes
+### ✅ Resets to page 1 when filter changes
 
 - Arrange fake repository with 7 recipes including "Burger" and "Salad".
 - Mount `RecipeSearch`; click Next to reach page 2.

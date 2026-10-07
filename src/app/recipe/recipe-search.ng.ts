@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { RecipeAddButton } from '../meal-planner/recipe-add-button.ng';
 import { Catalog } from '../shared/catalog.ng';
+import { Paginator } from './paginator.ng';
 import { RecipeFilter } from './recipe-filter';
 import { RecipeFilterForm } from './recipe-filter-form.ng';
 import { RecipePreview } from './recipe-preview.ng';
@@ -15,9 +16,9 @@ import { rxResource } from '@angular/core/rxjs-interop';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wm-recipe-search',
-  imports: [Catalog, RecipeAddButton, RecipeFilterForm, RecipePreview],
+  imports: [Catalog, Paginator, RecipeAddButton, RecipeFilterForm, RecipePreview],
   template: `
-    <wm-recipe-filter-form (filterChange)="filter.set($event)" />
+    <wm-recipe-filter-form (filterChange)="filter.set($event); offset.set(0)" />
     <wm-catalog>
       @for (recipe of page.value()?.items; track recipe.id) {
       <wm-recipe-preview [recipe]="recipe">
@@ -25,13 +26,25 @@ import { rxResource } from '@angular/core/rxjs-interop';
       </wm-recipe-preview>
       }
     </wm-catalog>
+    <wm-paginator
+      [offset]="offset()"
+      [limit]="limit"
+      [total]="page.value()?.total ?? 0"
+      (offsetChange)="offset.set($event)"
+    />
   `,
 })
 export class RecipeSearch {
   filter = signal<RecipeFilter>({});
+  offset = signal(0);
+  limit = 5;
   page = rxResource({
-    params: this.filter,
-    stream: ({ params }) => this._recipeRepository.search(params),
+    params: () => ({ filter: this.filter(), offset: this.offset() }),
+    stream: ({ params }) =>
+      this._recipeRepository.search(params.filter, {
+        offset: params.offset,
+        limit: this.limit,
+      }),
   });
 
   private _recipeRepository = inject(RecipeRepository);
