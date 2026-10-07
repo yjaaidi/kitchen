@@ -18,15 +18,8 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
 
   search(
     { keywords, maxIngredientCount, maxStepCount }: RecipeFilter = {},
-    /**
-     * @deprecated 🚧 work in progress
-     */
     pagination?: RecipePagination,
   ): Observable<RecipePage> {
-    if (pagination) {
-      throw new Error(`🚧 work in progress`);
-    }
-
     return defer(async () => {
       await this._pauseGate.whenResumed;
       const recipes = this._recipes.filter((recipe) => {
@@ -46,7 +39,10 @@ export class RecipeRepositoryFake implements RecipeRepositoryDef {
         /* Return true if all conditions are true. */
         return conditions.every((condition) => condition());
       });
-      return { items: recipes, total: recipes.length };
+      const offset = pagination?.offset ?? 0;
+      const end =
+        pagination?.limit != null ? offset + pagination.limit : undefined;
+      return { items: recipes.slice(offset, end), total: recipes.length };
     });
   }
 

@@ -57,7 +57,7 @@ flowchart LR
 ```
 
 <details>
-<summary>🚧 PR#1 — RecipePage + Repository</summary>
+<summary>✅ PR#1 — RecipePage + Repository</summary>
 
 ## Tasks
 
@@ -65,7 +65,7 @@ flowchart LR
 - [x] Extend `RecipeRepository.search()` to accept `offset` and `limit` params and pass them to the API.
 - [x] Map API response `total` field into `RecipePage`.
 - [x] Keep client-side `maxIngredientCount` filter on fetched items (page may show fewer than 5).
-- [ ] Update `RecipeRepositoryFake` to support offset/limit pagination.
+- [x] Update `RecipeRepositoryFake` to support offset/limit pagination.
 
 </details>
 
