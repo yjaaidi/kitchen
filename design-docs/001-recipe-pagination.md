@@ -63,7 +63,7 @@ flowchart LR
 
 - [x] Add `RecipePage` type with `items: Recipe[]` and `total: number`.
 - [x] Extend `RecipeRepository.search()` to accept `offset` and `limit` params and pass them to the API.
-- [ ] Map API response `total` field into `RecipePage`.
+- [x] Map API response `total` field into `RecipePage`.
 - [ ] Keep client-side `maxIngredientCount` filter on fetched items (page may show fewer than 5).
 - [ ] Update `RecipeRepositoryFake` to support offset/limit pagination.
 
