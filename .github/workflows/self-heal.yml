@@ -1,0 +1,27 @@
+name: Self heal trigger
+
+on:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+
+jobs:
+  fire:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fire self-heal routine
+        uses: ./.github/actions/fire-claude-routine
+        env:
+          CLAUDE_CODE_ROUTINE_FIRE_TOKEN: ${{ secrets.CLAUDE_CODE_ROUTINE_FIRE_TOKEN }}
+        with:
+          skill: self-heal
+          branch: ${{ github.event.workflow_run.head_branch }}
+          message: >-
+            Test workflow failed.
+            Run: ${{ github.event.workflow_run.html_url }}
+            Run id: ${{ github.event.workflow_run.id }}
+            Run number: ${{ github.event.workflow_run.run_number }}
+            Head SHA: ${{ github.event.workflow_run.head_sha }}
