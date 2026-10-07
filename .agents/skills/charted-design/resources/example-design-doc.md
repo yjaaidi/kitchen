@@ -43,15 +43,34 @@ flowchart TD
 
 (Note: this section is removed after the PR Plan is created.)
 
-- [ ] PR#1 — Add `Recipe` interface with `id` and `title` fields.
-- [ ] PR#1 — Add `RecipeRepository` with `getRecipes(): Recipe[]`.
-- [ ] PR#1 — Scaffold `RecipeSearchPage` with search input and recipe list.
-- [ ] PR#1 — Display all recipes from `RecipeRepository`.
-- [ ] PR#2 — Filter recipes by case-insensitive substring match on title.
-- [ ] PR#2 — Show "No recipes found" when filter matches nothing.
-- [ ] PR#3 — Add `MealPlanRepository` with `addRecipe(recipe: Recipe): void`.
-- [ ] PR#3 — Add "Add to meal plan" button on each recipe row.
-- [ ] PR#3 — Show confirmation toast after a recipe is added.
+```ts
+interface Recipe {
+  id: string;
+  title: string;
+}
+
+interface RecipeRepository {
+  getRecipes(): Recipe[];
+}
+
+/**
+ * Case-insensitive substring match on `title`.
+ * Empty query returns every recipe.
+ */
+function filterRecipes(recipes: Recipe[], query: string): Recipe[];
+
+interface MealPlanRepository {
+  addRecipe(recipe: Recipe): void;
+}
+```
+
+- [ ] Scaffold `RecipeSearchPage` with search input and recipe list.
+- [ ] Display all recipes from `RecipeRepository`.
+- [ ] Filter recipes by case-insensitive substring match on title.
+- [ ] Show "No recipes found" when filter matches nothing.
+- [ ] Add `MealPlanRepository` with `addRecipe(recipe: Recipe): void`.
+- [ ] Add "Add to meal plan" button on each recipe row.
+- [ ] Show confirmation toast after a recipe is added.
 
 # Testing Strategy
 
