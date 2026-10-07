@@ -16,11 +16,10 @@ export interface RecipePagination {
 }
 
 export interface RecipeRepositoryDef {
-  /* 🚧 `pagination` is work in progress and will make `search` return a `RecipePage`. */
   search(
     filter: RecipeFilter,
     pagination?: RecipePagination,
-  ): Observable<Recipe[]>;
+  ): Observable<RecipePage>;
 }
 
 @Injectable({
@@ -32,7 +31,7 @@ export class RecipeRepository implements RecipeRepositoryDef {
   search(
     { keywords, maxIngredientCount }: RecipeFilter = {},
     pagination?: RecipePagination,
-  ): Observable<Recipe[]> {
+  ): Observable<RecipePage> {
     const params: ResponseListQueryParams = {
       embed: 'ingredients',
       ...(pagination?.offset != null ? { offset: pagination.offset } : {}),
@@ -45,8 +44,8 @@ export class RecipeRepository implements RecipeRepositoryDef {
         params,
       })
       .pipe(
-        map((response) =>
-          response.items
+        map((response) => {
+          const items = response.items
             .map((item) =>
               createRecipe({
                 id: item.id,
@@ -62,8 +61,9 @@ export class RecipeRepository implements RecipeRepositoryDef {
               maxIngredientCount != null
                 ? recipe.ingredients.length <= maxIngredientCount
                 : true
-            )
-        )
+            );
+          return { items, total: response.total ?? items.length };
+        })
       );
   }
 }

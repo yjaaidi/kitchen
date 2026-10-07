@@ -19,7 +19,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
   template: `
     <wm-recipe-filter-form (filterChange)="filter.set($event)" />
     <wm-catalog>
-      @for (recipe of recipes.value(); track recipe.id) {
+      @for (recipe of page.value()?.items; track recipe.id) {
       <wm-recipe-preview [recipe]="recipe">
         <wm-recipe-add-button [recipe]="recipe" />
       </wm-recipe-preview>
@@ -29,7 +29,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export class RecipeSearch {
   filter = signal<RecipeFilter>({});
-  recipes = rxResource({
+  page = rxResource({
     params: this.filter,
     stream: ({ params }) => this._recipeRepository.search(params),
   });
