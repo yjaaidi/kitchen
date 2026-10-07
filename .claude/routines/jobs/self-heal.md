@@ -24,7 +24,6 @@ The **Test** workflow failed on the branch given in the dispatcher payload. Use 
 Work on the payload `branch` only.
 
 1. Commit with a clear message; suffix or prefix with `refactor: 🛠️ self-heal` when appropriate.
-2. If an open pull request exists for that branch, push to it.
-3. Otherwise open a pull request from that branch with title prefix `refactor: 🛠️ self-heal` and a short summary.
+2. Push to that branch. Do not open a pull request.
 
 Do not mask test failures or weaken assertions to make CI green.
