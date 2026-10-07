@@ -13,7 +13,7 @@ interface Commit {
 }
 
 export default {
-  base: 'charted-coding-0-starter',
+  base: 'charted-coding-1-design-doc',
   processCommit: (commit: Commit) => {
     const changedFiles = commit.files;
     if (changedFiles.length === 0) {
