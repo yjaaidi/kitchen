@@ -1,59 +1,60 @@
-# File Tests report
+# Covering Tests and Tests reports
 
-The report starts with a fixed top-level heading:
-
-```md
-# Tests
-```
-
-After the heading, the report starts with analysis metadata:
+The `Covering Tests` link for a source file opens a report headed `# File Analysis`. The `Tests` link for a test file opens one headed `# Test File Analysis`. Both reports start with file metadata:
 
 ```md
-- path: <target-file-path>
-- location: line <line>, column <column>
+- path: <file-path>
 - tests: <count>
-- tests: <count>/<failed-count>
-- tests: <count> (filter applied: "<test-name>" (<test-file-path>))
-- tests: <count> (filter applied: "<test-name>" (<test-file-path>)) but no tests found
 - lines: <line-count>
 - coverage: <percent>%
 - change risk anti-patterns: <number>
 - size: <size>
 ```
 
-Format details:
+`- path:` and `- tests:` are always present. The other metrics appear when available. A resolved source location adds `- location: line <line>, column <column>` after the path; the column appears only when known. When listed tests have failures, the test count is `<total>/<failed>`. A test filter adds `(filter applied: "<test-name>" (<test-file-path>))` to that line, followed by `but no tests found` if it matched no related test.
 
-- `- path:` is always present.
-- `- location:` appears when the analyze target included a resolved location.
-- `- tests:` is always present. When one or more listed tests failed, the value is `<total>/<failed>`.
-- A filter note appears when `--test` or `target.test` was used.
-- `- lines:`, `- coverage:`, `- change risk anti-patterns:`, and `- size:` appear when Wallaby has those values for the target.
-- Source-file analysis can include coverage and change-risk metrics. Test-file analysis usually includes line count and size.
+## Source-file report
 
-When tests are present and no exact filter is applied, source-file and source-location analysis include ranked summaries:
+A source-file report uses this shape:
 
 ```md
+# File Analysis
+
+- path: src/accounts.ts
+- tests: <count>
+- lines: <line-count>
+- coverage: <percent>%
+- change risk anti-patterns: <number>
+- size: <size>
+
+## Covering Tests
+
+### <test name>
+- status: passed|failed|skipped|todo|disabled
+- loc: <test-file-path>:<line>
+- time: <time>ms
+```
+
+`Covering Tests` lists all tests covering the selected source file or location, or the matching test when filtered. Entries are not grouped by test file. A failing entry can include its errors and stack traces. Source-file entries omit logs and covered-file lists.
+
+## Test-file report
+
+A test-file report uses this shape:
+
+````md
+# Test File Analysis
+
+- path: tests/accounts.spec.ts
+- tests: <count>
+- lines: <line-count>
+- size: <size>
+
 Top 5 tests by execution time:
 - <test name> (<time>ms, <test-file-path>:<line>)
 - ...
 
-Top 5 files by execution time:
-- <test-file-path> (<total-time>ms, <test-count> tests)
-- ...
+## Tests
 
-Top 5 files by test count:
-- <test-file-path> (<test-count> tests, <total-time>ms)
-- ...
-```
-
-Test-file analysis includes the top tests by execution time, but omits the file-count summaries because every listed test belongs to the analyzed test file.
-
-Filtered file analysis omits the ranked summaries and lists only the matching test.
-
-The rest of the report lists tests grouped by test file:
-
-````md
-## <test-file-path>
 ### <test name>
 - status: passed|failed|skipped|todo|disabled
 - loc: <test-file-path>:<line>
@@ -79,16 +80,6 @@ Stack trace:
 - ...
 ````
 
-This test-entry format uses the same test fields as the Failing Tests and All Tests reports, with fields shown when the formatter includes data for them.
+`Tests` lists the tests belonging to the selected test file. The ranking shows up to five tests by execution time and is omitted when the report has no tests or an applied filter matched a test. Test entries include errors, stack traces, logs, and covered files when available.
 
-The main analyze report may show a shorter test list:
-
-- Source-file analysis shows all related tests, but omits test errors, logs, and covered files from the inline `Covering Tests` list. Open `file-tests.md` for the full test entries.
-- Test-file analysis shows up to five tests inline and links to `file-tests.md` when additional tests are omitted.
-- Filtered file analysis shows the matching test inline with full details and still links to `file-tests.md`.
-
-If no tests are found, the report contains metadata followed by:
-
-```md
-No tests found.
-```
+If either report has no listed tests, its test section says `No tests found.` instead of showing test entries. Test names include their full suite path, joined with ` / `; location and time appear when Wallaby has those values.

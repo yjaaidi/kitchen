@@ -37,7 +37,7 @@
 
 ```mermaid
 flowchart TD
-  RecipeRepository(("RecipeRepository"))
+  RecipeRepository(["RecipeRepository"])
 
   RecipeSearch -->|"[offset: number]<br>[limit: number]<br>[total: number]"| Paginator
   Paginator -->|"(offsetChange: number)"| RecipeSearch
