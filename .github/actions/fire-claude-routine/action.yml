@@ -1,0 +1,67 @@
+name: Fire Claude Code routine
+description: POST a JSON dispatcher payload to the Kitchen Claude Code routine API trigger
+
+inputs:
+  skill:
+    description: Job id under .claude/routines/jobs/ or a repo-relative skill path
+    required: true
+  message:
+    description: Run-specific context (URLs, SHAs, notes)
+    required: true
+  branch:
+    description: Branch to pass to the routine (defaults to the triggering ref)
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Fire routine
+      shell: bash
+      env:
+        ROUTINE_FIRE_URL: https://api.anthropic.com/v1/claude_code/routines/trig_01Az4dzC3xXCA8vgTBZg7Nz2/fire
+        REPOSITORY: ${{ github.repository }}
+        SKILL: ${{ inputs.skill }}
+        MESSAGE: ${{ inputs.message }}
+        BRANCH_INPUT: ${{ inputs.branch }}
+        HEAD_REF: ${{ github.head_ref }}
+        REF_NAME: ${{ github.ref_name }}
+      run: |
+        set -euo pipefail
+
+        if [ -z "${CLAUDE_CODE_ROUTINE_FIRE_TOKEN:-}" ]; then
+          echo "Missing repository secret CLAUDE_CODE_ROUTINE_FIRE_TOKEN"
+          exit 1
+        fi
+
+        if [ -n "$BRANCH_INPUT" ]; then
+          BRANCH="$BRANCH_INPUT"
+        elif [ -n "$HEAD_REF" ]; then
+          BRANCH="$HEAD_REF"
+        else
+          BRANCH="$REF_NAME"
+        fi
+
+        TEXT="$(jq -nc \
+          --arg repository "$REPOSITORY" \
+          --arg branch "$BRANCH" \
+          --arg skill "$SKILL" \
+          --arg message "$MESSAGE" \
+          '{repository: $repository, branch: $branch, skill: $skill, message: $message}')"
+
+        BODY="$(jq -nc --arg text "$TEXT" '{text: $text}')"
+
+        HTTP_CODE="$(curl -sS -o /tmp/routine-fire-response.json -w '%{http_code}' \
+          -X POST "$ROUTINE_FIRE_URL" \
+          -H "Authorization: Bearer ${CLAUDE_CODE_ROUTINE_FIRE_TOKEN}" \
+          -H "anthropic-version: 2023-06-01" \
+          -H "Content-Type: application/json" \
+          -d "$BODY")"
+
+        cat /tmp/routine-fire-response.json
+        echo ""
+
+        if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+          echo "Routine fire failed with HTTP $HTTP_CODE"
+          exit 1
+        fi
