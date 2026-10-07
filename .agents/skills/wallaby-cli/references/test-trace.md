@@ -1,4 +1,4 @@
-# Test Execution Trace
+# Test Execution Trace artifact
 
 The Test Execution Trace shows the source lines Wallaby recorded while the selected test ran. It presents those lines in execution order across files, with the selected test's first line marked inline.
 

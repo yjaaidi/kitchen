@@ -16,7 +16,7 @@ export function celsiusToFahrenheit(celsius: number): number { /* line: 5 */
 
 Format details:
 
-- The file name is derived from the relative file path by replacing path separators with `-` and appending `.wcov`. For example, `src/temperature.ts` becomes `src-temperature.ts.wcov`.
+- The file name starts with `file-`, escapes each `@` as `@@`, encodes `/` as `@s` and `\` as `@b`, then appends `.wcov`. For example, `src/temperature.ts` becomes `file-src@stemperature.ts.wcov`.
 - The artifact contains the file content with a pseudo-block comment after every output line.
 - Every output line has a `line: <number>` annotation in a pseudo-block comment.
 - Coverable lines also include `coverage: full`, `coverage: partial`, or `coverage: none`.

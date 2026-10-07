@@ -5,7 +5,7 @@
       "source": "angular/skills",
       "sourceType": "github",
       "skillPath": "angular-developer/SKILL.md",
-      "computedHash": "28eb592b92e5a24c4e3a1c0229a854069f0b8c49bed7b8d2bf6b852812dbe214"
+      "computedHash": "4b23f026727c3e7aad1b553eac3769a39fb2cb3d2e04a450712455ce67653cef"
     },
     "charted-continue": {
       "source": "marmicode/skills",
@@ -17,7 +17,7 @@
       "source": "marmicode/skills",
       "sourceType": "github",
       "skillPath": "skills/charted-design/SKILL.md",
-      "computedHash": "576fd3549cdfdc62a44d2b92b1e7438296b7dbac53985c1a0a0f407ce3b4e3b7"
+      "computedHash": "ae7597ff0e541da0167474eb20a6e0aa8663d60091856e48a545c4646da9c353"
     },
     "charted-green": {
       "source": "marmicode/skills",
@@ -47,7 +47,7 @@
       "source": "wallabyjs/skills",
       "sourceType": "github",
       "skillPath": "skills/wallaby-cli/SKILL.md",
-      "computedHash": "c6e9819a685f62e9c5ab5f6bdfc98c0e9994c391f9befafa98f021da94da6037"
+      "computedHash": "5b5fba2af4ca8742a042c7c5bded8ea657746f59a58a6bec5be53f4a33124865"
     }
   }
 }
