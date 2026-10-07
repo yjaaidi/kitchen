@@ -13,14 +13,13 @@ This branch added one or more `// TIDYUP` markers compared to base branch `chart
 
 1. Find all `// TIDYUP` comments introduced on this branch (diff against the base branch).
 2. Apply each cleanup.
-3. If there are no file changes after cleanup, stop without opening a PR or pushing.
+3. If there are no file changes after cleanup, stop without pushing.
 
 ## Publish
 
 Work on the payload `branch` only.
 
 1. Commit with a clear message; suffix or prefix with `refactor: 🛠️ tidy up` when appropriate.
-2. If an open pull request exists for that branch, push to it.
-3. Otherwise open a pull request from that branch with title prefix `refactor: 🛠️ tidy up` and a short summary of what was tidied.
+2. Push to that branch. Do not open a pull request.
 
 Do not leave `// TIDYUP` markers in the tree when you finish.
