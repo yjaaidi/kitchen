@@ -17,8 +17,7 @@ The **Test** workflow failed on the branch given in the dispatcher payload. Use 
 ## Repair
 
 1. Apply code fixes following the Angular and testing skills.
-2. Run `pnpm test` and ensure tests pass.
-3. If the failure is environmental, flaky, or not fixable in-repo, stop with a short explanation and do not publish code changes.
+2. If the failure is environmental, flaky, or not fixable in-repo, stop with a short explanation and do not publish code changes.
 
 ## Publish
 
