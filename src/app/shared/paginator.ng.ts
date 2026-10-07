@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  output,
+  model,
 } from '@angular/core';
 
 /**
@@ -14,9 +14,7 @@ import {
   template: `Paginator - 🚧 work in progress`,
 })
 export class Paginator {
-  // TIDYUP use model instead of input + output
-  offset = input.required<number>();
+  offset = model.required<number>();
   limit = input.required<number>();
   total = input.required<number>();
-  offsetChange = output<number>();
 }
