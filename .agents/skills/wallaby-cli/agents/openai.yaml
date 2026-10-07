@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wallaby CLI"
+  short_description: "Live test verification, coverage, and runtime analysis"
+  default_prompt: "Use $wallaby-cli to establish a test baseline, keep affected-test feedback focused while making changes, and investigate or verify the result with coverage, execution traces, and runtime values."
